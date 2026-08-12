@@ -49,6 +49,13 @@ default, not a locked decision, since brand identity calls for explicit
 sign-off per the project brief.
 **Status:** proposed by Claude, needs explicit owner confirmation.
 
+### D2/D3/D5 status update
+Not corrected across two subsequent "continue" turns — Phase 2 proceeded
+on all three as accepted. Still easy to revisit: D2 only affects
+`services.html` (not yet built), D3 only affects `js/data/events.js`
+(no event is currently active, so nothing customer-facing depends on it
+yet), D5 only affects `css/tokens.css` (isolated, single file).
+
 ---
 
 ## Still open (tracked in PROJECT_STATUS.md, not yet decision points)

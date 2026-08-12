@@ -23,3 +23,25 @@
   carrying forward the old site's blue accent and dark palette.
 - `css/base.css` — reset, accessibility foundations, responsive breakpoint
   scale (carried over: 1100/900/640/420px).
+
+## Phase 2 — Core Site (in progress)
+- `css/style.css` adapted from the old site's stylesheet: removed the
+  now-redundant reset/`:root` block, converted 7 hardcoded hex colors to
+  token references (`--accent-2`, `--placeholder-*`) so it works correctly
+  in light mode.
+- `js/partials/header.html` / `footer.html` — shared page chrome.
+- `build-tools/stitch.py` — assembles partials into final static HTML.
+- `js/render/chrome.js` — mobile nav, scroll progress, back-to-top, footer
+  year, toggle-driven footer contact links. Replaces inline scripts
+  duplicated across all 8 old pages.
+- `js/render/eventBanner.js`, `js/render/buildCard.js`,
+  `js/render/faqAccordion.js` — reusable render components.
+- `pages-src/index.html` — homepage, built via stitch.py into `index.html`.
+  Reuses the old homepage's already-published copy (hero, trust cards,
+  custom-build pitch, testing process, FAQ answers, contact CTA), rewired
+  to the new data-driven architecture.
+- Verified the full render pipeline in a real DOM against test data
+  (available build w/ event pricing, sold build, active event): correct
+  filtering, correct optional-field handling, working FAQ accordion and
+  mobile nav. Found and fixed one real bug this way — skip-link had no
+  `#main` target.
