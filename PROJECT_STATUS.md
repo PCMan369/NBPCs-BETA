@@ -151,11 +151,12 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-Per the owner's request: (1) restructure the flat nav into "For Sale" and
-"Services" dropdown parents, (2) build the Part Boxes resale system
-(`js/data/partBoxes.js` + card renderer + multi-item order-request page).
-See DECISIONS.md D6 for the full brief. These are sequenced together
-since the new nav item exists to serve the new feature.
+Nav restructuring is done (see CHANGELOG.md). Per the owner's D6 request,
+the remaining piece is the Part Boxes resale system:
+`js/data/partBoxes.js` + a card/order-picker renderer + `part-boxes.html`
+(multi-item order-request page, no payment processing — matches how
+everything else here works). The nav already links to it; that link
+currently 404s until this is built.
 
 ## Files that matter
 

@@ -26,7 +26,12 @@
       hamburger.setAttribute('aria-expanded', isOpen);
     });
 
-    mobileNav.querySelectorAll('.nav-link').forEach(function (link) {
+    // Close the whole drawer when a real destination link is tapped —
+    // .nav-sublink included, .mobile-nav-toggle excluded even though it
+    // shares the .nav-link class for styling (it only expands/collapses
+    // its own submenu, see below — closing the drawer on that click
+    // would hide the submenu before you ever saw it).
+    mobileNav.querySelectorAll('.nav-link:not(.mobile-nav-toggle), .nav-sublink').forEach(function (link) {
       link.addEventListener('click', function () {
         hamburger.classList.remove('open');
         mobileNav.classList.remove('open');
@@ -34,6 +39,63 @@
       });
     });
   }
+
+  // ---- Desktop dropdown ("For Sale") ----
+  document.querySelectorAll('.nav-dropdown').forEach(function (dropdown) {
+    var trigger = dropdown.querySelector('.nav-dropdown-trigger');
+    if (!trigger) return;
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var willOpen = !dropdown.classList.contains('open');
+
+      // Only one dropdown open at a time.
+      document.querySelectorAll('.nav-dropdown.open').forEach(function (d) {
+        d.classList.remove('open');
+        var t = d.querySelector('.nav-dropdown-trigger');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+
+      if (willOpen) {
+        dropdown.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Click anywhere outside a dropdown closes it.
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.nav-dropdown.open').forEach(function (d) {
+      d.classList.remove('open');
+      var t = d.querySelector('.nav-dropdown-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Escape closes an open dropdown and returns focus to its trigger.
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.nav-dropdown.open').forEach(function (d) {
+      d.classList.remove('open');
+      var t = d.querySelector('.nav-dropdown-trigger');
+      if (t) {
+        t.setAttribute('aria-expanded', 'false');
+        t.focus();
+      }
+    });
+  });
+
+  // ---- Mobile accordion ("For Sale") ----
+  document.querySelectorAll('.mobile-nav-toggle').forEach(function (toggle) {
+    var submenu = toggle.nextElementSibling;
+    if (!submenu || !submenu.classList.contains('mobile-nav-submenu')) return;
+
+    toggle.addEventListener('click', function () {
+      var isOpen = toggle.classList.toggle('open');
+      submenu.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+  });
 
   // ---- Back-to-top + scroll progress ----
   var backToTop = document.getElementById('back-to-top');

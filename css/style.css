@@ -265,6 +265,79 @@ strong {
   background-color: var(--accent-h) !important;
 }
 
+/* ---- Dropdown ("For Sale") ---- */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.nav-caret {
+  font-size: 0.6rem;
+  transition: transform var(--ease);
+  display: inline-block;
+}
+
+.nav-dropdown.open .nav-caret {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 190px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity var(--ease), transform var(--ease), visibility var(--ease);
+  z-index: 1001;
+}
+
+.nav-dropdown.open .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-dropdown-link {
+  display: block;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: var(--muted);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all var(--ease);
+  white-space: nowrap;
+}
+
+.nav-dropdown-link:hover {
+  color: var(--text);
+  background-color: rgba(255,255,255,0.06);
+}
+
+.nav-dropdown-link.active {
+  color: var(--accent);
+  background-color: rgba(59,130,246,0.1);
+}
+
 
 /* ============================================================
    5. Mobile Navigation
@@ -333,6 +406,58 @@ strong {
   text-align: center;
   justify-content: center;
   display: flex;
+}
+
+/* ---- Mobile accordion ("For Sale") ---- */
+.mobile-nav-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobile-nav-toggle .nav-caret {
+  font-size: 0.65rem;
+  transition: transform var(--ease);
+}
+
+.mobile-nav-toggle.open .nav-caret {
+  transform: rotate(180deg);
+}
+
+.mobile-nav-submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--ease);
+}
+
+.mobile-nav-submenu.open {
+  max-height: 220px;
+}
+
+.nav-sublink {
+  display: block;
+  padding: 0.6rem 1rem 0.6rem 2rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: all var(--ease);
+}
+
+.nav-sublink:hover {
+  color: var(--text);
+  background-color: rgba(255,255,255,0.06);
+}
+
+.nav-sublink.active {
+  color: var(--accent);
+  background-color: rgba(59,130,246,0.1);
 }
 
 

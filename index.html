@@ -37,13 +37,24 @@
 
     <!-- Desktop navigation -->
     <nav class="header-nav" aria-label="Main navigation">
-      <a href="index.html"        class="nav-link active">Home</a>
-      <a href="builds.html"       class="nav-link ">Gaming PCs</a>
-      <a href="custom-build.html" class="nav-link ">Custom Builds</a>
-      <a href="services.html"     class="nav-link ">Services</a>
-      <a href="gallery.html"      class="nav-link ">Gallery</a>
-      <a href="faq.html"          class="nav-link ">FAQ</a>
-      <a href="contact.html"      class="nav-link nav-cta ">Contact</a>
+      <a href="index.html" class="nav-link active">Home</a>
+
+      <div class="nav-dropdown">
+        <button type="button" class="nav-link nav-dropdown-trigger "
+          id="forsale-trigger" aria-expanded="false" aria-haspopup="true" aria-controls="forsale-menu">
+          For Sale <span class="nav-caret" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="nav-dropdown-menu" id="forsale-menu" aria-labelledby="forsale-trigger">
+          <a href="builds.html"       class="nav-dropdown-link ">Gaming PCs</a>
+          <a href="custom-build.html" class="nav-dropdown-link ">Custom Builds</a>
+          <a href="part-boxes.html"   class="nav-dropdown-link ">Part Boxes</a>
+        </div>
+      </div>
+
+      <a href="services.html" class="nav-link ">Services</a>
+      <a href="gallery.html"  class="nav-link ">Gallery</a>
+      <a href="faq.html"      class="nav-link ">FAQ</a>
+      <a href="contact.html"  class="nav-link nav-cta ">Contact</a>
     </nav>
 
     <!-- Mobile hamburger button -->
@@ -56,13 +67,22 @@
 
   <!-- Mobile navigation drawer -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
-    <a href="index.html"        class="nav-link active">Home</a>
-    <a href="builds.html"       class="nav-link ">Gaming PCs</a>
-    <a href="custom-build.html" class="nav-link ">Custom Builds</a>
-    <a href="services.html"     class="nav-link ">Services</a>
-    <a href="gallery.html"      class="nav-link ">Gallery</a>
-    <a href="faq.html"          class="nav-link ">FAQ</a>
-    <a href="contact.html"      class="nav-link nav-cta ">Contact</a>
+    <a href="index.html" class="nav-link active">Home</a>
+
+    <button type="button" class="nav-link mobile-nav-toggle "
+      aria-expanded="false" aria-controls="forsale-mobile-menu">
+      For Sale <span class="nav-caret" aria-hidden="true">&#9662;</span>
+    </button>
+    <div class="mobile-nav-submenu" id="forsale-mobile-menu">
+      <a href="builds.html"       class="nav-sublink ">Gaming PCs</a>
+      <a href="custom-build.html" class="nav-sublink ">Custom Builds</a>
+      <a href="part-boxes.html"   class="nav-sublink ">Part Boxes</a>
+    </div>
+
+    <a href="services.html" class="nav-link ">Services</a>
+    <a href="gallery.html"  class="nav-link ">Gallery</a>
+    <a href="faq.html"      class="nav-link ">FAQ</a>
+    <a href="contact.html"  class="nav-link nav-cta ">Contact</a>
   </nav>
 </header>
 
@@ -365,6 +385,7 @@
         <a href="index.html">Home</a>
         <a href="builds.html">Gaming PCs</a>
         <a href="custom-build.html">Custom Builds</a>
+        <a href="part-boxes.html">Part Boxes</a>
         <a href="services.html">Services</a>
         <a href="gallery.html">Gallery</a>
         <a href="faq.html">FAQ</a>

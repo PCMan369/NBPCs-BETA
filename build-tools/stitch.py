@@ -34,17 +34,26 @@ PARTIALS_DIR = ROOT / "js" / "partials"
 SOURCE_DIR = ROOT / "pages-src"
 
 ACTIVE_TOKEN_RE = re.compile(r"\{\{active:([a-z0-9-]+)\}\}")
+ACTIVE_GROUP_RE = re.compile(r"\{\{activegroup:([a-z0-9,-]+)\}\}")
 HEADER_MARKER_RE = re.compile(r"<!--HEADER:([a-z0-9-]+)-->")
 FOOTER_MARKER = "<!--FOOTER-->"
 
 
 def build_header(header_template: str, active_page_id: str) -> str:
     """Replace every {{active:ID}} token — 'active' if it matches the
-    current page, otherwise an empty string."""
-    return ACTIVE_TOKEN_RE.sub(
+    current page, otherwise an empty string. Also resolves
+    {{activegroup:id1,id2,id3}} tokens — 'active' if the current page is
+    any of the listed ids, for highlighting a dropdown's parent trigger
+    when you're on one of its child pages."""
+    result = ACTIVE_TOKEN_RE.sub(
         lambda m: "active" if m.group(1) == active_page_id else "",
         header_template,
     )
+    result = ACTIVE_GROUP_RE.sub(
+        lambda m: "active" if active_page_id in m.group(1).split(",") else "",
+        result,
+    )
+    return result
 
 
 def main() -> int:

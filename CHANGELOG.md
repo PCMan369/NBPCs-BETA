@@ -46,7 +46,7 @@
   mobile nav. Found and fixed one real bug this way — skip-link had no
   `#main` target.
 
-## Phase 3 — Business Content (in progress)
+## Phase 3 — Business Content (continued)
 - Real inventory migrated: the old site's 3 sold PCs, new componentized
   schema, real product photos (not placeholders) copied into `images/`.
 - `builds.html` — full inventory page (available grid or notify-box
@@ -67,5 +67,22 @@
   covering every optional field path (all 10 component categories,
   accessories, condition, testing notes, video, event pricing) — all
   passed.
-- Logged D6 (Part Boxes resale system + nav restructuring into "For Sale"/
-  "Services" dropdown parents) as the next planned work, per owner request.
+- Logged D6 (Part Boxes resale system + nav restructuring) per owner
+  request — implemented in the next entry below.
+
+## Phase 3 — Nav restructuring
+- Flat nav replaced with a "For Sale" dropdown (desktop) / accordion
+  (mobile) over Gaming PCs, Custom Builds, Part Boxes. `stitch.py` gained
+  a `{{activegroup:...}}` token so the parent trigger highlights
+  correctly when on any child page. Services deliberately stayed a flat
+  link — see DECISIONS.md D6 for why.
+- Tested the full interaction sequence in a real DOM: dropdown open/
+  toggle-close/outside-click-close/Escape-close-with-focus-return, mobile
+  accordion expand/collapse without closing the whole drawer, and
+  confirmed tapping a real sublink still closes the drawer. Re-ran
+  existing regression checks (hamburger, footer year, FAQ accordion,
+  featured-builds, sold-builds, build-detail rendering) across all three
+  pages to confirm the shared chrome.js/style.css changes didn't break
+  anything already shipped.
+- Part Boxes system itself not yet built — nav links to `part-boxes.html`
+  exist and will 404 until that page is built (next planned work).

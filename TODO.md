@@ -4,15 +4,14 @@
 
 - [ ] Confirm the 3 proposed-but-unconfirmed items in DECISIONS.md (D2
       Services page structure, D3 countdown toggle, D5 brand carryover)
-- [ ] Nav restructuring: flat nav → "For Sale" and "Services" dropdown
-      parents (see DECISIONS.md D6) — scheduled right after builds.html/
-      build.html
+- [x] Nav restructuring: flat nav → "For Sale" dropdown/accordion (see
+      DECISIONS.md D6) — Services deliberately stayed flat, see D6 note
 - [ ] Part Boxes system: `js/data/partBoxes.js`, card renderer, multi-item
-      order-request page (see DECISIONS.md D6)
-- [ ] Phase 2: shared header/footer partials + `stitch.py` build script
-- [ ] Phase 2: homepage
+      order-request page, `part-boxes.html` (see DECISIONS.md D6) — next up
+- [x] Phase 2: shared header/footer partials + `stitch.py` build script
+- [x] Phase 2: homepage
 - [ ] Phase 3: Services page content (owner-provided wording/pricing)
-- [ ] Phase 3: real PC inventory migrated into the new schema
+- [x] Phase 3: real PC inventory migrated into the new schema
 - [ ] Phase 3: About Me content (owner-provided)
 - [ ] Phase 4: contact form(s) + inquiry routing
 - [ ] Phase 5: sitemap, robots.txt, structured data, Open Graph

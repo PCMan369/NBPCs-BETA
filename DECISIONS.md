@@ -76,6 +76,23 @@ in Phase 2. Owner's call, delegated grouping/labeling details to Claude.
 Both done together in one pass, since the nav change exists to serve
 this feature.
 
+**Nav restructuring — done.** "For Sale" is now a real dropdown (desktop)
+/ accordion (mobile) over Gaming PCs, Custom Builds, and Part Boxes.
+**Services was deliberately kept as a flat link, not a matching
+dropdown** — a technical call, not asked about, since it doesn't change
+customer-facing meaning: 4 of its 6 sub-services (Repair/Upgrades/
+Cleaning/Support) still have `show:false` and no real copy yet. A
+dropdown listing four mostly-empty destinations would be worse than the
+current single link to a hub page. Once those four have real content,
+Services can become a matching dropdown with the same mechanism — the
+`{{activegroup:...}}` token added to `stitch.py` already supports it,
+no architecture change needed then.
+
+**Part Boxes system — not yet built.** Nav links to `part-boxes.html`
+now exist (desktop + mobile + footer) and will 404 until that page is
+built, same as the pre-existing `custom-build.html`/`gallery.html`/
+`faq.html`/`contact.html` links. Next planned increment.
+
 - Public wording/pricing/policy for repair, upgrades, cleaning, tech
   support (needed before Services page gets real content).
 - About Me content — bio, experience, motivations (must come from owner,
