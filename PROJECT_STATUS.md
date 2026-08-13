@@ -18,10 +18,11 @@ site's constraint carries over — no server-side backend, no database).
 
 ## Current phase
 
-**Phase 2 — Core Site** (in progress)
+**Phase 3 — Business Content** (in progress)
 
-Per the phase plan: global navigation, footer, homepage, core reusable
-components, basic SEO infrastructure.
+Per the phase plan: services, available PCs, complete PC build
+cards/details, sold PCs, About Me, trust/testimonial system, empty-state
+handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Completed so far
 
@@ -78,38 +79,83 @@ components, basic SEO infrastructure.
 - [x] HTML tag-balance validated (html/head/body/main/header/footer/
       section/div all balanced) and all new JS files pass `node --check`.
 
+## Completed so far (continued)
+
+- [x] **Real inventory migrated**: the old site's 3 sold PCs are now real
+      entries in `js/data/builds.js`, using the new componentized schema
+      (title parsed into separate `cpu`/`gpu` fields, `fps` parsed into
+      structured `performance.items`). Their actual product photos (13MB,
+      11 real files) were copied into `images/` — not placeholders. One
+      filename with spaces was renamed for web-safety
+      (`Website Main Pic.jpeg` → `may26-01-main.jpg`).
+- [x] `builds.html` — full inventory page. Available section shows real
+      cards or the notify-box waitlist (data-driven, not hardcoded); sold
+      section shows/hides based on whether any sold builds exist.
+- [x] `js/render/notifyBox.js` — the waitlist system extracted from the
+      old site, same proven behavior, now reading the contact email from
+      `config.js` instead of having it hardcoded in this file.
+- [x] `build.html` + `js/render/buildDetail.js` — the full "complete build
+      card" system: sticky photo **and video** gallery (old site was
+      photos-only) with arrows/counter/thumbnails/keyboard nav, a spec
+      sheet that lists every populated component category (not just
+      RAM/Storage like the old site), a condition/testing-notes section
+      that only appears when populated, event-aware pricing, and a
+      status-aware CTA (inquiry form when available, sold notice when
+      not). The inquiry form's FormSubmit destination now reads
+      `CONTACT.email` from config.js instead of being hardcoded in the
+      page, and its post-submit redirect is built from
+      `window.location` instead of a hardcoded domain.
+- [x] `js/render/trustSection.js` — the "Why North Bridge PCs" cards and
+      "Testing & Setup Process" steps were duplicated verbatim between
+      the old homepage and the old build detail page. Now defined once,
+      used by both `index.html` and `build.html`.
+- [x] `css/build-detail.css` — build.html's styling (was an inline
+      `<style>` block on the old page) extracted to its own file, loaded
+      only where it's needed. Fixed the one hardcoded color found there
+      too (`#0a1526` → `var(--placeholder-solid)`).
+- [x] **Tested end-to-end again**: real DOM tests against the actual
+      migrated inventory (not synthetic data) covering builds.html's
+      available/sold split, build.html's gallery navigation (thumbnail
+      click + keyboard arrows), the sold-notice vs. inquiry-form switch,
+      the not-found state, the post-submit thank-you state, and — using
+      synthetic data to reach the paths the real inventory doesn't
+      exercise — every optional field (all 10 component categories,
+      accessories, condition, testing notes, video, event pricing).
+      All passed. Confirmed the homepage's trust-section refactor didn't
+      break anything.
+
 ## Not started yet
 
-- Rest of Phase 2: no other pages need nav/footer wiring yet since
-  builds.html, build.html, services.html, etc. don't exist until Phase 3
-  — but note stitch.py and the partials are ready for them.
-- Phase 3 (Business Content): Services page content, Available PCs page,
-  build detail page, Sold PCs, About Me, testimonials, empty-state/waitlist
-  page wiring, `js/data/gallery.js` port.
-- Phase 4 (Contact): inquiry-type-specific forms.
-- Phase 5 (SEO/Local): structured data (LocalBusiness JSON-LD), Open Graph
-  tags, canonical URLs, sitemap, robots.txt — deliberately deferred, not
-  forgotten (see ARCHITECTURE.md note in index.html's <head> comment).
-- Phase 6–8: media/polish, testing, documentation/handoff.
+- Nav restructuring + Part Boxes system (see DECISIONS.md D6) — next up.
+- Rest of Phase 3: Services page content, About Me, testimonials content,
+  `js/data/gallery.js` port (homepage gallery preview still shows the
+  graceful "coming soon" fallback).
+- Phase 4 (Contact): inquiry-type-specific forms (contact.html itself
+  doesn't exist yet).
+- Phase 5 (SEO/Local): structured data, Open Graph, canonical URLs,
+  sitemap, robots.txt.
+- Phase 6–8: media/polish (the migrated photos are real but unoptimized —
+  ~1.1MB average, worth compressing before launch), testing, docs/handoff.
 
 ## Known open questions (not yet blocking, but will be before their phase)
 
 - Repair/upgrade/cleaning/support: actual public-facing descriptions,
   pricing, and policy wording still needed from the owner (Phase 3 blocker).
-- About Me content, real testimonials (if any), and real PC inventory data
-  still needed from the owner (Phase 3 blocker).
-- Business email handling: old site has the personal Gmail hardcoded in
-  visible client-side source. No fix proposed yet — needs an explicit owner
-  call on whether that's acceptable long-term or worth a lightweight
-  mitigation.
+- About Me content and real testimonials (if any) still needed from the
+  owner (Phase 3 blocker).
+- Business email handling: still the personal Gmail, now sourced from one
+  place (`config.js`) instead of scattered, but the underlying exposure
+  in client-side source is inherent to the no-backend FormSubmit approach
+  regardless. Still needs an explicit owner call on whether that's fine
+  long-term.
 
 ## Immediate next step
 
-Phase 3: build `builds.html` (full inventory grid, reusing
-`renderBuildCard`/`renderEmptyBuildsState`) and `build.html` (individual
-build detail page — the "complete build card" system). The 3 real sold
-builds from the old site are factual data ready to migrate into the new
-schema whenever that's wanted (see TODO.md).
+Per the owner's request: (1) restructure the flat nav into "For Sale" and
+"Services" dropdown parents, (2) build the Part Boxes resale system
+(`js/data/partBoxes.js` + card renderer + multi-item order-request page).
+See DECISIONS.md D6 for the full brief. These are sequenced together
+since the new nav item exists to serve the new feature.
 
 ## Files that matter
 

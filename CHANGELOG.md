@@ -45,3 +45,27 @@
   filtering, correct optional-field handling, working FAQ accordion and
   mobile nav. Found and fixed one real bug this way — skip-link had no
   `#main` target.
+
+## Phase 3 — Business Content (in progress)
+- Real inventory migrated: the old site's 3 sold PCs, new componentized
+  schema, real product photos (not placeholders) copied into `images/`.
+- `builds.html` — full inventory page (available grid or notify-box
+  waitlist; sold section).
+- `js/render/notifyBox.js` — waitlist system, extracted from the old
+  site's working implementation, now reads the contact email from
+  config.js.
+- `build.html` + `js/render/buildDetail.js` — the complete build-card/
+  detail system: full componentized spec sheet, photo+video gallery,
+  condition/testing notes, event-aware pricing, status-aware CTA. Inquiry
+  form now sources its destination email and redirect URL dynamically
+  instead of hardcoding them.
+- `js/render/trustSection.js` — de-duplicated the trust cards and process
+  steps that were copy-pasted between the old homepage and old build page.
+- `css/build-detail.css` — extracted from an inline `<style>` block,
+  fixed one hardcoded color for light-mode support.
+- Tested end-to-end against the real migrated data plus synthetic data
+  covering every optional field path (all 10 component categories,
+  accessories, condition, testing notes, video, event pricing) — all
+  passed.
+- Logged D6 (Part Boxes resale system + nav restructuring into "For Sale"/
+  "Services" dropdown parents) as the next planned work, per owner request.

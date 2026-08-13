@@ -4,6 +4,11 @@
 
 - [ ] Confirm the 3 proposed-but-unconfirmed items in DECISIONS.md (D2
       Services page structure, D3 countdown toggle, D5 brand carryover)
+- [ ] Nav restructuring: flat nav → "For Sale" and "Services" dropdown
+      parents (see DECISIONS.md D6) — scheduled right after builds.html/
+      build.html
+- [ ] Part Boxes system: `js/data/partBoxes.js`, card renderer, multi-item
+      order-request page (see DECISIONS.md D6)
 - [ ] Phase 2: shared header/footer partials + `stitch.py` build script
 - [ ] Phase 2: homepage
 - [ ] Phase 3: Services page content (owner-provided wording/pricing)

@@ -103,39 +103,9 @@
         <div class="accent-line"></div>
       </div>
 
-      <div class="grid-3">
-
-        <div class="card">
-          <div class="card-icon">&#128269;</div>
-          <h3>Tested Before It Leaves</h3>
-          <p>
-            Every system gets cleaned, stress tested under load, and temperatures checked
-            before it goes anywhere. You're not getting a gamble — you're getting a machine
-            that's been run through its paces.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#128203;</div>
-          <h3>Honest Specs, Realistic Numbers</h3>
-          <p>
-            The specs listed are accurate. The performance estimates are based on real-world
-            expectations for that hardware — not cherry-picked benchmark runs. If a system has
-            a limitation, I'll tell you.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">&#128205;</div>
-          <h3>Local Pickup, Real Support</h3>
-          <p>
-            Based in Southern Oregon. Pickup is in person. If you hit a snag after getting
-            it home, reach out over email and I'll do my best to help. Not a ticket queue —
-            an actual person.
-          </p>
-        </div>
-
-      </div>
+      <!-- Content lives in js/render/trustSection.js — shared with build.html
+           so this copy only exists in one place. -->
+      <div id="trust-cards"></div>
     </div>
   </section>
 
@@ -217,38 +187,8 @@
         <div class="accent-line"></div>
       </div>
 
-      <div class="process-steps">
-        <div class="process-step">
-          <div class="step-num">1</div>
-          <div class="step-icon">&#129535;</div>
-          <h4>Cleaned</h4>
-          <p>Dust removed, thermal paste refreshed where needed. Clean inside and out.</p>
-        </div>
-        <div class="process-step">
-          <div class="step-num">2</div>
-          <div class="step-icon">&#9889;</div>
-          <h4>Stress Tested</h4>
-          <p>CPU and GPU pushed under sustained load to check for stability issues.</p>
-        </div>
-        <div class="process-step">
-          <div class="step-num">3</div>
-          <div class="step-icon">&#127777;&#65039;</div>
-          <h4>Temps Checked</h4>
-          <p>Thermals verified under load. Nothing runs hot, no surprises after pickup.</p>
-        </div>
-        <div class="process-step">
-          <div class="step-num">4</div>
-          <div class="step-icon">&#128190;</div>
-          <h4>Drivers Updated</h4>
-          <p>GPU and system drivers current before handoff. Ready to game the same day.</p>
-        </div>
-        <div class="process-step">
-          <div class="step-num">5</div>
-          <div class="step-icon">&#9989;</div>
-          <h4>Ready to Use</h4>
-          <p>Plugged in and confirmed working on pickup. A finished computer, not a box of parts.</p>
-        </div>
-      </div>
+      <!-- Content lives in js/render/trustSection.js — shared with build.html. -->
+      <div id="process-steps"></div>
     </div>
   </section>
 
@@ -376,11 +316,16 @@
   <script src="js/data/events.js"></script>
   <script src="js/data/builds.js"></script>
   <script src="js/render/buildCard.js"></script>
+  <script src="js/render/trustSection.js"></script>
   <script src="js/render/eventBanner.js"></script>
   <script src="js/render/chrome.js"></script>
   <script src="js/render/faqAccordion.js"></script>
 
   <script>
+    // Shared trust content (also used on build.html)
+    document.getElementById('trust-cards').innerHTML = renderTrustCards();
+    document.getElementById('process-steps').innerHTML = renderProcessSteps();
+
     // Featured builds (homepage — up to 3 available systems)
     (function () {
       var container = document.getElementById('featured-builds');

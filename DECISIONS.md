@@ -58,7 +58,23 @@ yet), D5 only affects `css/tokens.css` (isolated, single file).
 
 ---
 
-## Still open (tracked in PROJECT_STATUS.md, not yet decision points)
+### D6 — Part Boxes resale system + two-level nav restructuring (planned, not yet built)
+Owner wants a "PC Part Boxes & Packaging" resale system (empty component
+boxes from flips) — brand/model, quantity available, and multi-item order
+requests. Same data/render pattern as PC builds, no payment backend
+needed (order requests still get fulfilled in person like everything
+else). Quantity tracking will be manual, same as marking a PC sold —
+flagged to the owner as a real constraint, not hidden.
+
+Paired with this: restructure the flat nav into two dropdown parents —
+"For Sale" (Gaming PCs / Custom Builds / Part Boxes) and "Services"
+(Repair / Upgrades / Cleaning / Support) — replacing the flat nav shipped
+in Phase 2. Owner's call, delegated grouping/labeling details to Claude.
+**Decided by:** owner, explicit request.
+**Sequencing:** deliberately after the in-flight Gaming PCs Phase 3 work
+(builds.html/build.html) finishes, so the nav isn't retrofitted mid-page.
+Both done together in one pass, since the nav change exists to serve
+this feature.
 
 - Public wording/pricing/policy for repair, upgrades, cleaning, tech
   support (needed before Services page gets real content).
