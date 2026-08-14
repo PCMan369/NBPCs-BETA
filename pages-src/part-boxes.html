@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Empty PC component boxes for sale — GPU, CPU, and case packaging from North Bridge PCs builds. Southern Oregon local pickup.">
+  <title>Part Boxes &amp; Packaging — North Bridge PCs | Southern Oregon</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/part-boxes.css">
+</head>
+<body>
+
+<!--HEADER:part-boxes-->
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">Extra From the Bench</span>
+      <h1>Part Boxes &amp; Packaging</h1>
+      <p>Empty component boxes left over from builds — useful for shipping, storage, or reselling your own parts. Pick any combination below; local pickup in Southern Oregon.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="part-boxes-layout">
+
+        <div id="part-boxes-grid" class="box-grid"></div>
+
+        <aside class="order-summary" id="order-summary">
+          <div class="order-summary-title">Your Request</div>
+          <div id="order-summary-items">
+            <p class="order-summary-empty">No boxes selected yet.</p>
+          </div>
+          <div class="order-summary-total" id="order-summary-total" style="display:none;">
+            <span>Estimated Total</span>
+            <strong id="order-total-amount">$0</strong>
+          </div>
+
+          <div id="order-form-wrap" style="display:none;">
+            <form id="order-form">
+              <div class="form-group">
+                <label class="form-label" for="order-name">Your Name</label>
+                <input type="text" id="order-name" class="form-input" placeholder="First name is fine" required autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="order-email">Your Email</label>
+                <input type="email" id="order-email" class="form-input" placeholder="So I can follow up" required autocomplete="email">
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Send Request &rarr;</button>
+              <p id="order-error" style="color:var(--danger); font-size:0.85rem; display:none; text-align:center; margin-top:0.5rem;"></p>
+              <p style="font-size:0.72rem; color:var(--dim); margin-top:0.75rem; text-align:center; line-height:1.5;">
+                This sends a request, not a payment. I'll follow up by email to arrange pickup and payment.
+              </p>
+            </form>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!--FOOTER-->
+
+  <script src="js/data/config.js"></script>
+  <script src="js/data/events.js"></script>
+  <script src="js/data/partBoxes.js"></script>
+  <script src="js/render/partBoxCard.js"></script>
+  <script src="js/render/partBoxOrder.js"></script>
+  <script src="js/render/eventBanner.js"></script>
+  <script src="js/render/chrome.js"></script>
+
+  <script>
+    (function () {
+      var grid = document.getElementById('part-boxes-grid');
+      var available = partBoxes.filter(function (b) { return b.quantity > 0; });
+
+      grid.innerHTML = available.length
+        ? available.map(renderPartBoxCard).join('')
+        : renderEmptyPartBoxesState();
+
+      // An empty "Your Request" panel next to an empty-state message
+      // would look broken rather than intentional — hide it entirely
+      // when there's nothing orderable.
+      if (!available.length) {
+        document.getElementById('order-summary').style.display = 'none';
+      }
+    })();
+  </script>
+
+</body>
+</html>

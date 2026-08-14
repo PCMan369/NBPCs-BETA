@@ -88,10 +88,16 @@ Services can become a matching dropdown with the same mechanism — the
 `{{activegroup:...}}` token added to `stitch.py` already supports it,
 no architecture change needed then.
 
-**Part Boxes system — not yet built.** Nav links to `part-boxes.html`
-now exist (desktop + mobile + footer) and will 404 until that page is
-built, same as the pre-existing `custom-build.html`/`gallery.html`/
-`faq.html`/`contact.html` links. Next planned increment.
+**Part Boxes system — done.** `js/data/partBoxes.js` (empty, no real
+inventory yet — same "schema first, real data later" pattern as
+builds.js), `js/render/partBoxCard.js`, `js/render/partBoxOrder.js`
+(tracks quantities across cards, builds a running itemized summary, no
+real cart/checkout), and `part-boxes.html`. Order requests submit as one
+itemized inquiry via the same FormSubmit pattern as everything else —
+fulfillment (payment, pickup) still happens in person, matching current
+business practice. Quantities are manually maintained, not automatically
+decremented (no backend) — flagged to the owner up front, not discovered
+later.
 
 - Public wording/pricing/policy for repair, upgrades, cleaning, tech
   support (needed before Services page gets real content).

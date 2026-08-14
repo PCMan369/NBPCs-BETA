@@ -86,3 +86,26 @@
   anything already shipped.
 - Part Boxes system itself not yet built — nav links to `part-boxes.html`
   exist and will 404 until that page is built (next planned work).
+
+## Phase 3 — Part Boxes system
+- `js/data/partBoxes.js` — schema + docs, empty array (no real inventory
+  yet, same as builds.js started).
+- `js/render/partBoxCard.js` — box card with a quantity picker
+  (+/- buttons and a clamped number input, `max` = actual stock).
+- `js/render/partBoxOrder.js` — tracks selected quantities across all
+  cards, keeps a live "Your Request" summary (itemized lines + running
+  total) in sync, reveals the name/email form only once something's
+  selected, and submits the whole request as one itemized FormSubmit
+  inquiry. No cart, no checkout, no payment processing — matches how
+  every other form on this site works.
+- `part-boxes.html` — wires it together; empty-state when there's no
+  stock (hides the order summary too, rather than showing an empty panel
+  next to an empty-state message).
+- Tested in a real DOM: empty-inventory state, a zero-quantity box
+  correctly excluded from the grid, +/- button clamping at both 0 and the
+  per-box max, the same clamping via direct number-input typing, running
+  summary math across multiple items, form reveal/hide as selections
+  change, empty-field validation on submit, and a full successful
+  submission verifying the itemized payload and dynamic destination email
+  sent to FormSubmit. Re-checked tag balance and JS syntax across all 4
+  pages afterward.

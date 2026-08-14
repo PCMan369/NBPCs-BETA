@@ -151,12 +151,14 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-Nav restructuring is done (see CHANGELOG.md). Per the owner's D6 request,
-the remaining piece is the Part Boxes resale system:
-`js/data/partBoxes.js` + a card/order-picker renderer + `part-boxes.html`
-(multi-item order-request page, no payment processing — matches how
-everything else here works). The nav already links to it; that link
-currently 404s until this is built.
+D6 (nav restructuring + Part Boxes) is fully done. Remaining Phase 3 work,
+all gated on owner-provided content rather than architecture:
+Services page copy/pricing for the 4 pending sub-services, About Me
+content, real testimonials if any exist, and `js/data/gallery.js` (the
+homepage gallery preview still shows its graceful "coming soon"
+fallback). None of these block anything else — they can land in any
+order once the content exists. `custom-build.html`, `gallery.html`,
+`faq.html`, and `contact.html` also still need building as pages.
 
 ## Files that matter
 

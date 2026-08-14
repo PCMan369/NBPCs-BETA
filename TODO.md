@@ -6,8 +6,8 @@
       Services page structure, D3 countdown toggle, D5 brand carryover)
 - [x] Nav restructuring: flat nav → "For Sale" dropdown/accordion (see
       DECISIONS.md D6) — Services deliberately stayed flat, see D6 note
-- [ ] Part Boxes system: `js/data/partBoxes.js`, card renderer, multi-item
-      order-request page, `part-boxes.html` (see DECISIONS.md D6) — next up
+- [x] Part Boxes system: `js/data/partBoxes.js`, card renderer, multi-item
+      order-request page, `part-boxes.html` (see DECISIONS.md D6) — done
 - [x] Phase 2: shared header/footer partials + `stitch.py` build script
 - [x] Phase 2: homepage
 - [ ] Phase 3: Services page content (owner-provided wording/pricing)
@@ -25,6 +25,9 @@
 - [ ] Decide on business email handling (see DECISIONS.md open item)
 - [ ] Testimonials — collect any real ones that exist, or leave the
       section off (toggle is already safe either way)
+- [ ] Part boxes: no real inventory yet — `partBoxes.js` is empty on
+      purpose, same as builds.js started. Add real box types whenever
+      ready; the page already handles 0/1/many gracefully.
 
 ## Optional
 
