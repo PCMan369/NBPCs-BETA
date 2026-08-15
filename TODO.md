@@ -10,23 +10,28 @@
       order-request page, `part-boxes.html` (see DECISIONS.md D6) — done
 - [x] Phase 2: shared header/footer partials + `stitch.py` build script
 - [x] Phase 2: homepage
-- [ ] Phase 3: Services page content (owner-provided wording/pricing)
+- [x] Phase 3: Services page content (owner-provided wording/pricing) — done
 - [x] Phase 3: real PC inventory migrated into the new schema
-- [ ] Phase 3: About Me content (owner-provided)
+- [x] Phase 3: About Me content (owner-provided) — done, but see
+      Recommended below re: the `[Your Name]` placeholder
 - [x] Phase 4: contact form (see DECISIONS.md D7 — consolidated to one
       unified form since build.html now has its own embedded inquiry form)
-- [x] `custom-build.html`, `faq.html`, `gallery.html` — built, tested
+- [x] `custom-build.html`, `faq.html`, `gallery.html`, `services.html`,
+      `about.html` — built, tested
 - [ ] Phase 5: sitemap, robots.txt, structured data, Open Graph
 - [ ] Phase 7: full device/feature-toggle/empty-state test pass before
       pointing the real domain/GitHub Pages slot at this build
 
 ## Recommended
 
+- [ ] Fill in `[Your Name]` placeholder in `about.html` — nothing was
+      provided to put there
 - [ ] Decide whether to carry over the "sold" builds from the old site into
       the new sold-PC gallery, or start that section fresh
 - [ ] Decide on business email handling (see DECISIONS.md open item)
 - [ ] Testimonials — collect any real ones that exist, or leave the
-      section off (toggle is already safe either way)
+      section off (toggle is already safe either way; owner confirmed
+      leaving it off for now)
 - [ ] Part boxes: no real inventory yet — `partBoxes.js` is empty on
       purpose, same as builds.js started. Add real box types whenever
       ready; the page already handles 0/1/many gracefully.

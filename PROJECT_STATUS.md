@@ -174,11 +174,34 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       gallery.js, since that fallback logic was written in advance for
       exactly this handoff.
 
+## Completed so far (continued, Services + About)
+
+- [x] `services.js` real content for all 4 in-house services (Repair &
+      Diagnostics, Upgrades, Cleaning & Maintenance, Support) — schema
+      extended with `included`/`pricingNote`/`turnaroundNote`/
+      `notCovered`. All 4 flipped to `show: true`.
+- [x] `services.html` — hub cards (Sales, Custom Builds) + 4 detail
+      cards + a shared policy blurb (no surprise charges, scope
+      confirmed before expanding, honest-estimate-over-fast-promise,
+      summer turnaround note). Verified no fabricated prices or
+      turnaround-time language made it into the copy.
+- [x] `about.html` — real content from owner-provided facts. **Has a
+      `[Your Name]` placeholder — no name was provided anywhere in what
+      was shared. Needs the owner to fill that in.**
+- [x] "About" added to the nav (flat link, between Services and Gallery,
+      desktop + mobile + footer).
+- [x] Testimonials confirmed to stay disabled — no real ones exist yet;
+      architecture from Phase 1 already handles this safely, no code
+      changes needed.
+- [x] Tested in a real DOM: services.html renders 2 hub cards + 4 detail
+      cards correctly, each detail card's pricing/turnaround/caveat
+      notes render only when present, a page-wide sanity check confirmed
+      no fabricated dollar amounts or "same-day"/"24-hour" style
+      turnaround claims exist anywhere on the page. Full regression sweep
+      re-run across all 10 pages now in the project.
+
 ## Not started yet
 
-- Rest of Phase 3: Services page content (4 of 6 sub-services still need
-  owner-provided wording/pricing — `services.html` itself doesn't exist
-  yet either), About Me, testimonials content.
 - Phase 5 (SEO/Local): structured data, Open Graph, canonical URLs,
   sitemap, robots.txt.
 - Phase 6–8: media/polish (the migrated photos are real but unoptimized —
@@ -186,11 +209,8 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Known open questions (not yet blocking, but will be before their phase)
 
-- Repair/upgrade/cleaning/support: actual public-facing descriptions,
-  pricing, and policy wording still needed from the owner (blocks
-  `services.html`).
-- About Me content and real testimonials (if any) still needed from the
-  owner.
+- **The owner's name** — needed to replace the `[Your Name]` placeholder
+  in `about.html`. Nothing else depends on it.
 - Business email handling: still the personal Gmail, sourced from one
   place (`config.js`) everywhere now instead of scattered, but the
   underlying exposure in client-side source is inherent to the
@@ -199,12 +219,12 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-All pages that don't require new owner-provided copy are now built (8 of
-8: home, builds, build detail, part-boxes, contact, custom-build, faq,
-gallery). What's left is entirely gated on the owner: Services page
-copy/pricing for the 4 pending sub-services (blocks `services.html`),
-About Me content, and any real testimonials. Once any of that arrives,
-the corresponding piece can be built — they don't depend on each other.
+Every page in the site's information architecture now exists (10 of 10)
+with real content — nothing left is gated on new owner-provided copy.
+Two loose ends: (1) the `[Your Name]` placeholder on `about.html`, (2)
+Phase 5 SEO work (structured data, Open Graph, sitemap, robots.txt),
+which is architecture/technical work, not content-gated, and could
+reasonably be the next phase whenever work resumes.
 
 ## Files that matter
 

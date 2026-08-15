@@ -116,13 +116,32 @@ business practice. Quantities are manually maintained, not automatically
 decremented (no backend) — flagged to the owner up front, not discovered
 later.
 
-- Public wording/pricing/policy for repair, upgrades, cleaning, tech
-  support (needed before Services page gets real content).
-- About Me content — bio, experience, motivations (must come from owner,
-  never invented).
-- Whether any real testimonials exist to seed that system.
-- Real PC inventory data in the new richer schema (currently only one
-  clearly-marked example entry exists).
+### D8 — Services and About content added
+Owner provided real facts for all 4 pending services (Repair &
+Diagnostics, Upgrades, Cleaning & Maintenance, Support) and About Me.
+Converted directly into customer-facing copy — no new prices, turnaround
+times, or guarantees were introduced beyond what was given. `services.js`
+schema extended (`included`/`pricingNote`/`turnaroundNote`/`notCovered`)
+since a one-line description wasn't enough to represent the real
+constraints (e.g. "not every repair is worth doing," "no guaranteed
+performance increase") honestly. `services.html` and `about.html` built;
+"About" added to the nav (flat link, between Services and Gallery).
+**Decided by:** owner-provided content, Claude did the copywriting.
+**Flagged, not yet resolved:** `about.html` has a `[Your Name]`
+placeholder — no name was provided anywhere. Needs the owner to fill
+that in (or tell Claude what to put there).
+**Also confirmed:** testimonials stay off — no real ones exist yet, the
+architecture already handles this safely (empty array + toggle, from
+Phase 1). No changes needed there.
+
+---
+
+## Still open
+
+- Whether any real testimonials exist to seed that system (owner
+  confirmed: not yet — leave disabled).
 - How to handle the business email being visible in client-side source
   (inherent to the FormSubmit approach without a backend — needs an
   explicit owner call on whether that's acceptable).
+- The owner's actual name, for the `[Your Name]` placeholder in
+  `about.html`.

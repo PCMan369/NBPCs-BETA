@@ -165,3 +165,36 @@
 All pages that don't require new owner-provided copy are now built.
 Remaining work is gated on the owner: Services page content, About Me,
 testimonials.
+
+## Phase 3 — Services + About (content complete)
+- Owner provided real facts for all 4 pending services and About Me.
+  Converted into customer-facing copy without adding any price,
+  turnaround time, or guarantee beyond what was given.
+- `services.js` schema extended (`included`/`pricingNote`/
+  `turnaroundNote`/`notCovered`) — a one-line description wasn't enough
+  to honestly represent things like "not every repair is worth doing"
+  or "no guaranteed performance increase from an upgrade."
+- `js/render/serviceCard.js` — two renderers: hub cards (link out to
+  Sales/Custom Builds) and detail cards (full content, each section
+  optional).
+- `services.html` — hub cards, 4 detail cards, and a shared policy
+  blurb (no surprise charges, confirm before expanding scope, honest
+  estimate over a promised turnaround, summer timeline note).
+- `about.html` — real content from owner-provided facts. Contains a
+  `[Your Name]` placeholder — no name was given anywhere, flagged
+  rather than guessed.
+- "About" added to the nav — flat link, between Services and Gallery,
+  desktop + mobile + footer.
+- Testimonials confirmed to stay disabled (owner: none exist yet) — no
+  code changes needed, Phase 1's empty-array-plus-toggle already
+  handles this correctly.
+- Tested in a real DOM: hub/detail card counts, each detail card's
+  optional note sections rendering only when populated, and — this one
+  mattered — a page-wide text scan confirming no fabricated dollar
+  amounts or "same-day"/"24-hour" style turnaround language exists
+  anywhere on the page. Full regression sweep re-run across all 10 pages
+  now in the project.
+
+Every page in the site's IA now exists with real content. Nothing left
+is content-gated — remaining work (Phase 5 SEO, the `[Your Name]`
+placeholder) is either technical or a single small owner input.
