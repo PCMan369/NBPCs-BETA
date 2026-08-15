@@ -15,6 +15,7 @@
 - [ ] Phase 3: About Me content (owner-provided)
 - [x] Phase 4: contact form (see DECISIONS.md D7 — consolidated to one
       unified form since build.html now has its own embedded inquiry form)
+- [x] `custom-build.html`, `faq.html`, `gallery.html` — built, tested
 - [ ] Phase 5: sitemap, robots.txt, structured data, Open Graph
 - [ ] Phase 7: full device/feature-toggle/empty-state test pass before
       pointing the real domain/GitHub Pages slot at this build

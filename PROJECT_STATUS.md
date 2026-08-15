@@ -163,13 +163,22 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       content. Full regression sweep (hamburger, footer year, zero
       console errors) re-run across all 7 pages after every change.
 
+## Completed so far (continued, gallery)
+
+- [x] `gallery.html` + `js/data/gallery.js` — real migrated photos (same
+      11 files already in builds.js), ported from the old site's data.
+      Added a click-to-enlarge lightbox (new — old site was grid-only)
+      with prev/next, wrap-around, Escape, and overlay-click-to-close.
+      Homepage's gallery preview now shows real photos instead of its
+      "coming soon" fallback — no changes needed there beyond loading
+      gallery.js, since that fallback logic was written in advance for
+      exactly this handoff.
+
 ## Not started yet
 
 - Rest of Phase 3: Services page content (4 of 6 sub-services still need
   owner-provided wording/pricing — `services.html` itself doesn't exist
-  yet either), About Me, testimonials content, `js/data/gallery.js` port
-  + `gallery.html` (homepage gallery preview still shows the graceful
-  "coming soon" fallback).
+  yet either), About Me, testimonials content.
 - Phase 5 (SEO/Local): structured data, Open Graph, canonical URLs,
   sitemap, robots.txt.
 - Phase 6–8: media/polish (the migrated photos are real but unoptimized —
@@ -190,11 +199,12 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-`gallery.html` + `js/data/gallery.js` — the one remaining page that
-isn't gated on new owner-provided copy (the old site's gallery photos
-are real, existing content, same as the PC photos already migrated).
-Everything else left (Services content, About Me, testimonials) needs
-the owner's input before it can be built.
+All pages that don't require new owner-provided copy are now built (8 of
+8: home, builds, build detail, part-boxes, contact, custom-build, faq,
+gallery). What's left is entirely gated on the owner: Services page
+copy/pricing for the 4 pending sub-services (blocks `services.html`),
+About Me content, and any real testimonials. Once any of that arrives,
+the corresponding piece can be built — they don't depend on each other.
 
 ## Files that matter
 

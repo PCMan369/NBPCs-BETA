@@ -138,3 +138,30 @@
   correctly on `?sent=true`, and custom-build.html's tier cards/process
   steps render correctly. Re-ran the full regression sweep (hamburger,
   footer year, no console errors) across all 7 pages now in the project.
+
+## Phase 3 — Gallery (final core page)
+- `js/data/gallery.js` — real photo data ported from the old site (same
+  11 files already migrated into builds.js). `currentBuilds` empty on
+  purpose (no in-progress systems right now).
+- `js/render/galleryGrid.js` — grid renderer plus a new click-to-enlarge
+  lightbox (the old site's gallery was grid-only) with prev/next,
+  wrap-around at the ends, Escape-to-close, and overlay-click-to-close.
+  One shared lightbox instance serves both grids on the page.
+- `css/gallery.css` — lightbox styling only; the grid/item styles
+  already lived in the shared style.css since the homepage preview
+  already used them.
+- `gallery.html` — wires both sections together.
+- Closed the loop on the homepage's gallery preview: it was written back
+  in Phase 2 to gracefully fall back to "coming soon" until gallery.js
+  existed. Just loading the new script was enough — no logic changes
+  needed, confirming that fallback was built correctly the first time.
+- Tested in a real DOM: current-builds empty state, all 11 completed
+  photos rendered, lightbox open/close/next/prev/keyboard-arrows/
+  wrap-around/overlay-click, per-item correctness (clicking photo 6
+  shows photo 6, not photo 1), and confirmed the homepage preview now
+  shows 3 real photos instead of the coming-soon fallback. Full
+  regression sweep re-run across all 8 pages now in the project.
+
+All pages that don't require new owner-provided copy are now built.
+Remaining work is gated on the owner: Services page content, About Me,
+testimonials.
