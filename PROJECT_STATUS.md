@@ -124,14 +124,52 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       All passed. Confirmed the homepage's trust-section refactor didn't
       break anything.
 
+## Completed so far (continued)
+
+- [x] **Nav restructuring**: flat nav replaced with a "For Sale" dropdown
+      (desktop, click-to-open with outside-click/Escape-to-close) /
+      accordion (mobile, expands without closing the whole drawer) over
+      Gaming PCs, Custom Builds, Part Boxes. `stitch.py` gained an
+      `{{activegroup:...}}` token so the parent trigger highlights on any
+      child page. Services deliberately stayed a flat link — 4 of its 6
+      sub-services have no content yet, see DECISIONS.md D6.
+- [x] **Part Boxes system**: `js/data/partBoxes.js` (empty — no real
+      inventory yet), `js/render/partBoxCard.js` (quantity picker per
+      card), `js/render/partBoxOrder.js` (tracks selections across cards,
+      live itemized summary + running total, submits one FormSubmit
+      inquiry — no cart/checkout/payment), and `part-boxes.html`.
+- [x] `contact.html` — single unified form (the old site's two-variant/
+      `?system=` approach was simplified away, see DECISIONS.md D7, since
+      `build.html` now has its own embedded inquiry form). Destination
+      email and post-submit redirect both sourced dynamically from
+      `config.js`/`window.location`.
+- [x] `custom-build.html` — ported from the old site's real,
+      already-published content (6-step process, 3 example budget tiers,
+      "not sure what you need" section). No new copy invented.
+- [x] `faq.html` + `js/data/faq.js` + `js/render/faqList.js` — all 6 real
+      Q&A pairs in one data file; homepage's 3-item preview and the full
+      FAQ page both render from the same source via a `featured` flag,
+      eliminating what would've been 3 duplicated Q&A pairs.
+- [x] **Found and fixed a real bug**: `faqAccordion.js` was wiring click
+      handlers immediately on script load, before the (now dynamically
+      rendered) FAQ items existed in the DOM. Converted to run on
+      `DOMContentLoaded`, fixing it regardless of script order.
+- [x] All of the above tested in a real DOM, not just written: dropdown/
+      accordion open-close-outside-click-Escape sequence, quantity
+      clamping via both buttons and direct input, running order-summary
+      math, contact form's dynamic action/redirect + thank-you state,
+      FAQ dedup (3 featured on homepage, 6 total on faq.html,
+      single-item-open enforced), custom-build.html's tier/process
+      content. Full regression sweep (hamburger, footer year, zero
+      console errors) re-run across all 7 pages after every change.
+
 ## Not started yet
 
-- Nav restructuring + Part Boxes system (see DECISIONS.md D6) — next up.
-- Rest of Phase 3: Services page content, About Me, testimonials content,
-  `js/data/gallery.js` port (homepage gallery preview still shows the
-  graceful "coming soon" fallback).
-- Phase 4 (Contact): inquiry-type-specific forms (contact.html itself
-  doesn't exist yet).
+- Rest of Phase 3: Services page content (4 of 6 sub-services still need
+  owner-provided wording/pricing — `services.html` itself doesn't exist
+  yet either), About Me, testimonials content, `js/data/gallery.js` port
+  + `gallery.html` (homepage gallery preview still shows the graceful
+  "coming soon" fallback).
 - Phase 5 (SEO/Local): structured data, Open Graph, canonical URLs,
   sitemap, robots.txt.
 - Phase 6–8: media/polish (the migrated photos are real but unoptimized —
@@ -140,25 +178,23 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 ## Known open questions (not yet blocking, but will be before their phase)
 
 - Repair/upgrade/cleaning/support: actual public-facing descriptions,
-  pricing, and policy wording still needed from the owner (Phase 3 blocker).
+  pricing, and policy wording still needed from the owner (blocks
+  `services.html`).
 - About Me content and real testimonials (if any) still needed from the
-  owner (Phase 3 blocker).
-- Business email handling: still the personal Gmail, now sourced from one
-  place (`config.js`) instead of scattered, but the underlying exposure
-  in client-side source is inherent to the no-backend FormSubmit approach
-  regardless. Still needs an explicit owner call on whether that's fine
-  long-term.
+  owner.
+- Business email handling: still the personal Gmail, sourced from one
+  place (`config.js`) everywhere now instead of scattered, but the
+  underlying exposure in client-side source is inherent to the
+  no-backend FormSubmit approach regardless. Still needs an explicit
+  owner call on whether that's fine long-term.
 
 ## Immediate next step
 
-D6 (nav restructuring + Part Boxes) is fully done. Remaining Phase 3 work,
-all gated on owner-provided content rather than architecture:
-Services page copy/pricing for the 4 pending sub-services, About Me
-content, real testimonials if any exist, and `js/data/gallery.js` (the
-homepage gallery preview still shows its graceful "coming soon"
-fallback). None of these block anything else — they can land in any
-order once the content exists. `custom-build.html`, `gallery.html`,
-`faq.html`, and `contact.html` also still need building as pages.
+`gallery.html` + `js/data/gallery.js` — the one remaining page that
+isn't gated on new owner-provided copy (the old site's gallery photos
+are real, existing content, same as the PC photos already migrated).
+Everything else left (Services content, About Me, testimonials) needs
+the owner's input before it can be built.
 
 ## Files that matter
 

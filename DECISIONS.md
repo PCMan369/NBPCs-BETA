@@ -49,6 +49,23 @@ default, not a locked decision, since brand identity calls for explicit
 sign-off per the project brief.
 **Status:** proposed by Claude, needs explicit owner confirmation.
 
+### D7 — Contact form consolidated from two variants into one
+The old site's `contact.html` had two form variants toggled by a
+`?system=X` URL parameter: a "simple" pre-filled version (reached by
+clicking a build card) and a "full" general/custom-build version. In
+the new architecture, `build.html` has its own embedded inquiry form
+(see D-notes in CHANGELOG's Phase 3 entry) — nothing links to
+`contact.html?system=X` anymore, so the "simple" variant's only purpose
+no longer applies. `contact.html` is now just the one form (identical
+fields to the old "full" variant), with its FormSubmit destination and
+redirect URL now sourced dynamically from `config.js`/`window.location`
+instead of hardcoded.
+**Decided by:** Claude, technical simplification — no customer-facing
+capability was removed (asking about a specific system is still one
+click away, just on that system's own page now), so treated as an
+ordinary implementation choice rather than a business decision requiring
+sign-off. Flagged here for visibility regardless.
+
 ### D2/D3/D5 status update
 Not corrected across two subsequent "continue" turns — Phase 2 proceeded
 on all three as accepted. Still easy to revisit: D2 only affects

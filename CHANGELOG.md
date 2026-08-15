@@ -109,3 +109,32 @@
   submission verifying the itemized payload and dynamic destination email
   sent to FormSubmit. Re-checked tag balance and JS syntax across all 4
   pages afterward.
+
+## Phase 3 — Remaining core pages
+- `contact.html` — rebuilt as a single unified form (see DECISIONS.md
+  D7 for why the old two-variant/`?system=` approach was simplified
+  away). FormSubmit destination and post-submit redirect both sourced
+  dynamically from `config.js`/`window.location`, not hardcoded.
+- `custom-build.html` — ported directly from the old site's real,
+  already-published content (6-step process, 3 example budget tiers,
+  "not sure what you need" section) into the new architecture. No new
+  copy invented.
+- `faq.html` + `js/data/faq.js` + `js/render/faqList.js` — all 6 real
+  Q&A pairs now live in one data file. The homepage's 3-item preview
+  and the full FAQ page both render from the same source via a
+  `featured` flag, eliminating what would otherwise have been 3
+  duplicated Q&A pairs between the two pages.
+- **Found and fixed a real sequencing bug** while wiring the homepage's
+  now-dynamic FAQ preview: `faqAccordion.js` was attaching click
+  handlers immediately on script load, before the FAQ items existed in
+  the DOM (they're injected by a later inline script). Converted it to
+  run on `DOMContentLoaded` instead, which fixes it regardless of
+  script tag order and works correctly on both pages.
+- Tested all of the above in a real DOM: homepage FAQ preview shows
+  exactly the 3 featured items and its accordion actually opens
+  (confirming the sequencing fix), the full FAQ page renders all 6 and
+  enforces single-item-open behavior, the contact form's action/redirect
+  resolve correctly from config.js, the thank-you state triggers
+  correctly on `?sent=true`, and custom-build.html's tier cards/process
+  steps render correctly. Re-ran the full regression sweep (hamburger,
+  footer year, no console errors) across all 7 pages now in the project.

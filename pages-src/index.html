@@ -233,51 +233,7 @@
           <a href="faq.html" class="btn btn-secondary">Full FAQ &rarr;</a>
         </div>
 
-        <div class="faq-list" id="home-faq">
-
-          <div class="faq-item">
-            <div class="faq-question">
-              <h3>Can it run Fortnite?</h3>
-              <div class="faq-icon">+</div>
-            </div>
-            <div class="faq-answer">
-              <div class="faq-answer-inner">
-                <p>Yes — every listed system runs Fortnite. Entry builds handle 1080p medium settings
-                   comfortably. Mid and higher-tier builds push higher frame rates or Epic settings.
-                   Specific estimates are on each listing.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-question">
-              <h3>Do you offer Linux?</h3>
-              <div class="faq-icon">+</div>
-            </div>
-            <div class="faq-answer">
-              <div class="faq-answer-inner">
-                <p>Yes. Linux installation is available on request. If you have a preferred distro —
-                   Ubuntu, Fedora, Pop!_OS, or something else — just mention it when you reach out
-                   and I'll set it up before pickup.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-question">
-              <h3>What kind of support do you offer?</h3>
-              <div class="faq-icon">+</div>
-            </div>
-            <div class="faq-answer">
-              <div class="faq-answer-inner">
-                <p>Basic troubleshooting assistance after purchase, over email. If something isn't
-                   working right after you get it home, reach out and I'll help figure it out.
-                   Not a full repair shop — but I won't leave you without any help either.</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        <div class="faq-list" id="home-faq"></div>
       </div>
     </div>
   </section>
@@ -315,8 +271,10 @@
   <script src="js/data/config.js"></script>
   <script src="js/data/events.js"></script>
   <script src="js/data/builds.js"></script>
+  <script src="js/data/faq.js"></script>
   <script src="js/render/buildCard.js"></script>
   <script src="js/render/trustSection.js"></script>
+  <script src="js/render/faqList.js"></script>
   <script src="js/render/eventBanner.js"></script>
   <script src="js/render/chrome.js"></script>
   <script src="js/render/faqAccordion.js"></script>
@@ -325,6 +283,10 @@
     // Shared trust content (also used on build.html)
     document.getElementById('trust-cards').innerHTML = renderTrustCards();
     document.getElementById('process-steps').innerHTML = renderProcessSteps();
+
+    // FAQ preview (also used, in full, on faq.html)
+    document.getElementById('home-faq').innerHTML =
+      renderFaqList(faqItems.filter(function (f) { return f.featured; }));
 
     // Featured builds (homepage — up to 3 available systems)
     (function () {

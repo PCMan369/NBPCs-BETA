@@ -4,11 +4,17 @@
   ================================================================
   Click-to-expand behavior for any .faq-list on the page. Scoped per
   list, so this works unmodified on both the homepage FAQ preview and
-  the full FAQ page (Phase 3) without needing separate scripts.
+  the full FAQ page without needing separate scripts.
+
+  Runs on DOMContentLoaded rather than immediately: the FAQ items
+  themselves are rendered by an inline script from js/data/faq.js
+  (renderFaqList()), and this needs to wire up clicks on content that
+  exists by the time the page has finished loading — not whatever
+  happened to be in the DOM the instant this file was parsed.
   ================================================================
 */
 
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.faq-list').forEach(function (list) {
     list.querySelectorAll('.faq-question').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -25,4 +31,4 @@
       });
     });
   });
-})();
+});

@@ -13,7 +13,8 @@
 - [ ] Phase 3: Services page content (owner-provided wording/pricing)
 - [x] Phase 3: real PC inventory migrated into the new schema
 - [ ] Phase 3: About Me content (owner-provided)
-- [ ] Phase 4: contact form(s) + inquiry routing
+- [x] Phase 4: contact form (see DECISIONS.md D7 — consolidated to one
+      unified form since build.html now has its own embedded inquiry form)
 - [ ] Phase 5: sitemap, robots.txt, structured data, Open Graph
 - [ ] Phase 7: full device/feature-toggle/empty-state test pass before
       pointing the real domain/GitHub Pages slot at this build
