@@ -195,8 +195,8 @@
 
   <!-- ============================================================
        GALLERY PREVIEW
-       js/data/gallery.js lands in Phase 3 — until then this section
-       gracefully shows a "coming soon" message instead of an empty grid.
+       Pulls from js/data/gallery.js (same source gallery.html uses) —
+       first 3 photos combined from currentBuilds + completedBuilds.
        ============================================================ -->
   <section class="section section-alt">
     <div class="container">
@@ -272,6 +272,7 @@
   <script src="js/data/events.js"></script>
   <script src="js/data/builds.js"></script>
   <script src="js/data/faq.js"></script>
+  <script src="js/data/gallery.js"></script>
   <script src="js/render/buildCard.js"></script>
   <script src="js/render/trustSection.js"></script>
   <script src="js/render/faqList.js"></script>
@@ -299,9 +300,8 @@
         : renderEmptyBuildsState();
     })();
 
-    // Gallery preview (homepage — first 3 photos combined).
-    // js/data/gallery.js doesn't exist yet (Phase 3) — this degrades
-    // gracefully to a "coming soon" message until it does.
+    // Gallery preview (homepage — first 3 photos combined, from the
+    // same js/data/gallery.js that drives the full gallery page).
     (function () {
       var container = document.getElementById('gallery-preview');
       if (!container) return;
