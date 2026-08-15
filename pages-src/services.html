@@ -54,22 +54,81 @@
           the scope — or the price — of a job without checking with you first. I'd rather
           give an honest estimate than promise a turnaround I can't reliably hit. Since
           I'm balancing this with school, timelines can run a little longer during the
-          summer months — I'll always give you a realistic estimate before starting.
+          school year — summers tend to be faster since I have more time. I'll always
+          give you a realistic estimate before starting.
         </p>
       </div>
     </div>
   </section>
 
-  <section class="section section-alt">
+  <section class="section section-alt" id="service-request-section">
     <div class="container">
-      <div class="cta-box">
-        <h2>Have a System That Needs Attention?</h2>
-        <p>Send a message with what's going on, and I'll let you know what I can do and what it's likely to cost.</p>
-        <div class="btn-group">
-          <a href="contact.html" class="btn btn-primary btn-lg">Contact Me &rarr;</a>
-          <a href="faq.html"     class="btn btn-secondary btn-lg">Read the FAQ</a>
-        </div>
+      <div class="section-header" style="text-align:left; margin-bottom:1.5rem;">
+        <span class="section-label">Ready to Ask?</span>
+        <h2>Request a Service</h2>
+        <p>Pick which service fits above, or just select it below and describe what's going on.</p>
       </div>
+
+      <div class="form-card" style="max-width:640px;">
+        <!--
+          Form action/_next set dynamically from js/data/config.js
+          (CONTACT.email) below, same as contact.html. The service
+          dropdown is populated from services.js rather than hardcoded,
+          so it can't drift out of sync with the actual service list.
+        -->
+        <form id="service-request-form" method="POST">
+          <input type="hidden" name="_subject"  value="Service request \u2014 North Bridge PCs">
+          <input type="hidden" name="_captcha"  value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" id="service-request-next">
+
+          <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label class="form-label" for="sr-name">Your Name</label>
+              <input type="text" id="sr-name" name="name" class="form-input" placeholder="First name is fine" required autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sr-email">Your Email</label>
+              <input type="email" id="sr-email" name="email" class="form-input" placeholder="So I can reply to you" required autocomplete="email">
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="sr-service">Which Service?</label>
+              <select id="sr-service" name="service_requested" class="form-select" required>
+                <option value="" disabled selected>Select one</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="sr-system">What's the System? <span class="optional">(optional)</span></label>
+              <input type="text" id="sr-system" name="system_description" class="form-input" placeholder="Brand/model, or just a brief description">
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="sr-details">What's Going On?</label>
+              <textarea id="sr-details" name="details" class="form-textarea" placeholder="Describe the issue or what you need done" required></textarea>
+            </div>
+
+            <div class="form-privacy full">
+              <p><strong>Privacy:</strong> Your email is only used to respond to your message. It won't be shared or used for anything else.</p>
+            </div>
+
+          </div>
+
+          <div style="margin-top:1.5rem;">
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center;">Send Request &rarr;</button>
+          </div>
+        </form>
+      </div>
+
+      <p style="text-align:center; font-size:0.85rem; color:var(--dim); margin-top:1.5rem;">
+        Asking about buying a system or a custom build instead? Use the
+        <a href="contact.html" style="color:var(--accent);">general contact page</a>.
+      </p>
     </div>
   </section>
 
@@ -91,6 +150,42 @@
 
       document.getElementById('service-hub-cards').innerHTML = hub.map(renderServiceHubCard).join('');
       document.getElementById('service-detail-cards').innerHTML = detail.map(renderServiceDetailCard).join('');
+
+      // Populate the service dropdown from the same data — can't list a
+      // service here that doesn't actually exist above.
+      var select = document.getElementById('sr-service');
+      detail.forEach(function (svc) {
+        var opt = document.createElement('option');
+        opt.value = svc.name;
+        opt.textContent = svc.name;
+        select.appendChild(opt);
+      });
+
+      // Each detail card's "Request This Service" button pre-selects
+      // that service and scrolls down to the form.
+      document.getElementById('service-detail-cards').addEventListener('click', function (e) {
+        var btn = e.target.closest('.service-request-btn');
+        if (!btn) return;
+        select.value = btn.getAttribute('data-service-name');
+        document.getElementById('service-request-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('sr-name').focus({ preventScroll: true });
+      });
+
+      // Dynamic form destination + thank-you state (same pattern as contact.html)
+      var form = document.getElementById('service-request-form');
+      form.action = 'https://formsubmit.co/' + CONTACT.email;
+      document.getElementById('service-request-next').value =
+        window.location.origin + window.location.pathname + '?sent=true';
+
+      if (window.location.search.indexOf('sent=true') !== -1) {
+        form.innerHTML =
+          '<div style="text-align:center; padding:3rem 1rem;">' +
+            '<div style="font-size:3rem; margin-bottom:1.25rem;">&#9989;</div>' +
+            '<h3 style="margin-bottom:0.75rem; font-size:1.3rem;">Request Sent</h3>' +
+            '<p style="font-size:1rem; max-width:420px; margin:0 auto 2rem;">Thanks for reaching out. I\'ll get back to you by email to talk through next steps.</p>' +
+            '<a href="index.html" class="btn btn-secondary">Back to Home</a>' +
+          '</div>';
+      }
     })();
   </script>
 

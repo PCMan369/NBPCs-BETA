@@ -198,3 +198,25 @@ testimonials.
 Every page in the site's IA now exists with real content. Nothing left
 is content-gated — remaining work (Phase 5 SEO, the `[Your Name]`
 placeholder) is either technical or a single small owner input.
+
+## Phase 3 — Owner review fixes
+- Name filled in (Jacob Skrove), replacing the `[Your Name]` placeholder.
+- Corrected an error from the original business input: turnaround isn't
+  slower in summer "because of school" — it's the reverse, summer is
+  faster with less going on, school year can run slower. Fixed in
+  `about.html` and `services.html`.
+- Added a dedicated service-request form to `services.html`, replacing
+  a generic link to `contact.html` that didn't fit repair/upgrade/
+  cleaning/support inquiries (that form's fields — budget, games,
+  Wi-Fi, monitor, RGB — are built for PC purchases). New form: name,
+  email, a service dropdown populated live from `services.js` (can't
+  drift out of sync with the real service list), optional system
+  description, what's going on. Each service detail card got a
+  "Request This Service" button that pre-selects it and scrolls down.
+- Tested in a real DOM: dropdown options match the data, each card's
+  button pre-selects correctly and triggers the scroll, dynamic form
+  action/redirect resolve correctly, thank-you state works. Full
+  regression sweep re-run across all 10 pages.
+
+Nothing outstanding blocks anything else. Natural next step is Phase 5
+(SEO/local discovery).

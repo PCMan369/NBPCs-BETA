@@ -31,6 +31,13 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.service-request-btn {
+  margin-top: 1.25rem;
 }
 
 .service-detail-card h3 {

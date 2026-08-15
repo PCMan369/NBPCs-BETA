@@ -46,6 +46,10 @@ function renderServiceDetailCard(svc) {
       (svc.shortDescription ? '<p class="service-lead">' + svc.shortDescription + '</p>' : '') +
       includedHtml +
       notes +
+      '<button type="button" class="btn btn-secondary service-request-btn" ' +
+        'data-service-name="' + svc.name + '" style="width:100%; justify-content:center; margin-top:1.25rem;">' +
+        'Request This Service &rarr;' +
+      '</button>' +
     '</div>'
   );
 }

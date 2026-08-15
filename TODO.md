@@ -24,8 +24,7 @@
 
 ## Recommended
 
-- [ ] Fill in `[Your Name]` placeholder in `about.html` — nothing was
-      provided to put there
+- [x] Fill in `[Your Name]` placeholder in `about.html` — done, "Jacob Skrove"
 - [ ] Decide whether to carry over the "sold" builds from the old site into
       the new sold-PC gallery, or start that section fresh
 - [ ] Decide on business email handling (see DECISIONS.md open item)

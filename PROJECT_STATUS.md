@@ -200,6 +200,27 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       turnaround claims exist anywhere on the page. Full regression sweep
       re-run across all 10 pages now in the project.
 
+## Completed so far (continued, owner review fixes)
+
+- [x] Name filled in (`Jacob Skrove`), replacing the `[Your Name]`
+      placeholder in `about.html`.
+- [x] **Corrected an error in the original business input**: turnaround
+      is not slower in summer "because of school" — it's the opposite,
+      summer is faster (less going on), school year can be slower. Fixed
+      in `about.html` and `services.html`.
+- [x] Dedicated service-request form added to `services.html` — the old
+      generic link to `contact.html` didn't fit repair/upgrade/cleaning/
+      support inquiries (its fields are budget/games/Wi-Fi/monitor/RGB,
+      built for PC purchases). New form: name, email, a service dropdown
+      populated live from `services.js`, optional system description,
+      and what's going on. Each service detail card got a "Request This
+      Service" button that pre-selects it and scrolls to the form.
+- [x] Tested in a real DOM: dropdown correctly lists all 4 services
+      (sourced from data, not hardcoded), each card's button correctly
+      pre-selects its own service and triggers the scroll, dynamic
+      action/redirect resolve correctly, thank-you state works. Full
+      regression sweep re-run across all 10 pages.
+
 ## Not started yet
 
 - Phase 5 (SEO/Local): structured data, Open Graph, canonical URLs,
@@ -209,8 +230,6 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Known open questions (not yet blocking, but will be before their phase)
 
-- **The owner's name** — needed to replace the `[Your Name]` placeholder
-  in `about.html`. Nothing else depends on it.
 - Business email handling: still the personal Gmail, sourced from one
   place (`config.js`) everywhere now instead of scattered, but the
   underlying exposure in client-side source is inherent to the
@@ -219,12 +238,12 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-Every page in the site's information architecture now exists (10 of 10)
-with real content — nothing left is gated on new owner-provided copy.
-Two loose ends: (1) the `[Your Name]` placeholder on `about.html`, (2)
-Phase 5 SEO work (structured data, Open Graph, sitemap, robots.txt),
-which is architecture/technical work, not content-gated, and could
-reasonably be the next phase whenever work resumes.
+All content-gated work and the owner's post-review fixes are done: name
+filled in, the (incorrect) summer/school turnaround claim corrected, and
+a dedicated service-request form replaces the ill-fitting link to the
+general contact form. Nothing outstanding blocks anything else. Natural
+next step is Phase 5 (SEO/local discovery) — see PROJECT_STATUS.md's
+next-step note history for what that involves.
 
 ## Files that matter
 

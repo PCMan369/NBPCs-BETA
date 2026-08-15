@@ -134,6 +134,26 @@ that in (or tell Claude what to put there).
 architecture already handles this safely (empty array + toggle, from
 Phase 1). No changes needed there.
 
+### D9 — Owner name added, turnaround claim corrected, dedicated service-request form added
+Three fixes from owner review:
+1. `[Your Name]` placeholder replaced with "Jacob Skrove" in `about.html`.
+2. **Corrected an error from the original business input**: the notes
+   said turnaround is slower "during the summer... because of school,"
+   but the owner clarified summer is actually *faster* (less going on)
+   and it's the school year that can run slower. Fixed in both
+   `about.html` and `services.html`'s policy blurb.
+3. Owner flagged that `services.html` linked to the general contact
+   form (budget/games/Wi-Fi/monitor/RGB fields), which doesn't fit
+   someone asking about a repair or upgrade. Added a dedicated
+   service-request form directly on `services.html`: name, email, a
+   service dropdown (populated from `services.js`, not hardcoded — can't
+   list a service that doesn't exist above it), what the system is
+   (optional), and what's going on. Each of the 4 service detail cards
+   got a "Request This Service" button that pre-selects that service in
+   the dropdown and scrolls to the form. Replaces the old generic
+   "Contact Me" CTA box that prompted this fix.
+**Decided by:** owner correction (1, 2) and owner-identified UX gap (3).
+
 ---
 
 ## Still open
@@ -143,5 +163,3 @@ Phase 1). No changes needed there.
 - How to handle the business email being visible in client-side source
   (inherent to the FormSubmit approach without a backend — needs an
   explicit owner call on whether that's acceptable).
-- The owner's actual name, for the `[Your Name]` placeholder in
-  `about.html`.
