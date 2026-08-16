@@ -18,7 +18,13 @@
       unified form since build.html now has its own embedded inquiry form)
 - [x] `custom-build.html`, `faq.html`, `gallery.html`, `services.html`,
       `about.html` — built, tested
-- [ ] Phase 5: sitemap, robots.txt, structured data, Open Graph
+- [x] Phase 5: sitemap, robots.txt, structured data, Open Graph — done,
+      built against the placeholder URL, verified swap-safe (see
+      DECISIONS.md D10)
+- [ ] When the real domain arrives: update `SITE.url` in
+      `js/data/config.js`, re-run `stitch.py`, set up a fresh Google
+      Search Console property for the new domain, submit the
+      regenerated `sitemap.xml` there
 - [ ] Phase 7: full device/feature-toggle/empty-state test pass before
       pointing the real domain/GitHub Pages slot at this build
 

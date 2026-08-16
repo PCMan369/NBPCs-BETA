@@ -154,6 +154,29 @@ Three fixes from owner review:
    "Contact Me" CTA box that prompted this fix.
 **Decided by:** owner correction (1, 2) and owner-identified UX gap (3).
 
+### D10 — Phase 5 (SEO) built against the placeholder URL, verified swap-safe
+Owner asked whether building canonical/OG/structured-data/sitemap now,
+against the placeholder GitHub Pages URL, would cause problems once a
+real domain arrives in a few months. Answer: no functional risk (this
+metadata doesn't affect page rendering), but it does need updating when
+the domain changes — so `stitch.py` was extended to read `SITE.url`
+from `config.js` as the only source for every URL it generates
+(canonical tags, Open Graph, Twitter Card, JSON-LD, sitemap.xml,
+robots.txt). Title/description for OG tags are read from each page's
+own existing `<title>`/`<meta name="description">` rather than
+duplicated by hand, so they can't drift out of sync.
+**Verified, not just claimed**: temporarily changed `SITE.url` to a
+fake real domain, re-ran `stitch.py`, confirmed every generated file
+updated correctly and no trace of the old URL remained anywhere, then
+reverted.
+**Decided by:** owner question, Claude's technical judgment on how to
+build it safely.
+**Still to do when the real domain arrives:** update `SITE.url` in
+`config.js`, re-run `stitch.py`, and — this part isn't automatic — set
+up a Google Search Console property for the new domain and submit the
+regenerated sitemap.xml there (a fresh GSC property is needed either
+way for a new domain, independent of anything built here).
+
 ---
 
 ## Still open

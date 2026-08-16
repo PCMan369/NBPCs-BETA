@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pcman369.github.io/north-bridge-pcs-v2/sitemap.xml

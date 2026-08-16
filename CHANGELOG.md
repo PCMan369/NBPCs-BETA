@@ -220,3 +220,27 @@ placeholder) is either technical or a single small owner input.
 
 Nothing outstanding blocks anything else. Natural next step is Phase 5
 (SEO/local discovery).
+
+## Phase 5 — SEO / Local Discovery
+- `stitch.py` extended: generates canonical tags, Open Graph tags,
+  Twitter Card tags, and homepage JSON-LD (`ComputerStore` structured
+  data with address/service-area, no invented fields) for every page.
+  All driven from `SITE.url` in `config.js` — the one place this value
+  lives. OG title/description are read from each page's own existing
+  `<title>`/`<meta name="description">` rather than duplicated.
+- `sitemap.xml` and `robots.txt` now auto-generated on every build.
+- Owner asked whether building this against the placeholder GitHub
+  Pages URL (real domain still months out) could break anything.
+  Answer: no functional risk, but it does need updating later — so this
+  was built so that's a one-line change. **Verified, not just claimed**:
+  temporarily swapped `SITE.url` to a fake real domain, rebuilt,
+  confirmed every canonical/OG/JSON-LD/sitemap/robots.txt reference
+  updated correctly with zero trace of the old URL anywhere, then
+  reverted to the placeholder.
+- Confirmed generated JSON-LD is valid JSON, appears only on the
+  homepage (not redundantly on all 10 pages), canonical tags exist on
+  every page, and a full regression sweep across all 10 pages confirmed
+  the new `<head>` content didn't break anything already working.
+
+Phase 5 complete. Remaining: update the domain when it arrives (one
+config change + a new Search Console property), and Phase 6–8 polish.

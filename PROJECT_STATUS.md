@@ -221,10 +221,29 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       action/redirect resolve correctly, thank-you state works. Full
       regression sweep re-run across all 10 pages.
 
+## Completed so far (continued, Phase 5 SEO)
+
+- [x] `stitch.py` extended to generate canonical tags, Open Graph tags,
+      Twitter Card tags, and homepage JSON-LD (`ComputerStore` structured
+      data) — all driven from the single `SITE.url` value in `config.js`.
+      Title/description for OG tags are read from each page's own
+      existing `<title>`/`<meta name="description">`, not duplicated.
+- [x] `sitemap.xml` and `robots.txt` now auto-generated on every build,
+      covering all 10 pages.
+- [x] Built against the placeholder GitHub Pages URL (owner doesn't have
+      a real domain yet) — **verified swap-safe**: temporarily set
+      `SITE.url` to a fake real domain, rebuilt, confirmed every
+      generated file updated correctly with zero trace of the old URL
+      left anywhere, then reverted. Changing domains later is a
+      one-line edit + one command.
+- [x] Confirmed generated JSON-LD is valid, parseable JSON; confirmed it
+      appears only on the homepage (not redundantly on all 10 pages);
+      confirmed canonical tags exist on every page; full regression
+      sweep re-run across all 10 pages to confirm the new `<head>`
+      content didn't break anything already working.
+
 ## Not started yet
 
-- Phase 5 (SEO/Local): structured data, Open Graph, canonical URLs,
-  sitemap, robots.txt.
 - Phase 6–8: media/polish (the migrated photos are real but unoptimized —
   ~1.1MB average, worth compressing before launch), testing, docs/handoff.
 
@@ -238,12 +257,14 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-All content-gated work and the owner's post-review fixes are done: name
-filled in, the (incorrect) summer/school turnaround claim corrected, and
-a dedicated service-request form replaces the ill-fitting link to the
-general contact form. Nothing outstanding blocks anything else. Natural
-next step is Phase 5 (SEO/local discovery) — see PROJECT_STATUS.md's
-next-step note history for what that involves.
+Phase 5 (SEO) is done. Nothing is currently blocking or in progress.
+When the real domain arrives: update `SITE.url` in `js/data/config.js`,
+re-run `stitch.py`, and set up a fresh Google Search Console property
+for the new domain (submit the regenerated `sitemap.xml` there — a new
+GSC property is required for any new domain regardless of what's built
+here). Beyond that, remaining work is Phase 6–8 polish (image
+optimization, cross-device/feature-toggle testing) whenever it's time
+to move toward launch.
 
 ## Files that matter
 
