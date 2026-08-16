@@ -27,9 +27,24 @@
   --card-h:    #243044;
   --accent:    #3b82f6;
   --accent-h:  #2563eb;
+  --accent-h2: #1d4ed8; /* darker still — used where white text sits directly on
+                            an accent background (buttons, badges, banners).
+                            --accent itself only reaches 3.68:1 with white text
+                            (fails WCAG AA's 4.5:1 for this text size); --accent-h
+                            already reaches 5.17:1, so solid-fill+white-text
+                            components use --accent-h at rest and --accent-h2 on
+                            hover instead. --accent/--accent-h stay exactly as
+                            they were for text-color and border/decorative uses. */
   --text:      #f8fafc;
   --muted:     #94a3b8;
-  --dim:       #64748b;
+  --dim:       #8c9bb1; /* lightened from #64748b — that value only reached
+                            2.79:1 against --card-h (the worst-case surface
+                            this text can sit on), failing WCAG AA's 4.5:1 for
+                            normal-size text. This reaches 4.70:1 against the
+                            same surface. Light theme's --dim below is NOT
+                            changed here — it has its own separate, smaller
+                            gap (4.34:1 vs --card-h) that wasn't part of this
+                            fix's scope; flagged, not fixed. */
   --border:    #334155;
   --border-l:  #475569;
   --success:   #22c55e;

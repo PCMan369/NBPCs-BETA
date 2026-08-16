@@ -244,3 +244,35 @@ Nothing outstanding blocks anything else. Natural next step is Phase 5
 
 Phase 5 complete. Remaining: update the domain when it arrives (one
 config change + a new Search Console property), and Phase 6–8 polish.
+
+## Accessibility — contrast fixes
+- **Fix 1**: white text on solid `--accent` (#3b82f6) backgrounds only
+  reached 3.68:1 (needs 4.5:1). Audited every usage first — found 9
+  locations sharing this exact pairing (`.btn-primary`, `.nav-cta`,
+  `.step-num`, `.pl-num`, `.faq-icon` open state, `.back-to-top`,
+  `.skip-link`, `.qty-btn:hover`, `#event-banner`), not just the one
+  named component. Fix: these now rest at the already-existing
+  `--accent-h` (#2563eb → 5.17:1 with white text) and hover at a new
+  `--accent-h2` (#1d4ed8 → 6.70:1). `--accent`/`--accent-h` values
+  themselves untouched — only which components use them for
+  backgrounds changed.
+- **Fix 2**: dark theme `--dim` was 2.79:1 against its worst-case
+  surface (`--card-h`) — worse than the 3.75:1 originally reported
+  (checked against `--bg` only). New value `#8c9bb1`: 6.32:1 vs `--bg`,
+  5.18:1 vs `--card`, 4.70:1 vs `--card-h`. Light theme's `--dim`
+  untouched (was already compliant against `--bg`/`--card`).
+- Verified every ratio mathematically (WCAG relative-luminance formula,
+  not estimated) both before and after. Confirmed unrelated variables
+  (`--accent` as text, `--muted`, light-theme `--dim`) are byte-for-byte
+  unchanged. Full functional regression sweep across all 10 pages (zero
+  JS errors) plus HTML tag-balance and CSS brace-balance checks on
+  every file touched.
+- **Found, explicitly not fixed** (outside this fix's scope, flagged in
+  DECISIONS.md D11 and PROJECT_STATUS.md instead): `--accent` as text
+  color on `--card` (3.98:1), `a:hover` text color (3.45:1, value
+  unchanged by this fix so unaffected either way), light theme `--dim`
+  vs `--card-h` (4.34:1, newly discovered while auditing surfaces for
+  fix 2).
+
+Phase 6 has not been started, per explicit instruction to keep this fix
+isolated.

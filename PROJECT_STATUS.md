@@ -242,6 +242,28 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       sweep re-run across all 10 pages to confirm the new `<head>`
       content didn't break anything already working.
 
+## Completed so far (continued, accessibility contrast fixes)
+
+- [x] Fixed WCAG AA contrast failure: white text on solid `--accent`
+      backgrounds (buttons, badges, banner, skip link) was 3.68:1.
+      Audited all 9 locations sharing this pairing first, not just
+      `.btn-primary`. Fix: those components now rest at `--accent-h`
+      (5.17:1, already existed) and hover at new `--accent-h2` (6.70:1).
+      `--accent`/`--accent-h` values themselves unchanged.
+- [x] Fixed WCAG AA contrast failure: `--dim` in dark theme was 2.79:1
+      against its worst-case surface (`--card-h`) — worse than the
+      3.75:1 originally reported (which only checked `--bg`). New value
+      #8c9bb1 reaches 4.70:1 against that same surface. Light theme's
+      `--dim` untouched.
+- [x] Verified mathematically (exact ratios computed and reported, not
+      asserted), plus a full functional regression sweep across all 10
+      pages (zero JS errors) and HTML/CSS balance checks on every file
+      touched.
+- [x] Found 3 additional contrast issues while auditing — explicitly did
+      NOT fix them (outside this fix's scope, flagged instead): `--accent`
+      as text on `--card` (3.98:1), `a:hover` text color (3.45:1), light
+      theme `--dim` vs `--card-h` (4.34:1). See DECISIONS.md D11.
+
 ## Not started yet
 
 - Phase 6–8: media/polish (the migrated photos are real but unoptimized —
@@ -254,17 +276,21 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
   underlying exposure in client-side source is inherent to the
   no-backend FormSubmit approach regardless. Still needs an explicit
   owner call on whether that's fine long-term.
+- 3 additional contrast issues found during the accessibility fix but
+  explicitly left unfixed (out of that fix's scope) — see DECISIONS.md
+  D11's "found but not fixed" list. Owner hasn't weighed in on these yet.
 
 ## Immediate next step
 
-Phase 5 (SEO) is done. Nothing is currently blocking or in progress.
-When the real domain arrives: update `SITE.url` in `js/data/config.js`,
-re-run `stitch.py`, and set up a fresh Google Search Console property
-for the new domain (submit the regenerated `sitemap.xml` there — a new
-GSC property is required for any new domain regardless of what's built
-here). Beyond that, remaining work is Phase 6–8 polish (image
-optimization, cross-device/feature-toggle testing) whenever it's time
-to move toward launch.
+The accessibility contrast fix is done and verified. **Phase 6 has
+deliberately not been started** — next step is whatever the owner wants
+next: fold the 3 newly-flagged contrast issues into another small fix,
+move on to Phase 6 (image optimization, visual polish), or something
+else entirely. When the real domain arrives: update `SITE.url` in
+`js/data/config.js`, re-run `stitch.py`, and set up a fresh Google
+Search Console property for the new domain (submit the regenerated
+`sitemap.xml` there — required for any new domain regardless of what's
+built here).
 
 ## Files that matter
 

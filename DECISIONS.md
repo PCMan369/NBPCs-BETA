@@ -177,6 +177,48 @@ up a Google Search Console property for the new domain and submit the
 regenerated sitemap.xml there (a fresh GSC property is needed either
 way for a new domain, independent of anything built here).
 
+### D11 — Accessibility contrast fixes (buttons + dark-theme dim text)
+Fixed the two confirmed WCAG AA contrast failures from the earlier audit,
+scoped narrowly per owner instruction — no other changes.
+
+**Fix 1 — white text on solid accent backgrounds (buttons, badges, banner):**
+`--accent` (#3b82f6) with white text only reached 3.68:1. Audited every
+usage first (9 locations sharing this exact pairing: buttons, nav CTA,
+step/process numbers, FAQ toggle icon, back-to-top, skip link, part-box
+quantity buttons, event banner) rather than fixing `.btn-primary` alone
+and leaving the rest inconsistently broken. Solution: the already-existing
+`--accent-h` (#2563eb, used for hover states) already reaches 5.17:1 with
+white text, so it became the *resting* background for all 9; a new
+`--accent-h2` (#1d4ed8, 6.70:1) became their *hover* background, since
+they could no longer hover to the color they now rest at.
+`--accent`/`--accent-h` themselves were NOT changed — only which
+components use them for backgrounds changed, so text-color and
+decorative uses of both variables are byte-identical to before.
+
+**Fix 2 — `--dim` in dark theme:** #64748b only reached 2.79:1 against
+the worst-case surface it can sit on (`--card-h`) — worse than the
+3.75:1 originally reported, which had only been checked against `--bg`.
+Changed to #8c9bb1 (4.70:1 against `--card-h`, 5.18:1 against `--card`,
+6.32:1 against `--bg`). Light theme's `--dim` was NOT touched.
+
+**Verified mathematically, not just asserted** — see CHANGELOG.md for
+the exact numbers. Also ran the existing DOM-based functional regression
+suite (all 10 pages, zero JS errors) and confirmed HTML tag balance +
+CSS brace balance across every file touched.
+
+**Found but explicitly NOT fixed (out of scope, flagged for owner):**
+1. `--accent` as text color on `--card` background: 3.98:1, fails AA.
+   Affects small-caps labels (section labels, tier badges) that happen
+   to sit on card surfaces. Unrelated variable pairing to what was asked.
+2. `a:hover` text color (`--accent-h` on `--bg`): 3.45:1, fails AA.
+   Pre-existing; `--accent-h`'s *value* wasn't changed by this fix, so
+   this issue is unchanged by it either.
+3. Light theme's `--dim` against `--card-h`: 4.34:1, fails AA (barely).
+   Newly discovered while auditing surfaces for fix 2. Owner's original
+   ask named dark theme specifically; light theme left untouched pending
+   a decision on whether to include it.
+**Decided by:** owner-specified fix, Claude's technical implementation.
+
 ---
 
 ## Still open
@@ -186,3 +228,7 @@ way for a new domain, independent of anything built here).
 - How to handle the business email being visible in client-side source
   (inherent to the FormSubmit approach without a backend — needs an
   explicit owner call on whether that's acceptable).
+- Three contrast issues found during D11's audit, not fixed (out of that
+  fix's explicit scope): `--accent` as text on `--card` (3.98:1),
+  `a:hover` text color (3.45:1), light theme `--dim` vs `--card-h`
+  (4.34:1). See D11 for full detail.

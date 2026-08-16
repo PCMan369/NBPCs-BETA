@@ -145,7 +145,7 @@
 }
 
 .qty-btn:hover {
-  background: var(--accent);
+  background: var(--accent-h); /* was --accent — white text on it only reached 3.68:1 */
   color: white;
 }
 
