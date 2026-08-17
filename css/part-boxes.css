@@ -73,7 +73,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   background: rgba(59,130,246,0.1);
   border-radius: 999px;
   padding: 0.15rem 0.55rem;
@@ -183,7 +183,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   margin-bottom: 0.9rem;
 }
 

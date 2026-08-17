@@ -219,6 +219,54 @@ CSS brace balance across every file touched.
    a decision on whether to include it.
 **Decided by:** owner-specified fix, Claude's technical implementation.
 
+### D12 — Light-mode header bug fixed + the 3 previously-flagged contrast issues fixed
+**Header bug (owner-reported: "header is same as in dark mode, looks
+odd")**: root cause was `.site-header` having a hardcoded
+`rgba(15, 23, 42, 0.96)` background — that's literally dark theme's
+`--bg` spelled out in decimal, with no light-theme override, so the
+header stayed dark navy regardless of theme. It existed because the
+original hardcoded-color audit (Phase 2) only searched for `#hex`
+patterns and had a blind spot for `rgba()` decimal notation. Fixed with
+a new theme-aware `--header-bg` token (dark value unchanged from
+before, light value is light theme's own `--bg` at the same alpha).
+While investigating this, found the same blind-spot pattern affecting 5
+hover-feedback backgrounds (`rgba(255,255,255,0.06)` on nav links,
+dropdown links, hamburger, mobile sublinks, secondary buttons) — a
+white tint is nearly invisible against an already-light surface, so
+light-mode hover states would have shown almost no feedback. Fixed with
+a new `--hover-tint` token (dark: unchanged white tint; light: a dark
+tint instead).
+
+**The 3 flagged-but-not-fixed contrast issues, now fixed:**
+1. `--accent` as text color on `--card`: 3.98:1 (dark theme). Turned
+   out more pervasive on investigation — dark theme also failed against
+   `--card-h` (3.61:1), and **light theme failed against every surface**
+   (3.36–3.68:1), not just the one case originally measured. New
+   `--accent-text` token: dark #6aa5fb (5.30–7.13:1 across all
+   surfaces), light #1a44c4 (7.19–7.87:1). `--accent` itself is
+   unchanged — still used for backgrounds/borders/decorative elements.
+2. `a:hover` text color: 3.45:1. Now uses `--accent-text` (same as
+   resting state) with `text-decoration: underline` added for hover
+   feedback, rather than inventing a third blue shade for one hover
+   transition.
+3. Light theme `--dim` vs `--card-h`: 4.34:1. New value #5c6b82 reaches
+   4.94:1 on that surface (5.17–5.41:1 on the others).
+
+**A real bug introduced and caught during this fix**: the first
+implementation pass replaced `color: var(--accent);` via plain string
+substitution, which also matched inside `border-color: var(--accent);`
+and `background-color: var(--accent);` (since both end in `-color:`, a
+superstring of the search text) — silently converting 6 border/
+decorative-background rules that were never supposed to change.
+Caught by grepping for the corrupted pattern specifically before
+considering the fix complete; all 6 reverted to plain `--accent`.
+
+**Verified mathematically** (all ratios in CHANGELOG.md) and with a full
+functional regression sweep across all 10 pages (zero JS errors) plus
+HTML tag-balance and CSS brace-balance checks on every file touched.
+**Decided by:** owner-reported bug + owner's explicit request to fix
+the 3 previously-flagged items.
+
 ---
 
 ## Still open
@@ -228,7 +276,3 @@ CSS brace balance across every file touched.
 - How to handle the business email being visible in client-side source
   (inherent to the FormSubmit approach without a backend — needs an
   explicit owner call on whether that's acceptable).
-- Three contrast issues found during D11's audit, not fixed (out of that
-  fix's explicit scope): `--accent` as text on `--card` (3.98:1),
-  `a:hover` text color (3.45:1), light theme `--dim` vs `--card-h`
-  (4.34:1). See D11 for full detail.

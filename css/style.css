@@ -35,13 +35,19 @@
 
 /* ---- 1. Base link/list/button rules ---- */
 a {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: none;
   transition: color var(--ease);
 }
 
 a:hover {
-  color: var(--accent-h);
+  color: var(--accent-text); /* was --accent-h (#2563eb), which only reached
+                                 3.45:1 against dark --bg — fails WCAG AA.
+                                 Keeping the same color as the resting accent-text
+                                 state and relying on underline for hover feedback,
+                                 rather than inventing a third blue shade just for
+                                 this one hover transition. */
+  text-decoration: underline;
 }
 
 ul, ol {
@@ -121,7 +127,7 @@ strong {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   margin-bottom: 0.75rem;
 }
 
@@ -168,7 +174,9 @@ strong {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: rgba(15, 23, 42, 0.96);
+  background-color: var(--header-bg); /* was hardcoded rgba(15,23,42,0.96) — always
+                                          dark regardless of theme, which is why
+                                          the header looked identical in light mode */
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
@@ -201,7 +209,7 @@ strong {
 }
 
 .brand-name span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .brand-sub {
@@ -240,11 +248,11 @@ strong {
 
 .nav-link:hover {
   color: var(--text);
-  background-color: rgba(255,255,255,0.06);
+  background-color: var(--hover-tint);
 }
 
 .nav-link.active {
-  color: var(--accent);
+  color: var(--accent-text);
   background-color: rgba(59,130,246,0.1);
 }
 
@@ -330,11 +338,11 @@ strong {
 
 .nav-dropdown-link:hover {
   color: var(--text);
-  background-color: rgba(255,255,255,0.06);
+  background-color: var(--hover-tint);
 }
 
 .nav-dropdown-link.active {
-  color: var(--accent);
+  color: var(--accent-text);
   background-color: rgba(59,130,246,0.1);
 }
 
@@ -356,7 +364,7 @@ strong {
 }
 
 .hamburger:hover {
-  background-color: rgba(255,255,255,0.06);
+  background-color: var(--hover-tint);
 }
 
 .hamburger span {
@@ -452,11 +460,11 @@ strong {
 
 .nav-sublink:hover {
   color: var(--text);
-  background-color: rgba(255,255,255,0.06);
+  background-color: var(--hover-tint);
 }
 
 .nav-sublink.active {
-  color: var(--accent);
+  color: var(--accent-text);
   background-color: rgba(59,130,246,0.1);
 }
 
@@ -483,7 +491,7 @@ strong {
   gap: 0.5rem;
   background-color: rgba(59,130,246,0.1);
   border: 1px solid rgba(59,130,246,0.25);
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -784,7 +792,7 @@ strong {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 700;
   font-size: 0.82rem;
   margin-top: 0.1rem;
@@ -924,7 +932,7 @@ strong {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   margin-bottom: 0.35rem;
 }
 
@@ -1066,7 +1074,7 @@ strong {
 }
 
 .btn-secondary:hover {
-  background-color: rgba(255,255,255,0.05);
+  background-color: var(--hover-tint);
   border-color: var(--muted);
   color: var(--text);
   transform: translateY(-1px);
@@ -1074,14 +1082,14 @@ strong {
 
 .btn-ghost {
   background-color: transparent;
-  color: var(--accent);
+  color: var(--accent-text);
   border: 1px solid rgba(59,130,246,0.3);
 }
 
 .btn-ghost:hover {
   background-color: rgba(59,130,246,0.07);
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .btn-lg {
@@ -1125,7 +1133,7 @@ strong {
 .tier-badge {
   display: inline-block;
   background-color: rgba(59,130,246,0.14);
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -1177,7 +1185,7 @@ strong {
 
 .tier-features li::before {
   content: '✓';
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 700;
   flex-shrink: 0;
   font-size: 0.85rem;
@@ -1347,7 +1355,7 @@ strong {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 1.1rem;
   font-weight: 300;
   line-height: 1;
@@ -1584,7 +1592,7 @@ strong {
 }
 
 .footer-extra a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .footer-links {
@@ -1632,7 +1640,7 @@ strong {
   border: 0;
 }
 
-.text-accent { color: var(--accent); }
+.text-accent { color: var(--accent-text); }
 .text-muted  { color: var(--muted); }
 .text-dim    { color: var(--dim); }
 

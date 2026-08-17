@@ -51,6 +51,26 @@
   --danger:    #ef4444;
   --accent-2:  #60a5fa; /* secondary accent tint, for gradients/highlights — same in both themes */
 
+  --accent-text: #6aa5fb; /* lighter than --accent — used for accent-COLORED TEXT
+                              (links, active nav states, labels, badges). Plain
+                              --accent as text only reached 3.98:1 against --card
+                              and 3.61:1 against --card-h (fails WCAG AA's 4.5:1).
+                              This reaches 5.30:1 even on the worst-case surface.
+                              --accent itself is unchanged — still used for
+                              backgrounds, borders, and decorative elements. */
+
+  --hover-tint: rgba(255,255,255,0.06); /* subtle hover background for nav
+                              links/buttons. Unchanged in dark theme; light
+                              theme below uses a dark tint instead, since a
+                              white tint on an already-light surface is close
+                              to invisible. */
+
+  --header-bg: rgba(15, 23, 42, 0.96); /* was hardcoded directly on .site-header
+                              with no light-theme override at all, so the header
+                              stayed dark-navy regardless of theme. Same value
+                              here as before for dark theme (no visual change);
+                              light theme below gets its own. */
+
   /* Used for missing-image/video placeholder boxes. Separate from
      --card/--card-h because these need to read as "empty state," not
      as a normal elevated surface. */
@@ -87,11 +107,26 @@
     --accent-h:  #2563eb;
     --text:      #0f172a;
     --muted:     #475569;
-    --dim:       #64748b;
+    --dim:       #5c6b82; /* darkened from #64748b — that value only reached
+                              4.34:1 against --card-h (fails WCAG AA's 4.5:1).
+                              This reaches 4.94:1 against the same surface. */
     --border:    #e2e8f0;
     --border-l:  #cbd5e1;
     --success:   #16a34a;
     --danger:    #dc2626;
+
+    --accent-text: #1a44c4; /* darker than --accent, needed here since light
+                                theme's contrast direction is reversed from
+                                dark theme's. Plain --accent as text only
+                                reached 3.36–3.68:1 on every light-theme
+                                surface (fails everywhere, not just one case).
+                                This reaches 7.19:1 even on the worst case. */
+
+    --hover-tint: rgba(15,23,42,0.05); /* dark tint instead of white — see note
+                                on the dark-theme value above */
+
+    --header-bg: rgba(248, 250, 252, 0.96); /* light-theme equivalent of the
+                                dark header background, same alpha */
 
     --placeholder-start: #e2e8f0;
     --placeholder-end:   #cbd5e1;

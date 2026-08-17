@@ -264,6 +264,32 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       as text on `--card` (3.98:1), `a:hover` text color (3.45:1), light
       theme `--dim` vs `--card-h` (4.34:1). See DECISIONS.md D11.
 
+## Completed so far (continued, header fix + remaining contrast issues)
+
+- [x] Fixed the reported light-mode header bug: `.site-header` had a
+      hardcoded `rgba(15,23,42,0.96)` background with no light-theme
+      override — root cause was the original color audit only checking
+      `#hex` patterns, missing this `rgba()` one. New `--header-bg`
+      token, theme-aware.
+- [x] Found and fixed the same blind spot on 5 hover-feedback
+      backgrounds (`rgba(255,255,255,0.06)`, nearly invisible on a light
+      surface) — new `--hover-tint` token, theme-aware.
+- [x] Fixed all 3 previously-flagged-but-unfixed contrast issues:
+      `--accent` as text on `--card` (turned out to fail on every
+      surface in light theme, not just the one case originally
+      measured), `a:hover` text color, light theme `--dim` vs
+      `--card-h`. New `--accent-text` token, theme-aware; `--accent`
+      itself unchanged.
+- [x] Caught and fixed a real bug in my own implementation: a plain
+      string-replace for `color: var(--accent);` also matched inside
+      `border-color:`/`background-color:` rules (both end in `-color:`,
+      a superstring of the search text), silently converting 6 rules
+      that were never supposed to change. Found by grepping for the
+      corrupted pattern before considering the fix done; all 6 reverted.
+- [x] Verified mathematically (exact ratios in CHANGELOG.md) and with a
+      full functional regression sweep across all 10 pages (zero JS
+      errors) plus tag/brace-balance checks on every file touched.
+
 ## Not started yet
 
 - Phase 6–8: media/polish (the migrated photos are real but unoptimized —
@@ -276,21 +302,19 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
   underlying exposure in client-side source is inherent to the
   no-backend FormSubmit approach regardless. Still needs an explicit
   owner call on whether that's fine long-term.
-- 3 additional contrast issues found during the accessibility fix but
-  explicitly left unfixed (out of that fix's scope) — see DECISIONS.md
-  D11's "found but not fixed" list. Owner hasn't weighed in on these yet.
 
 ## Immediate next step
 
-The accessibility contrast fix is done and verified. **Phase 6 has
-deliberately not been started** — next step is whatever the owner wants
-next: fold the 3 newly-flagged contrast issues into another small fix,
-move on to Phase 6 (image optimization, visual polish), or something
-else entirely. When the real domain arrives: update `SITE.url` in
-`js/data/config.js`, re-run `stitch.py`, and set up a fresh Google
-Search Console property for the new domain (submit the regenerated
-`sitemap.xml` there — required for any new domain regardless of what's
-built here).
+All known accessibility contrast issues and the light-mode header bug
+are fixed and verified. **Phase 6 has deliberately not been started.**
+Next step is whatever the owner wants: Phase 6 (image optimization,
+visual polish), a full visual pass in a real browser (this sandbox has
+no browser — everything so far has been verified mathematically/
+functionally, not eyeballed), or something else. When the real domain
+arrives: update `SITE.url` in `js/data/config.js`, re-run `stitch.py`,
+and set up a fresh Google Search Console property for the new domain
+(submit the regenerated `sitemap.xml` there — required for any new
+domain regardless of what's built here).
 
 ## Files that matter
 

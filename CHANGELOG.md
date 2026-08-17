@@ -276,3 +276,41 @@ config change + a new Search Console property), and Phase 6–8 polish.
 
 Phase 6 has not been started, per explicit instruction to keep this fix
 isolated.
+
+## Accessibility — light-mode header bug + 3 remaining contrast issues
+- **Header bug** (owner-reported): `.site-header` had a hardcoded
+  `rgba(15,23,42,0.96)` background — dark theme's `--bg` spelled out in
+  decimal, no light-theme override. The original color audit only
+  searched `#hex` patterns and missed this `rgba()` one. Fixed with a
+  new `--header-bg` token (dark unchanged, light = light theme's own
+  `--bg` at the same alpha).
+- Same blind spot found on 5 hover-feedback backgrounds
+  (`rgba(255,255,255,0.06)`/`0.05`) — nearly invisible against a light
+  surface. New `--hover-tint` token (dark: unchanged; light: dark tint
+  instead of white).
+- **`--accent` as text on `--card`**: was 3.98:1 (dark). Turned out
+  worse on full investigation — dark theme also failed vs `--card-h`
+  (3.61:1), and light theme failed on *every* surface (3.36–3.68:1).
+  New `--accent-text` token: dark `#6aa5fb` (5.30–7.13:1 across all
+  surfaces), light `#1a44c4` (7.19–7.87:1). `--accent` unchanged —
+  still used for backgrounds/borders/decorative elements.
+- **`a:hover` text color**: was 3.45:1. Now uses `--accent-text` (same
+  as resting state) + `text-decoration: underline` for hover feedback,
+  rather than a third blue shade for one transition.
+- **Light theme `--dim` vs `--card-h`**: was 4.34:1. New value
+  `#5c6b82` reaches 4.94:1 there (5.17–5.41:1 elsewhere).
+- **Caught a real bug mid-fix**: the first pass replaced
+  `color: var(--accent);` via plain string substitution, which also
+  matched inside `border-color:`/`background-color:` rules (both end in
+  `-color:`, a superstring of the search text) — silently converting 6
+  border/decorative-background rules that were never supposed to
+  change. Caught by grepping for the corrupted pattern specifically
+  before considering the fix done; all 6 reverted to plain `--accent`.
+- Verified every ratio mathematically, both new fixes and confirming
+  previously-fixed values (button contrast, dark-theme `--dim`) are
+  unchanged. Full functional regression sweep across all 10 pages (zero
+  JS errors), HTML tag-balance and CSS brace-balance checks on every
+  file touched.
+
+All known contrast issues and the light-mode header bug are resolved.
+Phase 6 still not started.
