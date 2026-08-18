@@ -290,10 +290,33 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       full functional regression sweep across all 10 pages (zero JS
       errors) plus tag/brace-balance checks on every file touched.
 
+## Completed so far (continued, image optimization)
+
+- [x] Optimized all 11 real product photos: fixed EXIF orientation
+      (baked into pixels before stripping metadata, so nothing renders
+      sideways), resized to a 1800px max dimension (the largest they're
+      ever displayed at — the lightbox — tops out around 1100px, so
+      this still gives ~1.6x headroom for high-DPI screens), re-encoded
+      at JPEG quality 82, metadata stripped. 12.47MB → 4.50MB (63.9%
+      reduction) with no visible quality loss — checked visually, not
+      just by file size.
+- [x] **Found a real privacy issue as a side effect**: one photo
+      (`may26-01-main.jpg`) had precise GPS coordinates embedded in its
+      EXIF data — exact enough to pinpoint the location it was taken.
+      That would have gone into a public GitHub repo. Stripped along
+      with the rest of the metadata; confirmed removed by direct
+      before/after EXIF inspection, not assumed.
+- [x] Verified: no image filenames changed (only the files themselves,
+      in place), so every existing reference across all pages/data files
+      still resolves correctly — confirmed by loading the 4 pages that
+      reference images and checking `<img>` tags resolve with zero JS
+      errors.
+
 ## Not started yet
 
-- Phase 6–8: media/polish (the migrated photos are real but unoptimized —
-  ~1.1MB average, worth compressing before launch), testing, docs/handoff.
+- Phase 6 remainder: general visual/micro-interaction polish (image
+  optimization is done — see above).
+- Phase 7–8: testing, docs/handoff.
 
 ## Known open questions (not yet blocking, but will be before their phase)
 
@@ -305,16 +328,16 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-All known accessibility contrast issues and the light-mode header bug
-are fixed and verified. **Phase 6 has deliberately not been started.**
-Next step is whatever the owner wants: Phase 6 (image optimization,
-visual polish), a full visual pass in a real browser (this sandbox has
-no browser — everything so far has been verified mathematically/
-functionally, not eyeballed), or something else. When the real domain
-arrives: update `SITE.url` in `js/data/config.js`, re-run `stitch.py`,
-and set up a fresh Google Search Console property for the new domain
-(submit the regenerated `sitemap.xml` there — required for any new
-domain regardless of what's built here).
+Image optimization is done. Accessibility contrast issues and the
+light-mode header bug are fixed and verified. Next step is whatever the
+owner wants: remaining Phase 6 visual polish, a full visual pass in a
+real browser (this sandbox has none — everything so far has been
+verified mathematically/functionally, not eyeballed), or something
+else. When the real domain arrives: update `SITE.url` in
+`js/data/config.js`, re-run `stitch.py`, and set up a fresh Google
+Search Console property for the new domain (submit the regenerated
+`sitemap.xml` there — required for any new domain regardless of what's
+built here).
 
 ## Files that matter
 

@@ -269,6 +269,31 @@ the 3 previously-flagged items.
 
 ---
 
+### D13 — Image optimization, and a privacy issue found along the way
+All 11 real product photos were full phone-camera resolution
+(3024×4032, ~1.1MB average, 12.47MB total) despite never being
+displayed larger than ~1100px anywhere on the site (the lightbox's max
+width). Optimized: EXIF orientation baked into pixels first (so nothing
+would render sideways once metadata was stripped), resized to a 1800px
+max dimension, re-encoded at JPEG quality 82, metadata stripped.
+12.47MB → 4.50MB (63.9% reduction), checked visually for quality, not
+just by file size. No filenames changed, so no references anywhere
+needed updating.
+
+**Found in the process, not something being looked for**: one photo
+(`may26-01-main.jpg`) had precise GPS coordinates embedded in its EXIF
+data — accurate enough to pinpoint where it was taken. That metadata
+was about to go into a public GitHub repo along with everything else.
+Removed along with the rest of the stripped metadata; confirmed gone
+by direct before/after EXIF inspection. Worth knowing for any future
+photos added to this project — phone cameras embed this by default,
+and it's not visible just by looking at the image.
+**Decided by:** owner's "finish the pic stuff" follow-through on the
+already-flagged Phase 6 item; the GPS finding was Claude's own
+discovery during the work, not requested.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

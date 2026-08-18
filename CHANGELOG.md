@@ -314,3 +314,24 @@ isolated.
 
 All known contrast issues and the light-mode header bug are resolved.
 Phase 6 still not started.
+
+## Phase 6 — Image optimization
+- All 11 real product photos optimized: EXIF orientation baked into
+  pixels first, resized to a 1800px max dimension (the lightbox never
+  displays larger than ~1100px), re-encoded at JPEG quality 82,
+  metadata stripped. 12.47MB → 4.50MB (63.9% reduction). Checked
+  visually for quality after, not just by file size — orientation and
+  clarity both confirmed correct on inspection.
+- No filenames changed, only file contents, so every existing image
+  reference across all pages/data files kept working with zero updates
+  needed — confirmed by loading every page that references images and
+  checking for JS errors.
+- **Found a real privacy issue along the way**: one photo had precise
+  GPS coordinates embedded in its EXIF data, accurate enough to
+  pinpoint the location it was taken — about to go into a public
+  GitHub repo. Removed with the rest of the metadata; confirmed gone
+  by direct before/after EXIF inspection (not assumed from the general
+  strip operation).
+
+Phase 6's image-optimization item is done. Remaining Phase 6 scope is
+general visual polish; Phase 7 (testing) and 8 (handoff) not started.

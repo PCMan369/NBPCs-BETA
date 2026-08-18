@@ -27,6 +27,9 @@
       regenerated `sitemap.xml` there
 - [ ] Phase 7: full device/feature-toggle/empty-state test pass before
       pointing the real domain/GitHub Pages slot at this build
+- [x] Image optimization: 11 real photos, 12.47MB → 4.50MB (63.9%
+      reduction), EXIF/GPS metadata stripped (one photo had precise
+      GPS coordinates embedded — see DECISIONS.md D13)
 
 ## Recommended
 
