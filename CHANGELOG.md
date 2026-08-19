@@ -335,3 +335,32 @@ Phase 6 still not started.
 
 Phase 6's image-optimization item is done. Remaining Phase 6 scope is
 general visual polish; Phase 7 (testing) and 8 (handoff) not started.
+
+## Phase 7 — Testing
+- Link/asset reference audit across all 10 pages — found `favicon.ico`
+  was referenced everywhere but never existed. Created one (accent-blue
+  "N" monogram). First attempt only embedded 16×16 due to a Pillow ICO
+  API gotcha; caught by checking embedded sizes programmatically, fixed
+  properly (16/32/48/64px all present).
+- Feature-toggle matrix: phone, facebook, testimonials, events — every
+  state tested, no bugs.
+- Form failure-path testing (real gap — only success had been tested):
+  `notifyBox.js` and `partBoxOrder.js` both correctly error and
+  re-enable on network/server failure.
+- Video-only PC listing (no images) — tested, correct.
+- Alt text audit — clean.
+- Heading hierarchy audit — found and fixed 2 real skips:
+  `contact.html` (h1→h3, 4 headings promoted to h2) and
+  `custom-build.html` (h2→h4, 6 headings promoted to h3). Renamed the
+  matching CSS selectors too, so styling didn't silently break.
+- ARIA consistency audit (aria-controls, aria-expanded, aria-haspopup/
+  labelledby) — clean across all 10 pages.
+- SEO re-verification post-image-optimization — OG image and sitemap
+  both still correct.
+- Full regression sweep (zero JS errors) re-run after every fix.
+
+**Honest scope limit**: this is functional/structural/mathematical
+testing throughout — no real browser exists in this environment, so
+none of it is visual QA. Nothing has been eyeballed on an actual
+mobile/tablet/desktop viewport, and there's been no cross-browser
+verification.

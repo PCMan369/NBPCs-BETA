@@ -312,11 +312,56 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       reference images and checking `<img>` tags resolve with zero JS
       errors.
 
+## Completed so far (continued, Phase 7 testing)
+
+- [x] **Link/reference audit** across all 10 pages (every `href`/`src`
+      checked against real files on disk, not assumed): found
+      `favicon.ico` was referenced everywhere but never actually
+      existed — every page was showing a blank browser-tab icon.
+      Created one (simple "N" monogram, the site's existing accent
+      blue — not a new brand decision). First attempt only embedded
+      one size due to a real Pillow API gotcha (`append_images` doesn't
+      reliably work for the ICO plugin); caught by verifying embedded
+      sizes programmatically rather than trusting the save call, fixed
+      by generating one high-res base image and letting Pillow's ICO
+      writer resize internally. Now correctly multi-size (16/32/48/64px).
+- [x] **Feature-toggle matrix**: phone, facebook, testimonials, and
+      events all tested in every state (off, on-with-value,
+      on-missing-value where applicable) — no bugs found. Confirmed
+      blog/onlinePayments/expandedServiceArea are correctly unreferenced
+      by any code yet, matching the "architecture only" instruction.
+- [x] **Form failure-path testing** (a real gap — only success paths
+      had been tested before): `notifyBox.js` and `partBoxOrder.js`
+      both correctly show an error message and re-enable their submit
+      button on network failure and on server-reported failure. No bugs
+      found.
+- [x] **Video-only PC listing** (no images at all) — tested with
+      synthetic data, renders correctly, no bugs found.
+- [x] **Alt text audit** — every `<img>` across all 10 pages has
+      non-empty alt text. Clean.
+- [x] **Heading hierarchy audit** — found and fixed 2 real issues:
+      `contact.html` skipped h1→h3 (4 info-card headings promoted to
+      h2), `custom-build.html` skipped h2→h4 (6 process-step headings
+      promoted to h3). Renamed the matching CSS selectors
+      (`.contact-info-card h3`→`h2`, `.pl-content h4`→`h3`) so styling
+      didn't silently break when the tags changed.
+- [x] **ARIA consistency audit** — aria-controls targets, aria-expanded
+      initial values, aria-haspopup/aria-labelledby all checked across
+      all 10 pages. Clean, no issues.
+- [x] **SEO re-verification** post-image-optimization: confirmed the
+      Open Graph image reference still resolves (filename didn't
+      change), sitemap.xml still lists all 10 pages correctly.
+- [x] Full functional regression sweep (zero JS errors, hamburger,
+      footer year) re-run across all 10 pages after every fix in this
+      round.
+
 ## Not started yet
 
 - Phase 6 remainder: general visual/micro-interaction polish (image
   optimization is done — see above).
-- Phase 7–8: testing, docs/handoff.
+- Phase 8: docs/handoff (a consolidated maintenance/deployment guide —
+  flagged as a gap back in the "is anything left from the prompt"
+  audit, still not built).
 
 ## Known open questions (not yet blocking, but will be before their phase)
 
@@ -328,16 +373,20 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-Image optimization is done. Accessibility contrast issues and the
-light-mode header bug are fixed and verified. Next step is whatever the
-owner wants: remaining Phase 6 visual polish, a full visual pass in a
-real browser (this sandbox has none — everything so far has been
-verified mathematically/functionally, not eyeballed), or something
-else. When the real domain arrives: update `SITE.url` in
-`js/data/config.js`, re-run `stitch.py`, and set up a fresh Google
-Search Console property for the new domain (submit the regenerated
-`sitemap.xml` there — required for any new domain regardless of what's
-built here).
+Phase 7 (testing) is functionally/programmatically complete — link
+integrity, feature toggles, form success *and* failure paths, empty/
+missing-content states, accessibility structure (alt text, headings,
+ARIA), and SEO metadata have all been verified, with 3 real bugs found
+and fixed along the way (missing favicon, 2 heading-hierarchy skips).
+**What Phase 7 does NOT cover**: actual visual rendering in a real
+browser — this sandbox has none, so nothing here has been eyeballed on
+a real mobile/tablet/desktop viewport, and no true cross-browser check
+has happened. That's the honest gap if "testing" is expected to mean
+that too. Otherwise, next step is owner's call: remaining Phase 6
+visual polish, Phase 8 documentation, or the domain swap whenever it
+arrives (update `SITE.url` in `js/data/config.js`, re-run `stitch.py`,
+set up a fresh Google Search Console property, submit the regenerated
+`sitemap.xml`).
 
 ## Files that matter
 

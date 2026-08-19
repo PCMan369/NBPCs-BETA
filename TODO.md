@@ -25,8 +25,10 @@
       `js/data/config.js`, re-run `stitch.py`, set up a fresh Google
       Search Console property for the new domain, submit the
       regenerated `sitemap.xml` there
-- [ ] Phase 7: full device/feature-toggle/empty-state test pass before
-      pointing the real domain/GitHub Pages slot at this build
+- [x] Phase 7: functional/programmatic testing (link integrity, feature
+      toggles, form success+failure paths, empty-state, accessibility
+      structure, SEO) — done, see DECISIONS.md D14. **Not covered**:
+      actual visual rendering in a real browser (sandbox has none).
 - [x] Image optimization: 11 real photos, 12.47MB → 4.50MB (63.9%
       reduction), EXIF/GPS metadata stripped (one photo had precise
       GPS coordinates embedded — see DECISIONS.md D13)

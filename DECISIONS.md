@@ -294,6 +294,44 @@ discovery during the work, not requested.
 
 ---
 
+### D14 — Phase 7 testing pass: 3 real bugs found and fixed
+Systematic functional/programmatic testing across all 10 pages: link/
+asset reference integrity, feature-toggle matrix (every state of
+phone/facebook/testimonials/events), form success *and* failure paths
+(previously only success had been tested), empty/missing-content states,
+accessibility structure (alt text, heading hierarchy, ARIA), and a
+post-image-optimization SEO re-check.
+
+**Real bugs found and fixed, not just checked-and-clean:**
+1. `favicon.ico` was referenced on all 10 pages but never existed —
+   every page showed a blank browser-tab icon. Created one (simple "N"
+   monogram in the site's existing accent blue, not a new brand
+   decision). First generation attempt only embedded a single 16×16
+   size due to a Pillow API gotcha (`append_images` doesn't reliably
+   work for the ICO plugin) — caught by verifying the embedded sizes
+   programmatically rather than trusting the save call succeeded;
+   fixed by generating one high-res base image and letting Pillow's
+   ICO writer handle the resizing internally. Now correctly
+   multi-size (16/32/48/64px).
+2. `contact.html` skipped heading levels (h1 straight to h3, no h2) —
+   4 info-card headings promoted to h2.
+3. `custom-build.html` skipped heading levels (h2 straight to h4) — 6
+   process-step headings promoted to h3.
+Both heading fixes required renaming the matching CSS selectors
+(`.contact-info-card h3`→`h2`, `.pl-content h4`→`h3`) so component
+styling didn't silently stop applying when the tags changed — checked
+for this specifically rather than assuming a tag rename is free.
+
+**Explicitly not covered by this pass**: actual visual rendering.
+This sandbox has no real browser, so nothing has been eyeballed on a
+real mobile/tablet/desktop viewport, and there's been no true
+cross-browser check. Everything verified here is mathematical (contrast
+ratios) or structural/functional (DOM behavior, no JS errors, correct
+data flow) — not visual QA.
+**Decided by:** owner's request to do Phase 7 testing.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
