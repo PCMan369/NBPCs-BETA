@@ -364,3 +364,24 @@ testing throughout — no real browser exists in this environment, so
 none of it is visual QA. Nothing has been eyeballed on an actual
 mobile/tablet/desktop viewport, and there's been no cross-browser
 verification.
+
+## Live-site critique fixes (owner reviewed the deployed beta directly)
+- **#1 — Contact form works with zero JavaScript now.** `stitch.py`
+  gained a general-purpose build-time token system (`{{SITE_URL}}`,
+  `{{CONTACT_EMAIL}}`) that bakes the real FormSubmit destination and
+  redirect straight into the static HTML `action`/`_next` attributes.
+  Previously both were set only at runtime via JS — if JS failed, the
+  form silently did nothing on submit. Verified by parsing the raw
+  built HTML with zero JS executed and confirming the values are
+  already correct there, not just assumed. Same fix on `services.html`.
+- Found and fixed a real bug in the process: both forms had a literal
+  `\u2014` text sequence in their static `_subject` field (a JS-style
+  escape with no meaning in plain HTML) — replaced with `&mdash;`.
+- Removed the now-redundant runtime JS; kept only the thank-you-state
+  swap, which degrades gracefully (FormSubmit's own redirect still
+  works without it, just without the nicer confirmation message).
+- Full regression sweep across all 10 pages — clean.
+
+Remaining from this critique round: #2 (pre-render JS-driven content
+into static HTML), #3 (blocked on a real hero photo from the owner),
+and the homepage gallery-preview logic change.

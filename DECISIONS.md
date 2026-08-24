@@ -332,6 +332,44 @@ data flow) — not visual QA.
 
 ---
 
+### D15 — Contact form now works with zero JavaScript
+Owner reviewed the live beta site directly and found `contact.html`'s
+(and `services.html`'s service-request form's) submission was entirely
+JS-dependent: the form `action` and `_next` redirect were both set at
+runtime via JS, reading `CONTACT.email` from config.js. If JS failed to
+load or run for any reason, the form had no destination — a visitor
+could fill it out, submit, and nothing would happen, with no error
+shown. Silent lost inquiries.
+
+**Fix**: extended `stitch.py` with a general-purpose build-time token
+system (`{{SITE_URL}}`, `{{CONTACT_EMAIL}}`, both already read from
+`config.js`) that bakes the real, working `action`/`_next` values
+directly into the static HTML. The form now works with zero JavaScript
+— confirmed by parsing the raw built HTML with no JS executed at all
+and checking the values are already correct. The JS that previously set
+these values at runtime was removed; the only JS remaining on these
+forms is the "Message Sent" thank-you-state swap, which is a pure
+enhancement — if JS fails, FormSubmit's own redirect still lands the
+visitor back on the page with `?sent=true` in the URL, just without the
+fancier confirmation message.
+
+**Also fixed while in there**: both forms' `_subject` hidden field used
+a literal `\u2014` text sequence directly in static HTML (a JS-style
+unicode escape, meaningless outside a JS string) — FormSubmit would
+have emailed the literal text `\u2014` instead of an em-dash. Replaced
+with the HTML entity `&mdash;`. Confirmed this pattern doesn't exist
+anywhere else that isn't inside an actual JS string context.
+
+**Verified**: raw-HTML parse with zero JS proving the form action/next
+are correct without any script running, the JS-enhanced thank-you state
+still works with JS, no stray `\u201X`-style escapes remain in static
+HTML anywhere in the project, and a full functional regression sweep
+across all 10 pages.
+**Decided by:** owner's live-site review (critique item #1) + explicit
+request to fix it.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

@@ -149,16 +149,18 @@
 
       <div class="form-card" style="max-width:640px;">
         <!--
-          Form action/_next set dynamically from js/data/config.js
-          (CONTACT.email) below, same as contact.html. The service
-          dropdown is populated from services.js rather than hardcoded,
-          so it can't drift out of sync with the actual service list.
+          Form action and the _next redirect below are baked in at build
+          time by stitch.py (reading CONTACT.email/SITE.url from
+          config.js), same as contact.html — the form works with zero
+          JavaScript. The service dropdown is still populated from
+          services.js via JS, so it can't drift out of sync with the
+          actual service list.
         -->
-        <form id="service-request-form" method="POST">
-          <input type="hidden" name="_subject"  value="Service request \u2014 North Bridge PCs">
+        <form id="service-request-form" method="POST" action="https://formsubmit.co/jacobskrove@gmail.com">
+          <input type="hidden" name="_subject"  value="Service request &mdash; North Bridge PCs">
           <input type="hidden" name="_captcha"  value="false">
           <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_next" id="service-request-next">
+          <input type="hidden" name="_next" id="service-request-next" value="https://pcman369.github.io/north-bridge-pcs-v2/services.html?sent=true">
 
           <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">
 
@@ -278,12 +280,10 @@
         document.getElementById('sr-name').focus({ preventScroll: true });
       });
 
-      // Dynamic form destination + thank-you state (same pattern as contact.html)
+      // Thank-you state (progressive enhancement — the form itself
+      // already works without this via the baked-in action/_next above;
+      // this just swaps in a nicer confirmation when JS is available).
       var form = document.getElementById('service-request-form');
-      form.action = 'https://formsubmit.co/' + CONTACT.email;
-      document.getElementById('service-request-next').value =
-        window.location.origin + window.location.pathname + '?sent=true';
-
       if (window.location.search.indexOf('sent=true') !== -1) {
         form.innerHTML =
           '<div style="text-align:center; padding:3rem 1rem;">' +

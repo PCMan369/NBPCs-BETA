@@ -130,18 +130,20 @@
           <p style="margin-bottom:2rem; font-size:0.93rem;">Fill out what's relevant and skip anything that doesn't apply.</p>
 
           <!--
-            Form action/_next are set dynamically from js/data/config.js
-            (CONTACT.email) below, rather than hardcoded here — same
-            single-source-of-truth principle as the rest of the site.
-            Asking about a specific system? That has its own inquiry
-            form directly on that system's page now (build.html) — this
-            form covers general questions and custom-build inquiries.
+            Form action and the _next redirect below are baked in at
+            build time by stitch.py (reading CONTACT.email/SITE.url from
+            config.js) — see the jacobskrove@gmail.com/https://pcman369.github.io/north-bridge-pcs-v2 tokens.
+            This means the form actually works with zero JavaScript, not
+            just once JS happens to load and run. Asking about a specific
+            system? That has its own inquiry form directly on that
+            system's page now (build.html) — this form covers general
+            questions and custom-build inquiries.
           -->
-          <form id="contact-form" method="POST">
-            <input type="hidden" name="_subject"  value="New inquiry \u2014 North Bridge PCs">
+          <form id="contact-form" method="POST" action="https://formsubmit.co/jacobskrove@gmail.com">
+            <input type="hidden" name="_subject"  value="New inquiry &mdash; North Bridge PCs">
             <input type="hidden" name="_captcha"  value="false">
             <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" id="contact-next">
+            <input type="hidden" name="_next" id="contact-next" value="https://pcman369.github.io/north-bridge-pcs-v2/contact.html?sent=true">
 
             <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">
 
@@ -272,11 +274,10 @@
   <script>
     (function () {
       var form = document.getElementById('contact-form');
-      form.action = 'https://formsubmit.co/' + CONTACT.email;
-      document.getElementById('contact-next').value =
-        window.location.origin + window.location.pathname + '?sent=true';
 
-      // Thank-you state
+      // Thank-you state (progressive enhancement — the form itself
+      // works without this; this just swaps in a nicer confirmation
+      // when JS is available).
       if (window.location.search.indexOf('sent=true') !== -1) {
         form.innerHTML =
           '<div style="text-align:center; padding:3rem 1rem;">' +

@@ -32,6 +32,18 @@
 - [x] Image optimization: 11 real photos, 12.47MB → 4.50MB (63.9%
       reduction), EXIF/GPS metadata stripped (one photo had precise
       GPS coordinates embedded — see DECISIONS.md D13)
+- [x] Contact form works with zero JavaScript now (owner's live-site
+      critique #1) — `stitch.py` bakes the real form action/redirect
+      into static HTML at build time; see DECISIONS.md D15
+- [ ] Owner's live-site critique #2: pre-render JS-driven content
+      (PC listings, trust cards, FAQ, service cards, gallery) into
+      static HTML at build time, so it isn't empty when JS fails or
+      isn't run — in progress
+- [ ] Owner's live-site critique #3: replace the hero image fallback
+      text with a real photo — blocked, waiting on owner to provide it
+- [ ] Homepage gallery-preview logic: prioritize available-PC photos,
+      fall back to sold-PC photos, sourced from `builds.js` directly
+      (not the separate `gallery.js`) — not started
 
 ## Recommended
 

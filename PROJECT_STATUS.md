@@ -355,6 +355,26 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
       footer year) re-run across all 10 pages after every fix in this
       round.
 
+## Completed so far (continued, live-site critique fixes)
+
+- [x] **#1 — Contact form now works with zero JavaScript.** Owner
+      reviewed the live beta directly and found the form's `action`/
+      `_next` were entirely JS-set at runtime — if JS failed, the form
+      silently did nothing on submit. `stitch.py` now has a
+      general-purpose build-time token system (`{{SITE_URL}}`,
+      `{{CONTACT_EMAIL}}`) that bakes the real values into static HTML.
+      Verified by parsing the raw built HTML with zero JS executed and
+      confirming the values are already correct there. Same fix applied
+      to `services.html`'s service-request form.
+- [x] Also fixed a real bug found while in there: both forms' hidden
+      `_subject` field had a literal `\u2014` text sequence in static
+      HTML (meaningless outside JS) instead of an actual em-dash —
+      FormSubmit would have emailed the literal escape text. Fixed with
+      `&mdash;`; confirmed no other instance of this exists outside
+      actual JS string contexts.
+- [x] Full regression sweep across all 10 pages after the change —
+      clean.
+
 ## Not started yet
 
 - Phase 6 remainder: general visual/micro-interaction polish (image
@@ -373,20 +393,23 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 
 ## Immediate next step
 
-Phase 7 (testing) is functionally/programmatically complete — link
-integrity, feature toggles, form success *and* failure paths, empty/
-missing-content states, accessibility structure (alt text, headings,
-ARIA), and SEO metadata have all been verified, with 3 real bugs found
-and fixed along the way (missing favicon, 2 heading-hierarchy skips).
-**What Phase 7 does NOT cover**: actual visual rendering in a real
-browser — this sandbox has none, so nothing here has been eyeballed on
-a real mobile/tablet/desktop viewport, and no true cross-browser check
-has happened. That's the honest gap if "testing" is expected to mean
-that too. Otherwise, next step is owner's call: remaining Phase 6
-visual polish, Phase 8 documentation, or the domain swap whenever it
-arrives (update `SITE.url` in `js/data/config.js`, re-run `stitch.py`,
-set up a fresh Google Search Console property, submit the regenerated
-`sitemap.xml`).
+Owner did a live-site critique review and gave 3 follow-up fixes, to be
+done individually with verification between each, then stop for a
+separate visual/browser audit:
+- #1 (contact form JS-independence) — **done**, see above.
+- #2 (pre-render JS-driven content into static HTML at build time, so
+  it's not empty when JS fails/is slow/isn't run by a crawler — biggest
+  and most involved piece, not started yet).
+- #3 (replace the hero image placeholder with a real photo) — blocked,
+  waiting on the owner to provide the image file.
+Also still pending: the homepage gallery-preview logic change (pull
+from available-PC photos first, fall back to sold-PC photos, sourced
+from `builds.js` directly rather than the separate `gallery.js` — was
+about to start when the owner asked to prioritize the JS fixes instead).
+CAPTCHA and the beta canonical URL are explicitly being left alone per
+the owner's instruction. After #2 (and #3, once the photo arrives) and
+the gallery-preview change, the owner wants to stop for their own visual
+browser audit before any further redesign/polish.
 
 ## Files that matter
 
