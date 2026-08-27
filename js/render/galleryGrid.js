@@ -28,7 +28,8 @@ function renderGalleryGrid(images, containerId) {
   }
 
   container.innerHTML = images.map(function (img, i) {
-    return '<div class="gallery-item" data-idx="' + i + '">' +
+    return '<div class="gallery-item" data-idx="' + i + '" tabindex="0" role="button" ' +
+      'aria-label="View full-size: ' + img.alt + '">' +
       '<img src="' + img.src + '" alt="' + img.alt + '" loading="lazy" ' +
         'onload="this.classList.add(\'loaded\')" ' +
         'onerror="this.parentElement.innerHTML=\'<div class=gallery-placeholder><span class=gp-icon>&#128247;</span><span>Photo coming soon</span></div>\'">' +
@@ -36,9 +37,16 @@ function renderGalleryGrid(images, containerId) {
   }).join('');
 
   container.querySelectorAll('.gallery-item').forEach(function (item) {
-    item.addEventListener('click', function () {
+    function open() {
       var idx = parseInt(item.getAttribute('data-idx'), 10);
       openLightbox(images, idx);
+    }
+    item.addEventListener('click', open);
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        open();
+      }
     });
   });
 }

@@ -397,6 +397,16 @@ plan" below.
       applied to `contact.html`, `services.html`, and the build-detail
       inquiry form for consistency (D18). Owner will update `SITE.url`
       again once the final domain/repo is settled.
+- [x] **Batch 2 — Small accessibility fixes.** Gallery photos/thumbnails
+      (`gallery.html` and `build.html`) are now keyboard-reachable and
+      operable with Enter/Space — previously mouse-only. All four real
+      submission forms (contact, services, build inquiry, waitlist) now
+      announce their "message sent" confirmation to screen readers via
+      `aria-live`. No visual changes. See DECISIONS.md D19 for the full
+      writeup, including why the waitlist needed a slightly different
+      approach than the other three. `part-boxes.html`'s order form was
+      intentionally left out — still on the old JS-only pattern,
+      revisit once that gets its own reliability fix.
 
 ## Not started yet
 
@@ -421,10 +431,9 @@ findings in small, verified batches — one batch per response, verified
 and documented before moving to the next. Order:
 
 - [x] **Batch 1 — Waitlist reliability.** Done, see above / D16.
-- [ ] **Batch 2 — Small accessibility fixes**: keyboard-accessible
-  gallery controls + `aria-live` on dynamic form status messages. Next up.
+- [x] **Batch 2 — Small accessibility fixes.** Done, see above / D19.
 - [ ] **Batch 3 — Lightbox focus management**: move focus in on open,
-  keep it inside while open, restore it to the trigger on close.
+  keep it inside while open, restore it to the trigger on close. Next up.
 - [ ] **Batch 4 — Touch targets**: bring undersized interactive controls
   (hamburger, gallery arrows, quantity buttons) toward a more comfortable
   size without redesigning anything.

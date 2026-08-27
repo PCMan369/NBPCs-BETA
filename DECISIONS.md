@@ -510,6 +510,62 @@ fix works live.
 
 ---
 
+### D19 — Batch 2: keyboard-accessible galleries + aria-live form status
+
+**Scope**: per the owner's batch plan — (1) make gallery controls
+keyboard accessible, (2) add `aria-live` to dynamic form status
+messages. No visual changes.
+
+**Gallery keyboard access**: `.gallery-item` (`gallery.html`'s grid,
+`galleryGrid.js`) and `.gallery-thumb` (`build.html`'s thumbnail strip,
+`buildDetail.js`) were plain `<div>`s with only a `click` listener — a
+keyboard-only visitor couldn't reach them at all, and on `gallery.html`
+that meant the lightbox was completely unreachable without a mouse.
+Added `tabindex="0"`, `role="button"`, and a descriptive `aria-label`
+to each, plus a `keydown` handler that treats Enter/Space the same as
+a click (with `preventDefault()` on Space so the page doesn't scroll).
+`build.html`'s existing prev/next `<button>`s were already fine and
+weren't touched.
+
+**Form status aria-live**: confirmed via a full-project search that
+`aria-live`/`role="alert"`/`role="status"` appeared nowhere before this
+— every "message sent" confirmation was silent to screen readers.
+Added `role="status" aria-live="polite" aria-atomic="true"` to all four
+real submission forms (`contact.html`, `services.html`, the
+build-detail inquiry form, the waitlist). For `contact.html`/
+`services.html`/the inquiry form, the attributes go directly on the
+`<form>` tag, since only its `innerHTML` is swapped on success — the
+form element itself persists, which is what a live region requires.
+The waitlist is different: `wireNotifyBox()` replaces `#notify-box`
+itself (`outerHTML`, not `innerHTML`) with the success markup, so
+putting the live-region attributes on `#notify-box` would have broken
+on that exact swap. Instead added a `display:contents` wrapper
+(`#notify-region`) around it — adds no layout box of its own (visually
+identical either way), but gives the live region a stable node that
+survives the inner swap. `part-boxes.html`'s order form was
+deliberately left out of this pass — it's still on the older
+JS-only-submit pattern (flagged separately, not yet converted to the
+same reliable form pattern as the other four) and dormant with no real
+inventory yet; revisit its accessibility once its reliability fix
+happens.
+
+**Verified**: installed `jsdom` temporarily (removed after) to test in
+a real DOM rather than just reading the code — confirmed Enter and
+Space both open the lightbox / advance the gallery, Space doesn't
+scroll the page, other keys and Tab don't falsely trigger anything,
+and plain click still works unchanged. Confirmed by node identity that
+the aria-live container survives each swap (the `<form>` elements and
+the new `#notify-region` wrapper are literally the same DOM node
+before and after their respective success-state swaps, which is what
+makes the announcement work at all). Full JS syntax sweep, HTML
+tag-balance check on every page, and a `stitch.py` rebuild diffed
+byte-for-byte against the shipped files.
+
+**Decided by:** owner's Batch 2 instructions, following the original
+audit's A1/B3 findings.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

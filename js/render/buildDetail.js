@@ -102,7 +102,9 @@ function initBuildDetailPage() {
     ? '<div class="gallery-thumbs">' +
         media.map(function (m, i) {
           var thumbSrc = m.type === 'video' ? (m.poster || m.src) : m.src;
-          return '<div class="gallery-thumb' + (i === 0 ? ' active' : '') + '" data-idx="' + i + '">' +
+          var label = (m.type === 'video' ? 'Play video ' : 'View photo ') + (i + 1);
+          return '<div class="gallery-thumb' + (i === 0 ? ' active' : '') + '" data-idx="' + i + '" ' +
+            'tabindex="0" role="button" aria-label="' + label + '">' +
             '<img src="' + thumbSrc + '" alt="Photo ' + (i + 1) + '" loading="lazy">' +
             (m.type === 'video' ? '<span class="gallery-thumb-video-icon">&#9654;</span>' : '') +
           '</div>';
@@ -181,7 +183,7 @@ function initBuildDetailPage() {
         '<div class="listing-form-title">Inquire About This System</div>' +
         '<div class="listing-form-sub">Fill out the form and I\'ll get back to you by email.</div>' +
         '<div class="listing-system-badge"><span>Asking about:</span> <strong>' + build.title + '</strong></div>' +
-        '<form action="https://formsubmit.co/' + CONTACT.email + '" method="POST">' +
+        '<form action="https://formsubmit.co/' + CONTACT.email + '" method="POST" role="status" aria-live="polite" aria-atomic="true">' +
           '<input type="hidden" name="_subject" value="Inquiry: ' + build.title + ' \u2014 North Bridge PCs">' +
           '<input type="hidden" name="_captcha" value="false">' +
           '<input type="hidden" name="_template" value="table">' +
@@ -287,6 +289,12 @@ function initBuildDetailPage() {
   contentEl.querySelectorAll('.gallery-thumb').forEach(function (thumb) {
     thumb.addEventListener('click', function () {
       galGoTo(parseInt(thumb.getAttribute('data-idx'), 10));
+    });
+    thumb.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        galGoTo(parseInt(thumb.getAttribute('data-idx'), 10));
+      }
     });
   });
 
