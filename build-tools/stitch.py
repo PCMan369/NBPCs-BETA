@@ -56,6 +56,7 @@ SEO_MARKER = "<!--SEO-->"
 TITLE_RE = re.compile(r"<title>(.*?)</title>", re.DOTALL)
 DESCRIPTION_RE = re.compile(r'<meta name="description" content="([^"]*)"')
 SITE_URL_RE = re.compile(r'url:\s*"([^"]+)"')
+CONTACT_EMAIL_RE = re.compile(r'email:\s*"([^"]+)"')
 
 # The one real photo guaranteed to exist, used as the fallback social-
 # share image on every page. Update if a dedicated logo/og-image is
@@ -73,6 +74,20 @@ def get_site_url() -> str:
     if not match:
         raise ValueError(f"Could not find SITE.url in {config_path}")
     return match.group(1).rstrip("/")
+
+
+def get_contact_email() -> str:
+    """Reads CONTACT.email straight out of js/data/config.js — same
+    single-source-of-truth principle as get_site_url(). Used to bake a
+    real, working form `action` and `_next` redirect directly into the
+    static HTML at build time, so contact forms work with zero
+    JavaScript — not just once JS happens to load and run successfully."""
+    config_path = ROOT / "js" / "data" / "config.js"
+    config_text = config_path.read_text(encoding="utf-8")
+    match = CONTACT_EMAIL_RE.search(config_text)
+    if not match:
+        raise ValueError(f"Could not find CONTACT.email in {config_path}")
+    return match.group(1)
 
 
 def _escape_attr(text: str) -> str:
@@ -178,6 +193,7 @@ def main() -> int:
 
     try:
         site_url = get_site_url()
+        contact_email = get_contact_email()
     except ValueError as e:
         print(f"ERROR: {e}")
         return 1
@@ -215,6 +231,16 @@ def main() -> int:
             content = content.replace(SEO_MARKER, seo_html)
         else:
             print(f"NOTE: {src_file.name} has no <!--SEO--> marker — skipping canonical/OG/structured data for this page.")
+
+        # General-purpose value tokens, usable anywhere in a page — e.g.
+        # baking a real form `action`/`_next` directly into static HTML
+        # so it works with zero JavaScript, not just once JS loads.
+        content = content.replace("{{SITE_URL}}", site_url)
+        content = content.replace("{{CONTACT_EMAIL}}", contact_email)
+
+        leftover = re.findall(r"\{\{[A-Z_]+\}\}", content)
+        if leftover:
+            print(f"WARNING: {src_file.name} has unresolved token(s) {set(leftover)} — check for a typo.")
 
         out_path = ROOT / src_file.name
         out_path.write_text(content, encoding="utf-8")

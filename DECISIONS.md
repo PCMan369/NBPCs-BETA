@@ -370,6 +370,56 @@ request to fix it.
 
 ---
 
+### D16 — "Get Notified" waitlist form now works with zero JavaScript
+
+**Found during**: the post-launch comprehensive audit (visual/UX/
+accessibility/SEO/performance/architecture review), implemented as
+Batch 1 of the resulting fix plan.
+
+**Problem**: `js/render/notifyBox.js` (the waitlist box shown on
+`builds.html` whenever there are zero available systems) was the same
+category of bug as D15, just not caught by that pass — it was a plain
+`<div>` with a button wired to a `fetch()` call and no `<form action>`
+at all. If JS failed to load or run, or the `fetch()` call itself
+failed (network hiccup, an ad-blocker blocking a third-party POST,
+etc.), the visitor had no way to submit — silent lost inquiries again.
+It also had no honeypot spam field, unlike every other form on the
+site. This mattered more than a typical dormant bug because, at the
+time of the audit, all real inventory was marked sold — meaning this
+box was the *only* working conversion path on the PC-sales pages.
+
+**Fix**: converted it to the same real `<form method="POST"
+action="https://formsubmit.co/...">` pattern already proven by D15 and
+by the build-detail inquiry form, with `_subject`/`_captcha`/
+`_template`/`_next`/honeypot hidden fields and a native
+`required`/`type="email"` input instead of custom JS validation —
+matching contact.html's approach exactly. Because this file is
+JS-rendered (not a static `pages-src` page `stitch.py` processes), the
+email address and `_next` URL are filled in with `CONTACT.email` and
+`window.location` at render time, the same way `buildDetail.js`
+already does it for its own inquiry form — no new email source, no
+token system needed here. The old `fetch()`/AJAX submit handler was
+removed; the only JS remaining is a small enhancement that swaps in a
+"You're on the list" message after FormSubmit's redirect brings the
+visitor back with `?notified=true` in the URL — same pattern as
+contact.html's `?sent=true` handling. No other page or file references
+this box's internal DOM IDs, so no other changes were needed.
+
+**Verified**: rendered the component in an isolated Node context to
+confirm the generated markup is well-formed HTML with every required
+hidden field present exactly once; confirmed the success-state swap
+fires only when `?notified=true` is present and not otherwise;
+confirmed no other file references the removed `#notify-error` element;
+full `stitch.py` rebuild in a scratch copy produced byte-identical
+output for all 10 pages (this file isn't part of the static build, so
+that also confirms no other page was affected); JS syntax check across
+every file in `js/`.
+
+**Decided by:** finding from the owner-requested comprehensive audit;
+implemented per the owner's Batch 1 instructions.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

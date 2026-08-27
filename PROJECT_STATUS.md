@@ -18,11 +18,15 @@ site's constraint carries over — no server-side backend, no database).
 
 ## Current phase
 
-**Phase 3 — Business Content** (in progress)
+**Post-launch audit implementation** (in progress)
 
-Per the phase plan: services, available PCs, complete PC build
-cards/details, sold PCs, About Me, trust/testimonial system, empty-state
-handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
+The original build (Phases 0–8) is functionally complete. Owner ran a
+full audit of the finished site (visual/design, UX/conversion,
+inventory, forms, accessibility, SEO, performance, architecture,
+maintainability, future-readiness, content accuracy, project
+cleanliness) and is now working through the findings in small,
+verified batches before any visual redesign. See "Audit implementation
+plan" below.
 
 ## Completed so far
 
@@ -375,6 +379,15 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
 - [x] Full regression sweep across all 10 pages after the change —
       clean.
 
+## Completed so far (continued, post-audit implementation)
+
+- [x] **Batch 1 — Waitlist reliability.** The "Get Notified" box on
+      `builds.html` had the same zero-JS-fallback bug as critique #1,
+      just not caught by that pass — a JS-only `fetch()` call with no
+      `<form action>` and no honeypot. Converted to the same real-form
+      pattern as the contact/services forms. See DECISIONS.md D16 for
+      the full writeup and verification steps.
+
 ## Not started yet
 
 - Phase 6 remainder: general visual/micro-interaction polish (image
@@ -391,25 +404,44 @@ handling, waitlist/request architecture. Phase 2 (Core Site) is complete.
   no-backend FormSubmit approach regardless. Still needs an explicit
   owner call on whether that's fine long-term.
 
-## Immediate next step
+## Audit implementation plan (current)
 
-Owner did a live-site critique review and gave 3 follow-up fixes, to be
-done individually with verification between each, then stop for a
-separate visual/browser audit:
-- #1 (contact form JS-independence) — **done**, see above.
-- #2 (pre-render JS-driven content into static HTML at build time, so
-  it's not empty when JS fails/is slow/isn't run by a crawler — biggest
-  and most involved piece, not started yet).
-- #3 (replace the hero image placeholder with a real photo) — blocked,
-  waiting on the owner to provide the image file.
-Also still pending: the homepage gallery-preview logic change (pull
-from available-PC photos first, fall back to sold-PC photos, sourced
-from `builds.js` directly rather than the separate `gallery.js` — was
-about to start when the owner asked to prioritize the JS fixes instead).
-CAPTCHA and the beta canonical URL are explicitly being left alone per
-the owner's instruction. After #2 (and #3, once the photo arrives) and
-the gallery-preview change, the owner wants to stop for their own visual
-browser audit before any further redesign/polish.
+Owner ran a full audit of the finished site and is working through the
+findings in small, verified batches — one batch per response, verified
+and documented before moving to the next. Order:
+
+- [x] **Batch 1 — Waitlist reliability.** Done, see above / D16.
+- [ ] **Batch 2 — Small accessibility fixes**: keyboard-accessible
+  gallery controls + `aria-live` on dynamic form status messages. Next up.
+- [ ] **Batch 3 — Lightbox focus management**: move focus in on open,
+  keep it inside while open, restore it to the trigger on close.
+- [ ] **Batch 4 — Touch targets**: bring undersized interactive controls
+  (hamburger, gallery arrows, quantity buttons) toward a more comfortable
+  size without redesigning anything.
+- [ ] **Special task — sold-PC gallery fallback**: this is the same item
+  previously tracked as "homepage gallery-preview logic" — prioritize
+  available-PC media, fall back to sold-PC media if nothing's available,
+  empty state if neither, sourced from `builds.js` directly (not the
+  separate `gallery.js`), no manual homepage edits needed as inventory
+  changes.
+
+**Explicitly deferred until after the above + a real visual redesign
+phase** (owner will provide screenshots/browser views for that phase):
+typography, major visual redesign, mobile header redesign, broad
+spacing-token cleanup, broad SEO restructuring, new features, Stripe,
+testimonials, blog, expanded service area, phone/Facebook activation.
+
+**Explicitly deferred further still, to its own proposal-first step
+after the visual redesign**: owner's live-site critique #2
+(pre-rendering JS-driven content into static HTML at build time) is
+now folded into a future "build-time rendering" architecture
+experiment — `stitch.py`'s current workflow must be understood and
+preserved, a prototype (one non-critical component or one build-detail
+page) comes before any wider change, and the owner must explicitly
+approve the plan first. Critique #3 (hero photo) remains simply
+blocked on the owner providing the image. A real `404.html` (mentioned
+in `ARCHITECTURE.md`'s file layout but never actually built) is also
+deferred to whenever the owner gets to it.
 
 ## Files that matter
 

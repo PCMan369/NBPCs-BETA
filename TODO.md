@@ -35,15 +35,30 @@
 - [x] Contact form works with zero JavaScript now (owner's live-site
       critique #1) — `stitch.py` bakes the real form action/redirect
       into static HTML at build time; see DECISIONS.md D15
+- [x] Post-audit implementation Batch 1: "Get Notified" waitlist
+      (builds.html) now works with zero JavaScript — converted to a
+      real `<form action="...">` with the same honeypot/`_next`
+      pattern as contact.html, instead of a JS-only `fetch()` call
+      with no fallback; see DECISIONS.md D16
 - [ ] Owner's live-site critique #2: pre-render JS-driven content
       (PC listings, trust cards, FAQ, service cards, gallery) into
       static HTML at build time, so it isn't empty when JS fails or
-      isn't run — in progress
+      isn't run — **deferred** (owner is planning bigger changes here);
+      moved into the future build-time-rendering architecture
+      experiment (see ARCHITECTURE.md and the post-audit implementation
+      plan in PROJECT_STATUS.md) — not started, explicitly sequenced
+      after the current audit-fix batches and the visual redesign
 - [ ] Owner's live-site critique #3: replace the hero image fallback
       text with a real photo — blocked, waiting on owner to provide it
-- [ ] Homepage gallery-preview logic: prioritize available-PC photos,
-      fall back to sold-PC photos, sourced from `builds.js` directly
-      (not the separate `gallery.js`) — not started
+- [ ] Homepage gallery-preview logic ("sold-PC gallery fallback"):
+      prioritize available-PC photos/video, fall back to sold-PC media
+      when nothing's available, empty state if neither, sourced from
+      `builds.js` directly (not the separate `gallery.js`) — deferred,
+      scheduled as its own step in the current implementation plan
+      after the reliability/accessibility batches (see PROJECT_STATUS.md)
+- [ ] Create a real `404.html` (doesn't exist yet — `ARCHITECTURE.md`'s
+      directory layout mentions one, but it was never actually built) —
+      deferred, owner will do later
 
 ## Recommended
 

@@ -7,11 +7,19 @@
   forward with the same behavior, just reading the contact email from
   config.js instead of having it hardcoded in this file.
 
+  Reliability: this is a real <form action="..."> that posts straight
+  to FormSubmit — the same zero-JS-dependent pattern already used by
+  contact.html, services.html, and the build-detail inquiry form. It
+  works even if JavaScript never runs. The only thing JS adds is
+  swapping in a nicer "you're on the list" message after the redirect
+  back (same progressive-enhancement pattern as contact.html).
+
   Requires: js/data/config.js loaded first (for CONTACT.email).
   ================================================================
 */
 
 function renderNotifyBox() {
+  var nextUrl = window.location.origin + window.location.pathname + '?notified=true';
   return (
     '<div class="notify-box" id="notify-box">' +
       '<div class="notify-copy">' +
@@ -25,85 +33,52 @@ function renderNotifyBox() {
           'if you have something specific in mind.' +
         '</p>' +
       '</div>' +
-      '<div class="notify-form-wrap">' +
+      '<form class="notify-form-wrap" id="notify-form" method="POST" action="https://formsubmit.co/' + CONTACT.email + '">' +
+        '<input type="hidden" name="_subject" value="Notify me request \u2014 North Bridge PCs">' +
+        '<input type="hidden" name="_captcha" value="false">' +
+        '<input type="hidden" name="_template" value="table">' +
+        '<input type="hidden" name="_next" value="' + nextUrl + '">' +
+        '<input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">' +
         '<div class="form-group">' +
           '<label class="form-label" for="notify-email">Your Email</label>' +
-          '<input type="email" id="notify-email" class="form-input" ' +
-            'placeholder="So I can reach out when something comes in">' +
+          '<input type="email" id="notify-email" name="email" class="form-input" ' +
+            'placeholder="So I can reach out when something comes in" required autocomplete="email">' +
         '</div>' +
         '<div class="form-group">' +
           '<label class="form-label" for="notify-looking">' +
             'What are you looking for? <span class="optional">(optional)</span>' +
           '</label>' +
-          '<textarea id="notify-looking" class="form-textarea" style="min-height:90px;" ' +
+          '<textarea id="notify-looking" name="looking_for" class="form-textarea" style="min-height:90px;" ' +
             'placeholder="Budget, games you play, anything specific — or just leave it blank"></textarea>' +
         '</div>' +
         '<div class="form-privacy">' +
           '<p><strong>Privacy:</strong> Your email is only used to notify you about ' +
           'new listings. It won\'t be shared or used for anything else.</p>' +
         '</div>' +
-        '<button class="btn btn-primary btn-lg" style="width:100%; justify-content:center;" id="notify-submit">' +
+        '<button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center;" id="notify-submit">' +
           'Notify Me &rarr;' +
         '</button>' +
-        '<p id="notify-error" style="color:var(--danger); font-size:0.85rem; display:none; text-align:center;">' +
-          'Something went wrong — try again or <a href="contact.html">send a message instead</a>.' +
-        '</p>' +
-      '</div>' +
+      '</form>' +
     '</div>'
   );
 }
 
 function wireNotifyBox() {
-  var submitBtn = document.getElementById('notify-submit');
-  if (!submitBtn) return;
-
-  submitBtn.addEventListener('click', function () {
-    var email = document.getElementById('notify-email').value.trim();
-    var looking = document.getElementById('notify-looking').value.trim();
-    var errEl = document.getElementById('notify-error');
-
-    errEl.style.display = 'none';
-
-    if (!email || !email.includes('@')) {
-      errEl.textContent = 'Please enter a valid email address.';
-      errEl.style.display = 'block';
-      return;
+  // Progressive enhancement only — the form above already works via a
+  // plain POST + redirect with zero JS, same as contact.html. This just
+  // swaps in a nicer confirmation message when the redirect lands back
+  // here with ?notified=true.
+  if (window.location.search.indexOf('notified=true') !== -1) {
+    var box = document.getElementById('notify-box');
+    if (box) {
+      box.outerHTML =
+        '<div class="notify-success">' +
+          '<span class="success-icon">&#9989;</span>' +
+          '<h3>You\'re on the list</h3>' +
+          '<p>I\'ll reach out when something comes in that might be a good fit. ' +
+          'In the meantime, feel free to <a href="contact.html">send a message</a> ' +
+          'if you have questions.</p>' +
+        '</div>';
     }
-
-    submitBtn.textContent = 'Sending…';
-    submitBtn.disabled = true;
-
-    var endpoint = 'https://formsubmit.co/ajax/' + CONTACT.email;
-
-    fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        _subject: 'Notify me request — North Bridge PCs',
-        email: email,
-        looking_for: looking || 'Not specified'
-      })
-    })
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (data.success === 'true' || data.success === true) {
-          document.getElementById('notify-box').outerHTML =
-            '<div class="notify-success">' +
-              '<span class="success-icon">&#9989;</span>' +
-              '<h3>You\'re on the list</h3>' +
-              '<p>I\'ll reach out when something comes in that might be a good fit. ' +
-              'In the meantime, feel free to <a href="contact.html">send a message</a> ' +
-              'if you have questions.</p>' +
-            '</div>';
-        } else {
-          throw new Error('Submission failed');
-        }
-      })
-      .catch(function () {
-        submitBtn.textContent = 'Notify Me \u2192';
-        submitBtn.disabled = false;
-        errEl.textContent = 'Something went wrong — try again or send a message instead.';
-        errEl.style.display = 'block';
-      });
-  });
+  }
 }
