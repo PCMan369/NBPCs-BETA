@@ -14,12 +14,19 @@
   swapping in a nicer "you're on the list" message after the redirect
   back (same progressive-enhancement pattern as contact.html).
 
+  Includes a hidden `_url` field (FormSubmit's own documented fix for
+  browsers that now send a stripped/origin-only Referer header on
+  cross-domain POSTs) so FormSubmit reliably knows the real page URL
+  and honors `_next` instead of falling back to its own generic
+  "Thanks!" page. See DECISIONS.md D17.
+
   Requires: js/data/config.js loaded first (for CONTACT.email).
   ================================================================
 */
 
 function renderNotifyBox() {
-  var nextUrl = window.location.origin + window.location.pathname + '?notified=true';
+  var pageUrl = window.location.origin + window.location.pathname;
+  var nextUrl = pageUrl + '?notified=true';
   return (
     '<div class="notify-box" id="notify-box">' +
       '<div class="notify-copy">' +
@@ -38,6 +45,7 @@ function renderNotifyBox() {
         '<input type="hidden" name="_captcha" value="false">' +
         '<input type="hidden" name="_template" value="table">' +
         '<input type="hidden" name="_next" value="' + nextUrl + '">' +
+        '<input type="hidden" name="_url" value="' + pageUrl + '">' +
         '<input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">' +
         '<div class="form-group">' +
           '<label class="form-label" for="notify-email">Your Email</label>' +

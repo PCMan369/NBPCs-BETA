@@ -420,7 +420,63 @@ implemented per the owner's Batch 1 instructions.
 
 ---
 
+### D17 — Waitlist form redirect fixed for real-browser testing (`_url` field)
+
+**Found during**: owner's first live-browser test of the D16 fix.
+Submitting showed FormSubmit's own generic "Thanks! ... Return to
+original site: https://pcman369.github.io/" page instead of redirecting
+to `_next`.
+
+**Cause**: this is FormSubmit's own documented behavior, not a bug in
+the `_next` value itself. Modern browsers send a stripped,
+origin-only `Referer` header (no path) on cross-domain POSTs like this
+one (`strict-origin-when-cross-origin` is now the default policy).
+FormSubmit relies on that header to confirm the request's true origin;
+when it's stripped, FormSubmit falls back to its own generic success
+page instead of trusting `_next`. FormSubmit's help page documents
+exactly this and recommends a hidden `_url` field with the exact page
+URL as the fix.
+
+**Fix**: added `<input type="hidden" name="_url" value="...">` to the
+waitlist form, computed the same dynamic way as `_next` (this file is
+JS-rendered, so it always reflects the real live URL regardless of
+what `SITE.url` is configured to in `config.js`).
+
+**Separately surfaced, not yet fixed**: the owner's test also revealed
+the site is currently live at `https://pcman369.github.io/NBPCs-BETA/`,
+which does not match `SITE.url` in `config.js`
+(`.../north-bridge-pcs-v2`). Unlike this form, `contact.html` and
+`services.html` bake their `_next` (and would need the same new `_url`
+field baked in too) from that static `SITE.url` value at build time —
+so if `NBPCs-BETA` really is the current live path, those two forms'
+redirects are currently pointing at the wrong place, not just showing
+FormSubmit's generic page. Left alone pending the owner's answer on
+whether `NBPCs-BETA` is the value to bake in now, since a prior session
+explicitly decided to leave the "beta" canonical URL alone rather than
+keep chasing a moving target — see "Still open" below.
+
+**Verified**: re-rendered the component simulating the exact reported
+live URL (`https://pcman369.github.io/NBPCs-BETA/builds.html`) and
+confirmed both `_next` and the new `_url` compute correctly; HTML
+tag-balance check on the output; full JS syntax sweep; `stitch.py`
+rebuild in a scratch copy — byte-identical output for all 10 pages
+(confirming this JS-only change didn't touch anything build-related).
+
+**Decided by:** owner's live-browser test report.
+
+---
+
 ## Still open
+
+- **SITE_URL vs. actual deployed path**: `config.js`'s `SITE.url` is
+  `.../north-bridge-pcs-v2`, but the owner's live test shows the site
+  is currently served from `.../NBPCs-BETA/`. This affects canonical
+  tags, Open Graph, `sitemap.xml`, `robots.txt`, and — more urgently —
+  `contact.html`/`services.html`'s baked `_next` redirects, which would
+  currently send a real submitter to the wrong path. Needs an owner
+  answer: is `NBPCs-BETA` the value to bake in now, or still a
+  temporary testing location (matching the earlier decision to leave
+  the "beta" canonical URL alone rather than chase a moving target)?
 
 - Whether any real testimonials exist to seed that system (owner
   confirmed: not yet — leave disabled).
