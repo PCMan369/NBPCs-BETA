@@ -466,17 +466,51 @@ rebuild in a scratch copy — byte-identical output for all 10 pages
 
 ---
 
-## Still open
+### D18 — SITE_URL synced to the live testing path; `_url` field added to the other FormSubmit forms
 
-- **SITE_URL vs. actual deployed path**: `config.js`'s `SITE.url` is
-  `.../north-bridge-pcs-v2`, but the owner's live test shows the site
-  is currently served from `.../NBPCs-BETA/`. This affects canonical
-  tags, Open Graph, `sitemap.xml`, `robots.txt`, and — more urgently —
-  `contact.html`/`services.html`'s baked `_next` redirects, which would
-  currently send a real submitter to the wrong path. Needs an owner
-  answer: is `NBPCs-BETA` the value to bake in now, or still a
-  temporary testing location (matching the earlier decision to leave
-  the "beta" canonical URL alone rather than chase a moving target)?
+**Context**: D17 left the SITE_URL-vs-actual-deployed-path mismatch as
+an open question rather than deciding it unilaterally. Owner confirmed
+the D17 `_url` fix works (tested successfully across multiple devices)
+and gave explicit direction: sync `SITE.url` to the current live path
+now, since it's also useful for testing, understanding they'll change
+it again later when the final domain/repo is settled.
+
+**Changed**:
+- `config.js`: `SITE.url` updated from the `north-bridge-pcs-v2`
+  placeholder to `https://pcman369.github.io/NBPCs-BETA` (the owner's
+  confirmed current live path).
+- `pages-src/contact.html` and `pages-src/services.html`: added the
+  same `_url` hidden field D17 added to the waitlist form (same
+  FormSubmit-recommended fix for the browser referrer-stripping
+  issue), baked from `{{SITE_URL}}` like the existing `_next` field.
+- `buildDetail.js` (per-build inquiry form): added the same `_url`
+  field, computed dynamically like the waitlist form since this is
+  JS-rendered rather than a static `pages-src` page.
+- Ran `stitch.py` for real this time and confirmed the root HTML
+  reflects it — an earlier pass had only verified the rebuild in
+  scratch copies without applying it to the actual project files,
+  which a repeat diff caught before shipping.
+
+**Note for later**: the owner has said they'll update `SITE.url` again
+once the final domain/repo is settled — this is intentionally not a
+"final" value, just the current best one for live testing. No
+functional difference in `stitch.py` or the token system either way;
+it's a one-line config change whenever that happens (see D10).
+
+**Verified**: fresh `stitch.py` rebuild in a scratch copy is
+byte-identical to the actual project's root files (confirms nothing
+stale); zero remaining references to the old URL anywhere in the
+project; HTML tag-balance check on `contact.html`/`services.html`
+output — both fully balanced; both forms have all six FormSubmit
+hidden fields present exactly once; full JS syntax sweep across the
+project.
+
+**Decided by:** explicit owner instruction, after confirming the D17
+fix works live.
+
+---
+
+## Still open
 
 - Whether any real testimonials exist to seed that system (owner
   confirmed: not yet — leave disabled).

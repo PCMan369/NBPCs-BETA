@@ -174,7 +174,8 @@ function initBuildDetailPage() {
   // ---- Inquiry form (available) or sold notice ----
   var formHtml;
   if (isAvailable) {
-    var nextUrl = window.location.origin + window.location.pathname + '?id=' + encodeURIComponent(build.id) + '&sent=true';
+    var pageUrl = window.location.origin + window.location.pathname + '?id=' + encodeURIComponent(build.id);
+    var nextUrl = pageUrl + '&sent=true';
     formHtml =
       '<div class="listing-form-card">' +
         '<div class="listing-form-title">Inquire About This System</div>' +
@@ -185,6 +186,7 @@ function initBuildDetailPage() {
           '<input type="hidden" name="_captcha" value="false">' +
           '<input type="hidden" name="_template" value="table">' +
           '<input type="hidden" name="_next" value="' + nextUrl + '">' +
+          '<input type="hidden" name="_url" value="' + pageUrl + '">' +
           '<input type="hidden" name="system" value="' + build.title + '">' +
           '<input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">' +
           '<div style="display:flex; flex-direction:column; gap:1rem;">' +

@@ -387,6 +387,16 @@ plan" below.
       `<form action>` and no honeypot. Converted to the same real-form
       pattern as the contact/services forms. See DECISIONS.md D16 for
       the full writeup and verification steps.
+- [x] **Batch 1 follow-through (owner live-tested it).** Real-browser
+      testing surfaced two more things, both fixed and verified across
+      multiple devices: FormSubmit was showing its own generic
+      "Thanks!" page instead of redirecting, fixed with FormSubmit's
+      documented `_url` hidden field (D17); and `SITE.url` didn't match
+      where the site is actually live, now synced to
+      `https://pcman369.github.io/NBPCs-BETA` and the same `_url` fix
+      applied to `contact.html`, `services.html`, and the build-detail
+      inquiry form for consistency (D18). Owner will update `SITE.url`
+      again once the final domain/repo is settled.
 
 ## Not started yet
 

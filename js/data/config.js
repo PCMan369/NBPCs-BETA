@@ -34,7 +34,7 @@ const SITE = {
   // IMPORTANT: update this the day you get a custom domain, and nowhere
   // else needs to change. Used to build the sitemap, canonical URLs, and
   // Open Graph tags.
-  url: "https://pcman369.github.io/north-bridge-pcs-v2", // placeholder — update when the new repo/URL is final
+  url: "https://pcman369.github.io/NBPCs-BETA", // current live testing URL — owner will update again when the final domain/repo is ready (see DECISIONS.md D17/D18)
 
   // Current service area copy — keep this in sync with what's true today.
   // Do not expand this until the business actually expands its area.
