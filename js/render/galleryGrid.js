@@ -11,6 +11,13 @@
   built lazily on first use, so multiple grids on the same page (e.g.
   "Current Builds" and "Completed Builds") can each open it correctly
   with their own image set.
+
+  Focus management: opening moves focus to the close button and
+  remembers whatever had focus beforehand (the grid item that was
+  activated); Tab/Shift+Tab cycle within the lightbox's own buttons
+  while it's open; closing (via Escape, the close button, or clicking
+  the overlay) returns focus to that original element. See DECISIONS.md
+  D20.
   ================================================================
 */
 
@@ -56,6 +63,7 @@ function renderGalleryGrid(images, containerId) {
 var _lightboxEl = null;
 var _lightboxImages = [];
 var _lightboxIdx = 0;
+var _lightboxTriggerEl = null; // element to restore focus to on close
 
 function _ensureLightbox() {
   if (_lightboxEl) return _lightboxEl;
@@ -88,25 +96,54 @@ function _ensureLightbox() {
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') lightboxStep(-1);
     if (e.key === 'ArrowRight') lightboxStep(1);
+    if (e.key === 'Tab') _trapLightboxFocus(e);
   });
 
   _lightboxEl = el;
   return el;
 }
 
+// Keeps Tab/Shift+Tab cycling within the lightbox's own buttons while
+// it's open, instead of moving focus to the page underneath. Only
+// considers currently-visible buttons — prev/next are hidden via
+// style.display when there's just one photo (see _renderLightboxImage).
+function _trapLightboxFocus(e) {
+  var focusable = Array.prototype.filter.call(
+    _lightboxEl.querySelectorAll('button'),
+    function (btn) { return getComputedStyle(btn).display !== 'none'; }
+  );
+  if (!focusable.length) return;
+  var first = focusable[0];
+  var last = focusable[focusable.length - 1];
+
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
 function openLightbox(images, idx) {
+  _lightboxTriggerEl = document.activeElement;
   var el = _ensureLightbox();
   _lightboxImages = images;
   _lightboxIdx = idx;
   _renderLightboxImage();
   el.classList.add('open');
   document.body.classList.add('lightbox-open');
+  el.querySelector('.lightbox-close').focus();
 }
 
 function closeLightbox() {
   if (!_lightboxEl) return;
   _lightboxEl.classList.remove('open');
   document.body.classList.remove('lightbox-open');
+  if (_lightboxTriggerEl && document.contains(_lightboxTriggerEl)) {
+    _lightboxTriggerEl.focus();
+  }
+  _lightboxTriggerEl = null;
 }
 
 function lightboxStep(delta) {

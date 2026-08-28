@@ -407,6 +407,15 @@ plan" below.
       approach than the other three. `part-boxes.html`'s order form was
       intentionally left out — still on the old JS-only pattern,
       revisit once that gets its own reliability fix.
+- [x] **Batch 3 — Lightbox focus management.** The one shared lightbox
+      (`gallery.html`) now moves focus to its close button on open,
+      remembers whichever grid item triggered it, traps Tab/Shift+Tab
+      within its own buttons while open (adapting correctly to
+      prev/next being hidden for a single photo), and restores focus
+      to the trigger on close — however it's closed (Escape, the close
+      button, or clicking the dark overlay). No visual changes.
+      `build.html`'s gallery is a different, non-modal pattern and
+      wasn't affected. See DECISIONS.md D20.
 
 ## Not started yet
 
@@ -432,11 +441,10 @@ and documented before moving to the next. Order:
 
 - [x] **Batch 1 — Waitlist reliability.** Done, see above / D16.
 - [x] **Batch 2 — Small accessibility fixes.** Done, see above / D19.
-- [ ] **Batch 3 — Lightbox focus management**: move focus in on open,
-  keep it inside while open, restore it to the trigger on close. Next up.
+- [x] **Batch 3 — Lightbox focus management.** Done, see above / D20.
 - [ ] **Batch 4 — Touch targets**: bring undersized interactive controls
   (hamburger, gallery arrows, quantity buttons) toward a more comfortable
-  size without redesigning anything.
+  size without redesigning anything. Next up.
 - [ ] **Special task — sold-PC gallery fallback**: this is the same item
   previously tracked as "homepage gallery-preview logic" — prioritize
   available-PC media, fall back to sold-PC media if nothing's available,

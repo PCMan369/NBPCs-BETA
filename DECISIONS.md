@@ -566,6 +566,49 @@ audit's A1/B3 findings.
 
 ---
 
+### D20 — Batch 3: lightbox focus management
+
+**Scope**: per the owner's batch plan — move focus in on open, trap it
+inside while open, restore it on close, keep Escape working. No visual
+changes. Applies to the one shared lightbox in `galleryGrid.js` (used
+by `gallery.html`); `build.html`'s gallery is a different, simpler
+pattern (main image + thumbnail strip, no modal) and wasn't in scope.
+
+**Changed** (`js/render/galleryGrid.js` only):
+- `openLightbox()` now records `document.activeElement` (whichever
+  grid item was actually clicked or Enter/Space-activated) before
+  doing anything else, then moves focus to the close button once the
+  dialog is open.
+- A new `_trapLightboxFocus()` keeps Tab/Shift+Tab cycling among the
+  lightbox's own buttons instead of leaking focus to the page
+  underneath. It only counts buttons that are actually visible right
+  now (`getComputedStyle(btn).display !== 'none'`) — prev/next are
+  hidden via inline `style.display` when there's only one photo, so
+  with a single photo, Tab just cycles back to the close button;
+  chosen over the more common `offsetParent` check because this
+  codebase always hides those buttons via `style.display`, and reading
+  that back doesn't depend on a real layout engine.
+- `closeLightbox()` returns focus to whatever was recorded on open —
+  guarded with `document.contains(...)` first in case that element
+  somehow isn't around anymore.
+
+**Verified**: temporarily installed `jsdom` again (removed after) and
+ran real-DOM scenarios rather than just reading the code: mouse-click
+open/close, keyboard (Enter) open + Escape close, close via the X
+button, close via clicking the dark overlay, Tab-trap wrap-around in
+both directions with 3 photos, Tab from a non-boundary button doing
+nothing unusual, and the single-photo case where prev/next are hidden
+and Tab correctly only cycles the close button. Confirmed the Tab-trap
+handler is a no-op whenever the lightbox is closed, so ordinary page
+tabbing elsewhere is untouched. Full JS syntax sweep, HTML tag-balance
+check, and a `stitch.py` rebuild diffed byte-for-byte against the
+shipped files.
+
+**Decided by:** owner's Batch 3 instructions, following the original
+audit's C3 finding.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
