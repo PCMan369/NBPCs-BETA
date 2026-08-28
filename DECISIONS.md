@@ -653,6 +653,103 @@ audit's C2 finding.
 
 ---
 
+### D22 — Special task: homepage gallery-preview now sourced from `builds.js` directly (sold-PC fallback)
+
+**Scope**: per the owner's plan — homepage gallery prioritizes
+available-PC media, falls back to sold/completed builds when nothing's
+available, empty state if neither, no duplicated data, no manual
+homepage edits needed as inventory changes, both photos and video
+clips supported. This is the same item long-tracked as "homepage
+gallery-preview logic."
+
+**Correction while investigating**: earlier in this project (including
+this session) `js/data/builds.js` was believed to have a 4th,
+available build. Re-reading the actual file (not a keyword search
+across it) showed that entry is inside the file's top-of-file
+documentation comment — a copy-paste template showing how to add a
+new PC, not a live entry. The real `const builds = [...]` array
+(starting after the comment closes) has always had exactly 3 builds,
+all `status: "sold"`. Noted here so this doesn't get miscounted again.
+
+**Problem**: the homepage's gallery preview read from `js/data/gallery.js`
+(`currentBuilds`/`completedBuilds`) — a separate, hand-maintained photo
+list duplicating what's already in `builds.js`'s own `media` field per
+build. It combined the first 3 entries from both arrays with no regard
+for availability, and had already drifted out of sync (missing photos
+for at least one build that existed in `builds.js` but was never added
+to `gallery.js`) — concrete proof the duplication was a real, live
+maintenance risk, not just a theoretical one.
+
+**Fix** (`pages-src/index.html` — the inline script, script list, and
+head `<link>`s):
+- New logic reads `builds.js` directly: filters to `status: "available"`
+  first; if that set has no usable media, falls back to `status: "sold"`;
+  shows the existing "Photos coming soon" empty state if neither has
+  any. Each build's `media.images` and `media.videos` are combined into
+  the same `{type, src, poster, alt}` shape `buildDetail.js` already
+  uses, capped at 3 total. Alt text is synthesized from the build's
+  title (gallery.js's hand-written alt text is no longer used here).
+- Now calls the shared `renderGalleryGrid()` (`galleryGrid.js`) instead
+  of a third hand-rolled copy of "build a grid of `.gallery-item`
+  divs." As a direct consequence, the homepage preview is now
+  click-to-enlarge with the same lightbox as `gallery.html` — it wasn't
+  interactive at all before (no click handler existed). Flagging this
+  clearly since it wasn't explicitly asked for: it's a natural result
+  of reusing the already-hardened shared component rather than writing
+  a 3rd non-interactive variant, and it's the same visual grid either
+  way — nothing about it looks different, it's just now clickable.
+- `<script src="js/data/gallery.js">` removed from `pages-src/index.html`
+  (no longer used there) and replaced with
+  `<script src="js/render/galleryGrid.js">`; added
+  `<link rel="stylesheet" href="css/gallery.css">` so the lightbox is
+  actually styled when opened from the homepage (it previously wasn't
+  loaded there at all, since only `gallery.html` used the lightbox).
+- `gallery.html` itself is untouched — it's a separate, intentionally
+  curated page (not just "current inventory"), so it keeps reading
+  `gallery.js` as its own deliberate list.
+
+**Video support** (`galleryGrid.js`, needed for the fix above to
+genuinely satisfy "preserve support for video/clips," not just claim
+to): the grid and lightbox previously only knew how to render `<img>`.
+Added a `type: 'video'` branch throughout — grid thumbnails show the
+video's poster (or a generic placeholder icon if no poster is set,
+rather than trying to load a video file as an `<img src>`, which
+doesn't reliably work); the lightbox now has a `<video controls>`
+alongside the `<img>`, toggling which is visible per item; the Tab-trap
+now also recognizes a visible `video[controls]` as part of its
+focusable set, so a lightbox showing only a single video (no prev/next)
+still traps Tab correctly between the close button and the video
+instead of leaking focus past it. Every build's `videos` array is
+currently empty, so none of this changes anything visible today — it's
+there so a real clip drops in automatically the next time inventory
+changes, same as photos already do.
+
+**Verified**: temporarily installed `jsdom` (removed after) and tested
+against the actual `builds.js` file, not synthetic data, for the
+real-world case — confirmed it correctly falls back to sold-build
+photos (3 sold, 0 available is the real current state) with correct
+"previously sold" alt-text suffixing. Separately tested, with
+hand-built data (since current inventory doesn't exercise every path):
+an available build correctly takes priority over a sold one; an
+available build with zero photos correctly still falls through to the
+sold fallback rather than showing nothing; a fully-empty inventory
+correctly shows the empty state; a mixed image+video build correctly
+caps at 3 total; opening a video item correctly shows the video and
+hides the image (and vice versa); closing correctly pauses playback;
+the Tab-trap correctly includes the video element when it's the only
+other visible control. One thing `jsdom` can't verify at all — it
+doesn't implement real browser tab-key focus traversal between
+non-boundary elements — so ordinary (non-wrapping) Tab movement relies
+on standard browser behavior rather than being independently confirmed
+here. Full JS syntax sweep, HTML tag-balance check on the rebuilt
+`index.html`, and a `stitch.py` rebuild diffed byte-for-byte against
+the shipped files.
+
+**Decided by:** owner's special-task instructions, following the
+original audit's finding on `gallery.js`/`builds.js` duplication risk.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

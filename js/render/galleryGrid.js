@@ -2,7 +2,7 @@
   ================================================================
   js/render/galleryGrid.js — Gallery Grid + Lightbox
   ================================================================
-  Renders a grid of images into a container, and wires up a simple
+  Renders a grid of media into a container, and wires up a simple
   click-to-enlarge lightbox (new — the old site's gallery was
   grid-only). No dependencies, no library — just a modal overlay with
   prev/next and Escape-to-close, consistent with the rest of the site.
@@ -10,14 +10,20 @@
   Every gallery grid rendered by this file shares one lightbox that's
   built lazily on first use, so multiple grids on the same page (e.g.
   "Current Builds" and "Completed Builds") can each open it correctly
-  with their own image set.
+  with their own media set.
+
+  Each item is either a photo — {src, alt} — or a video clip —
+  {type: 'video', src, poster, alt} — the same shape build.html's own
+  media list already uses. `type` defaults to 'image' when omitted,
+  so existing plain photo lists (gallery.html's) don't need to change.
 
   Focus management: opening moves focus to the close button and
   remembers whatever had focus beforehand (the grid item that was
-  activated); Tab/Shift+Tab cycle within the lightbox's own buttons
+  activated); Tab/Shift+Tab cycle within the lightbox's own controls
+  (including the video's native controls, when a video is showing)
   while it's open; closing (via Escape, the close button, or clicking
   the overlay) returns focus to that original element. See DECISIONS.md
-  D20.
+  D20, D22.
   ================================================================
 */
 
@@ -35,11 +41,20 @@ function renderGalleryGrid(images, containerId) {
   }
 
   container.innerHTML = images.map(function (img, i) {
+    var isVideo = img.type === 'video';
+    var label = (isVideo ? 'Play video: ' : 'View full-size: ') + img.alt;
+    var thumbSrc = isVideo ? img.poster : img.src;
+
+    var mediaHtml = thumbSrc
+      ? '<img src="' + thumbSrc + '" alt="' + img.alt + '" loading="lazy" ' +
+          'onload="this.classList.add(\'loaded\')" ' +
+          'onerror="this.parentElement.innerHTML=\'<div class=gallery-placeholder><span class=gp-icon>&#128247;</span><span>Photo coming soon</span></div>\'">'
+      : '<div class="gallery-placeholder"><span class="gp-icon">&#127916;</span><span>' + img.alt + '</span></div>';
+
     return '<div class="gallery-item" data-idx="' + i + '" tabindex="0" role="button" ' +
-      'aria-label="View full-size: ' + img.alt + '">' +
-      '<img src="' + img.src + '" alt="' + img.alt + '" loading="lazy" ' +
-        'onload="this.classList.add(\'loaded\')" ' +
-        'onerror="this.parentElement.innerHTML=\'<div class=gallery-placeholder><span class=gp-icon>&#128247;</span><span>Photo coming soon</span></div>\'">' +
+      'aria-label="' + label + '">' +
+      mediaHtml +
+      (isVideo ? '<span class="gallery-item-video-icon">&#9654;</span>' : '') +
     '</div>';
   }).join('');
 
@@ -77,6 +92,7 @@ function _ensureLightbox() {
     '<button class="lightbox-close" aria-label="Close">&times;</button>' +
     '<button class="lightbox-arrow lightbox-prev" aria-label="Previous photo">&lsaquo;</button>' +
     '<img class="lightbox-img" alt="">' +
+    '<video class="lightbox-video" controls playsinline></video>' +
     '<button class="lightbox-arrow lightbox-next" aria-label="Next photo">&rsaquo;</button>' +
     '<div class="lightbox-counter"></div>';
 
@@ -103,14 +119,17 @@ function _ensureLightbox() {
   return el;
 }
 
-// Keeps Tab/Shift+Tab cycling within the lightbox's own buttons while
+// Keeps Tab/Shift+Tab cycling within the lightbox's own controls while
 // it's open, instead of moving focus to the page underneath. Only
-// considers currently-visible buttons — prev/next are hidden via
-// style.display when there's just one photo (see _renderLightboxImage).
+// considers currently-visible controls — prev/next are hidden via
+// style.display when there's just one item, and the video element is
+// only relevant when a video is actually showing (see
+// _renderLightboxItem) — so a visible, focusable video counts too.
 function _trapLightboxFocus(e) {
+  var candidates = _lightboxEl.querySelectorAll('button, video[controls]');
   var focusable = Array.prototype.filter.call(
-    _lightboxEl.querySelectorAll('button'),
-    function (btn) { return getComputedStyle(btn).display !== 'none'; }
+    candidates,
+    function (el) { return getComputedStyle(el).display !== 'none'; }
   );
   if (!focusable.length) return;
   var first = focusable[0];
@@ -130,7 +149,7 @@ function openLightbox(images, idx) {
   var el = _ensureLightbox();
   _lightboxImages = images;
   _lightboxIdx = idx;
-  _renderLightboxImage();
+  _renderLightboxItem();
   el.classList.add('open');
   document.body.classList.add('lightbox-open');
   el.querySelector('.lightbox-close').focus();
@@ -140,6 +159,8 @@ function closeLightbox() {
   if (!_lightboxEl) return;
   _lightboxEl.classList.remove('open');
   document.body.classList.remove('lightbox-open');
+  var videoEl = _lightboxEl.querySelector('.lightbox-video');
+  if (videoEl) videoEl.pause();
   if (_lightboxTriggerEl && document.contains(_lightboxTriggerEl)) {
     _lightboxTriggerEl.focus();
   }
@@ -149,14 +170,38 @@ function closeLightbox() {
 function lightboxStep(delta) {
   var len = _lightboxImages.length;
   _lightboxIdx = (_lightboxIdx + delta + len) % len;
-  _renderLightboxImage();
+  _renderLightboxItem();
 }
 
-function _renderLightboxImage() {
-  var img = _lightboxImages[_lightboxIdx];
+function _renderLightboxItem() {
+  var item = _lightboxImages[_lightboxIdx];
   var imgEl = _lightboxEl.querySelector('.lightbox-img');
-  imgEl.src = img.src;
-  imgEl.alt = img.alt;
+  var videoEl = _lightboxEl.querySelector('.lightbox-video');
+  var isVideo = item.type === 'video';
+
+  videoEl.pause();
+
+  if (isVideo) {
+    var existingSource = videoEl.querySelector('source');
+    if (existingSource) existingSource.remove();
+    var source = document.createElement('source');
+    source.src = item.src;
+    videoEl.appendChild(source);
+    if (item.poster) {
+      videoEl.setAttribute('poster', item.poster);
+    } else {
+      videoEl.removeAttribute('poster');
+    }
+    videoEl.load();
+    videoEl.style.display = '';
+    imgEl.style.display = 'none';
+  } else {
+    imgEl.src = item.src;
+    imgEl.alt = item.alt;
+    imgEl.style.display = '';
+    videoEl.style.display = 'none';
+  }
+
   _lightboxEl.querySelector('.lightbox-counter').textContent =
     (_lightboxIdx + 1) + ' / ' + _lightboxImages.length;
 

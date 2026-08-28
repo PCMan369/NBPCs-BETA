@@ -50,12 +50,11 @@
       after the current audit-fix batches and the visual redesign
 - [ ] Owner's live-site critique #3: replace the hero image fallback
       text with a real photo — blocked, waiting on owner to provide it
-- [ ] Homepage gallery-preview logic ("sold-PC gallery fallback"):
+- [x] Homepage gallery-preview logic ("sold-PC gallery fallback"):
       prioritize available-PC photos/video, fall back to sold-PC media
       when nothing's available, empty state if neither, sourced from
-      `builds.js` directly (not the separate `gallery.js`) — deferred,
-      scheduled as its own step in the current implementation plan
-      after the reliability/accessibility batches (see PROJECT_STATUS.md)
+      `builds.js` directly (not the separate `gallery.js`) — done, see
+      DECISIONS.md D22
 - [ ] Create a real `404.html` (doesn't exist yet — `ARCHITECTURE.md`'s
       directory layout mentions one, but it was never actually built) —
       deferred, owner will do later

@@ -423,6 +423,17 @@ plan" below.
       Decorative numbered badges and already-adequate full-width nav
       rows were left alone — see DECISIONS.md D21 for the full sweep
       and reasoning. CSS-only, no layout or visual-glyph changes.
+- [x] **Special task — sold-PC gallery fallback.** Homepage gallery
+      preview now reads `builds.js` directly instead of the separate,
+      already-drifting `gallery.js` list — available-PC media first,
+      falls back to sold/completed builds if none are available (the
+      real current state — 0 available, 3 sold), empty state if
+      neither. Also now shares the same lightbox component as
+      `gallery.html` (previously non-interactive), and `galleryGrid.js`
+      gained real video-clip support in the process, per the task's
+      requirements. See DECISIONS.md D22 for the full writeup,
+      including a correction of an earlier miscount of how many builds
+      actually exist in `builds.js`.
 
 ## Not started yet
 
@@ -450,12 +461,12 @@ and documented before moving to the next. Order:
 - [x] **Batch 2 — Small accessibility fixes.** Done, see above / D19.
 - [x] **Batch 3 — Lightbox focus management.** Done, see above / D20.
 - [x] **Batch 4 — Touch targets.** Done, see above / D21.
-- [ ] **Special task — sold-PC gallery fallback**: this is the same item
-  previously tracked as "homepage gallery-preview logic" — prioritize
-  available-PC media, fall back to sold-PC media if nothing's available,
-  empty state if neither, sourced from `builds.js` directly (not the
-  separate `gallery.js`), no manual homepage edits needed as inventory
-  changes.
+- [x] **Special task — sold-PC gallery fallback.** Done, see above / D22.
+
+This completes every item in the owner's post-audit implementation
+plan. Per that plan, next is a pause for a real visual/design review
+(owner will provide screenshots/browser views) before any further
+work — not something to start automatically.
 
 **Explicitly deferred until after the above + a real visual redesign
 phase** (owner will provide screenshots/browser views for that phase):

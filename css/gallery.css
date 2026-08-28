@@ -36,6 +36,13 @@ body.lightbox-open {
   box-shadow: var(--shadow-lg);
 }
 
+.lightbox-video {
+  max-width: min(90vw, 1100px);
+  max-height: 82vh;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+}
+
 .lightbox-close {
   position: absolute;
   top: 1.25rem;

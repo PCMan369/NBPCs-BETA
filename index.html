@@ -38,6 +38,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/gallery.css">
   <!--
     NOTE: no google-site-verification meta tag or canonical URL yet —
     those depend on the real domain/Search Console property for this
@@ -289,8 +290,9 @@
 
   <!-- ============================================================
        GALLERY PREVIEW
-       Pulls from js/data/gallery.js (same source gallery.html uses) —
-       first 3 photos combined from currentBuilds + completedBuilds.
+       Sourced directly from builds.js media — available systems first,
+       falling back to sold/completed builds if none are available.
+       See js/render/galleryGrid.js for the render logic.
        ============================================================ -->
   <section class="section section-alt">
     <div class="container">
@@ -395,7 +397,7 @@
   <script src="js/data/events.js"></script>
   <script src="js/data/builds.js"></script>
   <script src="js/data/faq.js"></script>
-  <script src="js/data/gallery.js"></script>
+  <script src="js/render/galleryGrid.js"></script>
   <script src="js/render/buildCard.js"></script>
   <script src="js/render/trustSection.js"></script>
   <script src="js/render/faqList.js"></script>
@@ -423,25 +425,55 @@
         : renderEmptyBuildsState();
     })();
 
-    // Gallery preview (homepage — first 3 photos combined, from the
-    // same js/data/gallery.js that drives the full gallery page).
+    // Gallery preview (homepage) — sourced directly from builds.js
+    // media, not a separate photo list, so there's nothing extra to
+    // keep in sync as inventory changes. Prioritizes available
+    // systems; falls back to sold/completed builds if none are
+    // available right now; empty state if there's no media at all.
+    // Supports both photos and video clips (same {type, src, poster}
+    // shape build.html's own media list already uses).
     (function () {
       var container = document.getElementById('gallery-preview');
       if (!container) return;
 
-      var hasGalleryData = (typeof currentBuilds !== 'undefined') || (typeof completedBuilds !== 'undefined');
-      var all = hasGalleryData ? [].concat(currentBuilds || [], completedBuilds || []).slice(0, 3) : [];
+      function collectMedia(list) {
+        var out = [];
+        list.forEach(function (b) {
+          var m = b.media || {};
+          (m.images || []).forEach(function (src) {
+            out.push({
+              type: 'image',
+              src: src,
+              alt: b.title + (b.status === 'sold' ? ' — previously sold' : '')
+            });
+          });
+          (m.videos || []).forEach(function (v) {
+            var src = typeof v === 'string' ? v : v.src;
+            var poster = typeof v === 'string' ? null : (v.poster || null);
+            out.push({
+              type: 'video',
+              src: src,
+              poster: poster,
+              alt: b.title + ' — video clip' + (b.status === 'sold' ? ' (previously sold)' : '')
+            });
+          });
+        });
+        return out;
+      }
 
-      if (!all.length) {
+      var available = builds.filter(function (b) { return b.status === 'available'; });
+      var sold = builds.filter(function (b) { return b.status === 'sold'; });
+
+      var media = collectMedia(available);
+      if (!media.length) media = collectMedia(sold);
+      media = media.slice(0, 3);
+
+      if (!media.length) {
         container.innerHTML = '<p class="text-muted text-center" style="grid-column:1/-1;">Photos coming soon.</p>';
         return;
       }
 
-      container.innerHTML = all.map(function (img) {
-        return '<div class="gallery-item"><img src="' + img.src + '" alt="' + img.alt + '" loading="lazy" ' +
-          'onerror="this.parentElement.innerHTML=\'<div class=gallery-placeholder><span class=gp-icon>&#128247;</span><span>Photo coming soon</span></div>\'">' +
-          '</div>';
-      }).join('');
+      renderGalleryGrid(media, 'gallery-preview');
     })();
   </script>
 
