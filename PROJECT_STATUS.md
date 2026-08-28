@@ -416,6 +416,13 @@ plan" below.
       button, or clicking the dark overlay). No visual changes.
       `build.html`'s gallery is a different, non-modal pattern and
       wasn't affected. See DECISIONS.md D20.
+- [x] **Batch 4 — Touch targets.** Four icon-only buttons that were
+      under the 44×44 comfort threshold are now at it: the mobile
+      hamburger, `build.html`'s gallery prev/next, the lightbox's
+      prev/next on mobile, and the part-boxes quantity stepper.
+      Decorative numbered badges and already-adequate full-width nav
+      rows were left alone — see DECISIONS.md D21 for the full sweep
+      and reasoning. CSS-only, no layout or visual-glyph changes.
 
 ## Not started yet
 
@@ -442,9 +449,7 @@ and documented before moving to the next. Order:
 - [x] **Batch 1 — Waitlist reliability.** Done, see above / D16.
 - [x] **Batch 2 — Small accessibility fixes.** Done, see above / D19.
 - [x] **Batch 3 — Lightbox focus management.** Done, see above / D20.
-- [ ] **Batch 4 — Touch targets**: bring undersized interactive controls
-  (hamburger, gallery arrows, quantity buttons) toward a more comfortable
-  size without redesigning anything. Next up.
+- [x] **Batch 4 — Touch targets.** Done, see above / D21.
 - [ ] **Special task — sold-PC gallery fallback**: this is the same item
   previously tracked as "homepage gallery-preview logic" — prioritize
   available-PC media, fall back to sold-PC media if nothing's available,

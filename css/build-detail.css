@@ -111,8 +111,8 @@ video.gallery-main-img.active {
 }
 
 .gallery-arrow {
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   background: rgba(0,0,0,0.55);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 50%;

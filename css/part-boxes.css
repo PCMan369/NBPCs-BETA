@@ -130,8 +130,8 @@
 }
 
 .qty-btn {
-  width: 34px;
-  min-height: 34px;
+  width: 44px;
+  min-height: 44px;
   background: var(--card-h);
   border: none;
   color: var(--text);

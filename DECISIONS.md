@@ -609,6 +609,50 @@ audit's C3 finding.
 
 ---
 
+### D21 — Batch 4: touch target sizes
+
+**Scope**: per the owner's batch plan — review interactive controls for
+touch target size, bring undersized ones toward a comfortable size
+without redesigning or adding bulk.
+
+**Method**: rather than relying on memory from the earlier audit,
+re-swept every CSS rule setting an explicit small width/height, then
+checked each one's actual markup to separate real interactive controls
+from decorative badges (numbered circles like `.step-num`/`.pl-num`,
+the FAQ's icon, a video-overlay icon with `pointer-events:none`) —
+none of those are themselves clickable, so they were left alone. Also
+confirmed nav links and the FAQ accordion row are already comfortably
+sized as full-width tappable rows, and `.lightbox-close`/`.back-to-top`
+were already 44×44.
+
+**Changed** — four real icon-only buttons that were under the 44×44
+comfort threshold, all fixed by adjusting `min-width`/`min-height` or
+`width`/`height` only (no layout, spacing, or visual-glyph changes):
+- `.hamburger` (mobile nav toggle): effective clickable area was
+  ~38×32px (22px icon + 8px padding). Added `min-width`/`min-height:
+  44px` plus `align-items`/`justify-content: center` so the same
+  3-line icon glyph stays centered in the now-larger button.
+- `.gallery-arrow` (`build.html`'s prev/next buttons): 38×38 → 44×44.
+- `.lightbox-arrow` at the ≤640px breakpoint only (`gallery.html`'s
+  lightbox prev/next): 40×40 → 44×44. Desktop was already 48×48,
+  untouched.
+- `.qty-btn` (part-boxes quantity stepper, still dormant/no real
+  inventory yet): 34×34 → 44×44. `.qty-input` between them stretches
+  to match automatically (`align-items: stretch` on the shared row),
+  so the whole stepper grows together rather than looking mismatched.
+
+**Verified**: confirmed via text search that no other rule anywhere
+overrides these sizes at any breakpoint; full JS syntax sweep (no JS
+touched, but checked regardless); `stitch.py` rebuild diffed
+byte-for-byte against the shipped files. This was a CSS-only change,
+so there was nothing for `jsdom` to usefully test — verified by
+reading the resulting computed values directly instead.
+
+**Decided by:** owner's Batch 4 instructions, following the original
+audit's C2 finding.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
