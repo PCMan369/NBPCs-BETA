@@ -86,8 +86,8 @@ function renderBuildCard(build) {
 
 function renderEmptyBuildsState() {
   return (
-    '<div class="empty-state">' +
-      '<span class="empty-icon">&#128421;&#65039;</span>' +
+    '<div class="empty-state-forge">' +
+      '<span class="icon">&#128421;&#65039;</span>' +
       '<h3>No Systems Listed Right Now</h3>' +
       '<p>Nothing available at the moment — check back soon, or get notified when something comes in.</p>' +
       '<div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.5rem;">' +

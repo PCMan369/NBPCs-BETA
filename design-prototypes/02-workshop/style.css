@@ -1,0 +1,302 @@
+/*
+  ================================================================
+  PROTOTYPE 2 — "WORKSHOP DOCUMENTATION"
+  ================================================================
+  Design philosophy: the opposite instinct from Prototype 1's
+  restraint — lean INTO the fact that this is a technical, hands-on
+  trade. Presented like a real workshop's own documentation: a spec
+  sheet, a parts catalog, a lab notebook. Structure is visible on
+  purpose (rules, boxed sections, tab-style labels) rather than
+  hidden behind soft shadows and rounded corners. Trust comes from
+  precision and evidence, not from a polished "trust section."
+
+  Typography:
+    Headings — "Space Grotesk" (Google Fonts). A geometric sans with
+      a slightly quirky, technical character — distinct from both
+      generic corporate sans (Inter/Helvetica) and from anything
+      "gamer." Reads like it belongs on a piece of equipment.
+    Body — "Public Sans" (Google Fonts). Built for clarity at small
+      sizes; plain and legible, doesn't compete with the headings.
+    Data / specs — "IBM Plex Mono" (Google Fonts). Every spec, price,
+      and measurement runs in monospace so numbers align and scan
+      like a real datasheet, not like marketing copy.
+
+  Color: warm paper background (not white), warm dark ink (not pure
+  black), and a muted teal accent — closer to old tool-enamel paint
+  or a hardware-store color than a "tech" color. No blue anywhere;
+  this teal leans green, not blue-tech.
+
+  Components deliberately NOT used: icon+heading+description cards,
+  numbered circular steps, pill badges, drop-shadow cards, emoji.
+  Where boxes exist, they look like labeled document sections, not
+  soft UI cards.
+  ================================================================
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --paper: #f3efe4;
+  --paper-deep: #eae3d2;
+  --ink: #2a251e;
+  --ink-soft: #56503f;
+  --ink-mute: #837a63;
+  --line: #c9beA2;
+  --line-strong: #2a251e;
+  --teal: #3d6b60;
+  --teal-deep: #294942;
+  --white: #fffdf8;
+  --max: 1200px;
+  --head: 'Space Grotesk', sans-serif;
+  --body: 'Public Sans', -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+
+.proto-ribbon {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  padding: 0.65rem 1.25rem;
+  text-align: center;
+  line-height: 1.6;
+}
+.proto-ribbon b { color: #fff; }
+.proto-ribbon a { color: #9fd6c4; }
+
+/* ---- Tag / index label used instead of pill badges -------------- */
+.tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal-deep);
+  border: 1px solid var(--teal);
+  padding: 0.2rem 0.5rem;
+  display: inline-block;
+}
+.tag.demo { color: #8a5a1f; border-color: #b98a3d; }
+.tag.sold { color: var(--ink-mute); border-color: var(--line); }
+
+/* ---- Header ------------------------------------------------------*/
+header.site {
+  border-bottom: 2px solid var(--line-strong);
+  background: var(--paper);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.site-header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 0; gap: 2rem;
+}
+.wordmark {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+.wordmark .dim { color: var(--ink-mute); }
+
+nav.primary { display: flex; gap: 0; }
+nav.primary a {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding: 0.5rem 0.9rem;
+  border-left: 1px solid var(--line);
+}
+nav.primary a:first-child { border-left: none; }
+nav.primary a:hover, nav.primary a:focus-visible { background: var(--paper-deep); color: var(--ink); }
+nav.primary a.current { color: var(--teal-deep); font-weight: 600; }
+nav.primary a.nav-cta { display: none; }
+
+.nav-cta {
+  font-family: var(--mono);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.6rem 1.1rem;
+  text-decoration: none;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.nav-cta:hover, .nav-cta:focus-visible { background: var(--teal-deep); }
+
+.nav-toggle { display: none; background: none; border: 2px solid var(--ink); font-size: 1.3rem; padding: 0.2rem 0.6rem; cursor: pointer; }
+
+/* ---- Section index label (replaces decorative underline) --------*/
+.sec-index {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--teal-deep);
+  border-top: 2px solid var(--line-strong);
+  padding-top: 0.6rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  justify-content: space-between;
+}
+.sec-index span:last-child { color: var(--ink-mute); }
+
+section { padding: 4rem 0; }
+section.deep { background: var(--paper-deep); }
+
+.section-title {
+  font-family: var(--head);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.01em;
+}
+.section-sub { color: var(--ink-soft); max-width: 62ch; margin: 0 0 2.5rem; font-size: 1.02rem; }
+
+/* ---- Hero ---------------------------------------------------------*/
+.hero { padding: 3rem 0 4rem; }
+.hero-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 900px) { .hero-grid { grid-template-columns: 1fr 1fr; gap: 3rem; align-items: stretch; } }
+.hero h1 {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.06;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.01em;
+}
+.hero h1 .accent { color: var(--teal-deep); }
+.hero p.lede { font-size: 1.1rem; color: var(--ink-soft); max-width: 48ch; margin: 0 0 1.75rem; }
+.hero-meta { font-family: var(--mono); font-size: 0.85rem; color: var(--ink-mute); margin-bottom: 1.5rem; }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn {
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  padding: 0.85rem 1.5rem;
+  text-decoration: none;
+  border: 2px solid var(--ink);
+  display: inline-block;
+}
+.btn-primary { background: var(--ink); color: var(--paper); }
+.btn-primary:hover, .btn-primary:focus-visible { background: var(--teal-deep); border-color: var(--teal-deep); }
+.btn-secondary { background: transparent; color: var(--ink); }
+.btn-secondary:hover, .btn-secondary:focus-visible { background: var(--ink); color: var(--paper); }
+
+.figure {
+  border: 2px solid var(--line-strong);
+  background: var(--white);
+  padding: 0.6rem;
+}
+.figure img { width: 100%; }
+.figure figcaption {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-mute);
+  padding: 0.5rem 0.2rem 0.1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ---- Spec-sheet panel (used everywhere instead of soft cards) ---*/
+.panel { border: 2px solid var(--line-strong); background: var(--white); }
+.panel-head {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.55rem 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+.panel-body { padding: 1.5rem; }
+
+/* ---- Listing layout ----------------------------------------------*/
+.listing-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+@media (min-width: 900px) { .listing-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; } }
+.listing-title { font-family: var(--head); font-weight: 600; font-size: 1.5rem; margin: 0.9rem 0 0.3rem; }
+.listing-price { font-family: var(--mono); font-size: 1.3rem; font-weight: 600; color: var(--teal-deep); margin: 0 0 1.25rem; }
+
+table.spec { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.92rem; }
+table.spec tr { border-bottom: 1px solid var(--line); }
+table.spec td { padding: 0.6rem 0; }
+table.spec td:first-child { color: var(--ink-mute); width: 38%; }
+table.spec td:last-child { text-align: right; }
+table.spec tr.demo td:first-child::after { content: " [demo]"; color: #8a5a1f; }
+
+.perf-list { font-family: var(--mono); font-size: 0.9rem; margin: 1rem 0; }
+.perf-list div { display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed var(--line); }
+
+/* ---- Gallery — contact-sheet style ------------------------------*/
+.contact-sheet { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+@media (min-width: 700px) { .contact-sheet { grid-template-columns: repeat(3, 1fr); } }
+.contact-sheet .figure img { aspect-ratio: 4/3; object-fit: cover; }
+
+/* ---- About / trust — evidence log style -------------------------*/
+.log-entry { display: grid; grid-template-columns: 1fr; gap: 0.4rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+@media (min-width: 800px) { .log-entry { grid-template-columns: 160px 1fr; gap: 2rem; } }
+.log-date { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-mute); }
+.log-entry h3 { font-family: var(--head); font-size: 1.1rem; margin: 0 0 0.4rem; }
+.log-entry p { margin: 0; color: var(--ink-soft); }
+
+.about-split { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 900px) { .about-split { grid-template-columns: 0.8fr 1.2fr; gap: 3rem; } }
+.about-portrait { border: 2px solid var(--line-strong); background: var(--white); aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center; color: var(--ink-mute); font-family: var(--mono); font-size: 0.82rem; text-align: center; padding: 1.5rem; }
+
+/* ---- Services table ----------------------------------------------*/
+table.services-table { width: 100%; border-collapse: collapse; }
+table.services-table tr { border-bottom: 1px solid var(--line); }
+table.services-table td { padding: 1.1rem 0.5rem; vertical-align: top; }
+table.services-table td:first-child { font-family: var(--head); font-weight: 600; width: 30%; }
+table.services-table td:last-child { text-align: right; white-space: nowrap; }
+table.services-table a { font-family: var(--mono); font-size: 0.85rem; color: var(--teal-deep); text-decoration: none; }
+table.services-table a:hover { text-decoration: underline; }
+
+/* ---- CTA -----------------------------------------------------------*/
+.cta-panel { border: 2px solid var(--line-strong); background: var(--white); padding: 3rem; text-align: center; }
+.cta-panel h2 { font-family: var(--head); font-size: clamp(1.6rem, 3vw, 2.1rem); margin: 0 0 0.85rem; }
+.cta-panel p { color: var(--ink-soft); max-width: 52ch; margin: 0 auto 1.75rem; }
+
+/* ---- Footer -------------------------------------------------------*/
+footer.site { border-top: 2px solid var(--line-strong); padding: 2.5rem 0; font-family: var(--mono); font-size: 0.82rem; color: var(--ink-mute); }
+.footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.3rem 1.1rem; }
+.footer-links a { color: var(--ink-soft); text-decoration: none; }
+.footer-links a:hover { color: var(--teal-deep); }
+
+/* ---- Build detail --------------------------------------------------*/
+.build-thumbs { display: flex; gap: 0.6rem; margin-top: 0.6rem; }
+.build-thumbs img { width: 64px; height: 64px; object-fit: cover; border: 2px solid var(--line); cursor: pointer; opacity: 0.6; }
+.build-thumbs img.active, .build-thumbs img:hover { opacity: 1; border-color: var(--ink); }
+
+.sold-panel { border: 2px solid var(--line-strong); background: var(--paper-deep); padding: 1.5rem; margin-top: 1.5rem; }
+.sold-panel p { margin: 0 0 1rem; }
+
+@media (max-width: 780px) {
+  nav.primary { position: fixed; inset: 0; background: var(--paper); flex-direction: column; padding: 5rem 2rem 2rem;
+    transform: translateX(100%); transition: transform 0.25s ease; z-index: 50; }
+  nav.primary.open { transform: translateX(0); }
+  nav.primary a { border-left: none; border-bottom: 1px solid var(--line); padding: 1rem 0; font-size: 1.1rem; }
+  nav.primary a.nav-cta { display: block; border: 2px solid var(--ink); text-align: center; margin-top: 1.5rem; }
+  .header-cta { display: none; }
+  .nav-toggle { display: block; }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 1.25rem; }
+  section { padding: 2.75rem 0; }
+  .cta-panel { padding: 2rem 1.25rem; }
+}
+
+:focus-visible { outline: 2px solid var(--teal-deep); outline-offset: 2px; }

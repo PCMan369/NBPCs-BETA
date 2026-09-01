@@ -434,6 +434,19 @@ plan" below.
       requirements. See DECISIONS.md D22 for the full writeup,
       including a correction of an earlier miscount of how many builds
       actually exist in `builds.js`.
+- [x] **Redesign Batch 1 — homepage visual redesign ("Forge").**
+      Established the new dark/amber visual system on the homepage
+      only: full-bleed-leaning hero, one new evidence-based trust
+      section (replacing the old cards + numbered-circle process
+      steps), a restructured custom-builds section with no numbered
+      circles or highlight-boxes, and a new asymmetric gallery grid —
+      all built from existing real content, nothing invented. New
+      `css/homepage-forge.css` is scoped to `body.theme-forge`
+      (`index.html` only), so the other 9 pages are confirmed
+      byte-for-byte unchanged. See DECISIONS.md D23 for the full
+      writeup, including a real structural conflict found (the old
+      trust section is a component shared with `build.html`) and three
+      real bugs caught and fixed during screenshot verification.
 
 ## Not started yet
 
@@ -464,9 +477,25 @@ and documented before moving to the next. Order:
 - [x] **Special task — sold-PC gallery fallback.** Done, see above / D22.
 
 This completes every item in the owner's post-audit implementation
-plan. Per that plan, next is a pause for a real visual/design review
-(owner will provide screenshots/browser views) before any further
-work — not something to start automatically.
+plan. The design-review phase followed (owner reviewed the live site,
+then three disposable visual-direction prototypes in
+`design-prototypes/` — not part of the production site). Owner chose
+Prototype 3 ("Forge") as the redesign foundation.
+
+## Redesign implementation plan (current)
+
+"Keep the engine, redesign the body": preserve the data/build
+architecture, forms, accessibility work, and SEO infrastructure;
+restructure presentation-level HTML/CSS where it's tied to the old
+visual language. Working in small batches, one page group at a time,
+verified and documented before moving on.
+
+- [x] **Batch 1 — Homepage.** Done, see above / D23.
+- [ ] Remaining pages (builds/build-detail, services, about, contact,
+      gallery, FAQ, part-boxes) — not started, batched separately per
+      owner's direction. `js/render/trustSection.js` and
+      `buildCard.js`'s shared card renderer still serve their original
+      look on every page except the homepage until their turn comes.
 
 **Explicitly deferred until after the above + a real visual redesign
 phase** (owner will provide screenshots/browser views for that phase):

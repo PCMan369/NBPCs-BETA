@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ryzen 5 3600 / RTX 2070 Super — Prototype 2</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="proto-ribbon">
+  <b>DESIGN PROTOTYPE — build-detail layout.</b>
+  Real specs/photos/FPS estimates for this build (jul26-01) reused as-is. Motherboard/PSU/Case rows marked <b>[demo]</b> — not tracked in the real data model yet.
+  <a href="home.html">← Back to prototype home</a>
+</div>
+
+<header class="site">
+  <div class="wrap site-header-inner">
+    <a href="home.html" class="wordmark">NORTH_BRIDGE<span class="dim">.pcs</span></a>
+    <nav class="primary" id="nav">
+      <a href="home.html">HOME</a>
+      <a href="home.html#available" class="current">FOR_SALE</a>
+      <a href="home.html#services">SERVICES</a>
+      <a href="home.html#about">ABOUT</a>
+      <a href="home.html#gallery">GALLERY</a>
+      <a href="#" class="nav-cta">CONTACT →</a>
+    </nav>
+    <a href="#" class="nav-cta header-cta">CONTACT →</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Toggle menu">≡</button>
+  </div>
+</header>
+
+<div class="wrap" style="padding-top:1.5rem;">
+  <a href="home.html#available" style="font-family:var(--mono); font-size:0.85rem; color:var(--ink-mute); text-decoration:none;">&larr; ALL_LISTINGS</a>
+</div>
+
+<section style="padding-top:1.5rem;">
+  <div class="wrap listing-grid" style="align-items:start;">
+    <div>
+      <figure class="figure">
+        <img src="../../images/3600_2070S.jpg" alt="Ryzen 5 3600 / RTX 2070 Super" id="mainPhoto">
+        <figcaption><span>FIG. 01</span><span id="photoLabel">MAIN</span></figcaption>
+      </figure>
+      <div class="build-thumbs">
+        <img src="../../images/3600_2070S.jpg" class="active" alt="View 1" data-full="../../images/3600_2070S.jpg" data-label="MAIN">
+        <img src="../../images/3600_2070S_Front.jpg" alt="View 2" data-full="../../images/3600_2070S_Front.jpg" data-label="FRONT">
+        <img src="../../images/3600_2070S_Side.jpg" alt="View 3" data-full="../../images/3600_2070S_Side.jpg" data-label="SIDE">
+        <img src="../../images/3600_2070S_IO.jpg" alt="View 4" data-full="../../images/3600_2070S_IO.jpg" data-label="I/O">
+        <img src="../../images/3600_2070S_Back.jpg" alt="View 5" data-full="../../images/3600_2070S_Back.jpg" data-label="BACK">
+      </div>
+
+      <div class="panel" style="margin-top:2rem;">
+        <div class="panel-head"><span>TESTING LOG</span><span>PRE-DELIVERY</span></div>
+        <div class="panel-body" style="color:var(--ink-soft);">
+          Every system gets cleaned, stress tested under load, and temperatures checked before it goes anywhere. Specs below are accurate — performance estimates are based on real-world expectations for this hardware, not cherry-picked benchmark runs.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class="tag sold">SOLD — JUL 2026</span>
+      <h1 style="font-family:var(--head); font-weight:700; font-size:1.8rem; margin:0.75rem 0 0.3rem;">Ryzen 5 3600 / RTX 2070 Super</h1>
+      <p class="listing-price">$625</p>
+
+      <div class="panel">
+        <div class="panel-head"><span>SPEC SHEET</span><span>ID: JUL26-01</span></div>
+        <div class="panel-body">
+          <table class="spec">
+            <tr><td>CPU</td><td>Ryzen 5 3600</td></tr>
+            <tr><td>GPU</td><td>RTX 2070 Super</td></tr>
+            <tr><td>RAM</td><td>16GB DDR4 2800MHz</td></tr>
+            <tr><td>STORAGE</td><td>512GB NVMe SSD</td></tr>
+            <tr class="demo"><td>MOTHERBOARD</td><td>B450 ATX</td></tr>
+            <tr class="demo"><td>PSU</td><td>600W 80+ Bronze</td></tr>
+            <tr class="demo"><td>CASE</td><td>Mid-tower, tempered glass</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:1.5rem;">
+        <div class="panel-head"><span>ESTIMATED PERFORMANCE</span><span>1080P</span></div>
+        <div class="panel-body">
+          <div class="perf-list">
+            <div><span>FORTNITE</span><span>~120FPS @ HIGH</span></div>
+            <div><span>MINECRAFT</span><span>~220FPS+ @ HIGH</span></div>
+            <div><span>MARVEL RIVALS</span><span>~90FPS @ HIGH</span></div>
+            <div><span>CYBERPUNK 2077</span><span>~65FPS @ HIGH</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sold-panel">
+        <p><strong>SOLD.</strong> Kept on record as a real, specific example of what's come through the shop recently. Check current listings for what's available now.</p>
+        <a href="home.html#available" class="btn btn-primary">BROWSE AVAILABLE →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">© 2026 NORTH BRIDGE PCS — SOUTHERN OREGON. PROTOTYPE CONTENT, NOT PRODUCTION.</div>
+</footer>
+
+<script>
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  var mainPhoto = document.getElementById('mainPhoto');
+  var photoLabel = document.getElementById('photoLabel');
+  document.querySelectorAll('.build-thumbs img').forEach(function (thumb) {
+    function activate() {
+      document.querySelectorAll('.build-thumbs img').forEach(function (t) { t.classList.remove('active'); });
+      thumb.classList.add('active');
+      mainPhoto.src = thumb.getAttribute('data-full');
+      photoLabel.textContent = thumb.getAttribute('data-label');
+    }
+    thumb.addEventListener('click', activate);
+    thumb.setAttribute('tabindex', '0');
+    thumb.setAttribute('role', 'button');
+    thumb.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  });
+</script>
+
+</body>
+</html>

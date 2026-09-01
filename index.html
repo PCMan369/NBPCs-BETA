@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/gallery.css">
+  <link rel="stylesheet" href="css/homepage-forge.css">
   <!--
     NOTE: no google-site-verification meta tag or canonical URL yet —
     those depend on the real domain/Search Console property for this
@@ -46,7 +47,7 @@
     the site has a real home.
   -->
 </head>
-<body>
+<body class="theme-forge">
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -125,10 +126,31 @@
        Mobile: image on top, text below.
        ============================================================ -->
   <section class="hero">
-    <div class="container">
-      <div class="hero-inner">
+    <div class="hero-inner">
 
-        <div class="hero-content">
+      <!--
+        HOW TO REPLACE THE HERO IMAGE
+        1. Add your photo to the images/ folder.
+           Recommended: a wide, landscape photo — this now displays
+           large and full-width, not in a side panel.
+        2. Change the src below to match your filename.
+        3. Update the alt text to describe what's in the photo.
+        If the file is missing, a placeholder shows automatically.
+      -->
+      <div class="hero-media-frame">
+        <img
+          src="images/hero-build.jpg"
+          alt="Custom gaming PC build — North Bridge PCs, Southern Oregon"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        >
+        <div class="hero-placeholder" style="display:none;">
+          <span class="icon">&#128421;&#65039;</span>
+          <span>Photo coming soon</span>
+        </div>
+        <div class="hero-scrim"></div>
+      </div>
+      <div class="hero-copy">
+        <div class="hero-copy-inner">
           <div class="hero-eyebrow">Southern Oregon</div>
           <h1>Gaming PCs Built and Tested in Southern Oregon</h1>
           <p class="hero-body">
@@ -141,24 +163,8 @@
             <a href="custom-build.html" class="btn btn-secondary btn-lg">Custom Builds</a>
           </div>
         </div>
-
-        <!--
-          HOW TO REPLACE THE HERO IMAGE
-          1. Add your photo to the images/ folder.
-             Recommended size: 1200x900px (or similar 4:3 ratio).
-          2. Change the src below to match your filename.
-          3. Update the alt text to describe what's in the photo.
-          If the file is missing, a placeholder shows automatically.
-        -->
-        <div class="hero-image-wrap">
-          <img
-            src="images/hero-build.jpg"
-            alt="Custom gaming PC build — North Bridge PCs, Southern Oregon"
-            onerror="this.parentElement.innerHTML='<div class=hero-img-placeholder><span class=icon>&#128421;</span><span>Add hero-build.jpg to the images folder</span></div>'"
-          >
-        </div>
-
       </div>
+
     </div>
   </section>
 
@@ -187,20 +193,52 @@
 
 
   <!-- ============================================================
-       WHY NORTH BRIDGE PCS
+       EVIDENCE
+       Replaces the old icon+heading+description trust cards and the
+       numbered-circle testing steps with one section built from the
+       same real facts — homepage-specific markup, does NOT use the
+       shared js/render/trustSection.js (that stays exactly as-is for
+       build.html). If this copy needs updating, update it here AND
+       in trustSection.js separately — they're intentionally no
+       longer the same component on this page.
        ============================================================ -->
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">What You're Getting</span>
-        <h2>Why North Bridge PCs</h2>
-        <p>No fluff. Here's what's actually different.</p>
+        <span class="section-label">Before It Leaves</span>
+        <h2>What Actually Happens Before Pickup</h2>
+        <p>Every system goes through the same checklist — no shortcuts, no exceptions.</p>
         <div class="accent-line"></div>
       </div>
 
-      <!-- Content lives in js/render/trustSection.js — shared with build.html
-           so this copy only exists in one place. -->
-      <div id="trust-cards"></div>
+      <div class="evidence">
+        <div>
+          <p class="evidence-lead">Every system gets <span class="accent">cleaned, stress tested under load, and temperature-checked</span> before it goes anywhere.</p>
+          <p class="evidence-sub">The specs listed are accurate — performance estimates are based on real-world expectations for that hardware, not cherry-picked benchmark runs. If a system has a limitation, I'll tell you. Based in Southern Oregon, pickup is in person — if you hit a snag after getting it home, you're reaching an actual person, not a ticket queue.</p>
+        </div>
+        <div class="evidence-checklist">
+          <div class="evidence-row">
+            <span class="mark">01</span>
+            <div><h4>Cleaned</h4><p>Dust removed, thermal paste refreshed where needed. Clean inside and out.</p></div>
+          </div>
+          <div class="evidence-row">
+            <span class="mark">02</span>
+            <div><h4>Stress tested</h4><p>CPU and GPU pushed under sustained load to check for stability issues.</p></div>
+          </div>
+          <div class="evidence-row">
+            <span class="mark">03</span>
+            <div><h4>Temps checked</h4><p>Thermals verified under load. Nothing runs hot, no surprises after pickup.</p></div>
+          </div>
+          <div class="evidence-row">
+            <span class="mark">04</span>
+            <div><h4>Drivers updated</h4><p>GPU and system drivers current before handoff. Ready to game the same day.</p></div>
+          </div>
+          <div class="evidence-row">
+            <span class="mark">05</span>
+            <div><h4>Ready to use</h4><p>Plugged in and confirmed working on pickup. A finished computer, not a box of parts.</p></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -220,70 +258,36 @@
             actually want to do with it — no upsells, no filler parts.
           </p>
 
-          <div class="step-list" style="margin-bottom:2rem;">
-            <div class="step-list-item">
-              <div class="step-list-num">1</div>
-              <div class="step-list-text">
-                <strong>Tell me your budget.</strong>
-                <p>I'll work with what you have, not push you past it.</p>
-              </div>
+          <div class="cb-list">
+            <div class="cb-row">
+              <strong>Tell me your budget.</strong>
+              <p>I'll work with what you have, not push you past it.</p>
             </div>
-            <div class="step-list-item">
-              <div class="step-list-num">2</div>
-              <div class="step-list-text">
-                <strong>Tell me what games you play.</strong>
-                <p>Different games have different demands. I'll build for what you actually run.</p>
-              </div>
+            <div class="cb-row">
+              <strong>Tell me what games you play.</strong>
+              <p>Different games have different demands. I'll build for what you actually run.</p>
             </div>
-            <div class="step-list-item">
-              <div class="step-list-num">3</div>
-              <div class="step-list-text">
-                <strong>Tell me what features matter.</strong>
-                <p>Wi-Fi, extra storage, Linux, quiet operation — mention what's important to you.</p>
-              </div>
+            <div class="cb-row">
+              <strong>Tell me what features matter.</strong>
+              <p>Wi-Fi, extra storage, Linux, quiet operation — mention what's important to you.</p>
             </div>
           </div>
 
           <a href="custom-build.html" class="btn btn-primary btn-lg">See Custom Build Options &rarr;</a>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:1rem;">
-          <div class="highlight-box">
-            <h3>Entry Gaming — Around $500</h3>
-            <p>Solid 1080p gaming on popular titles. Good starting point without overspending.</p>
-          </div>
-          <div class="highlight-box">
-            <h3>High Refresh 1080p — Around $800</h3>
-            <p>Smooth gameplay at higher frame rates. More headroom on demanding games.</p>
-          </div>
-          <div class="highlight-box">
-            <h3>1440p Gaming — Around $1,200</h3>
-            <p>Higher resolution and a stronger GPU. Handles modern titles at quality settings.</p>
-          </div>
-          <p style="font-size:0.78rem; color:var(--dim); font-style:italic; margin-top:0.25rem;">
+        <div>
+          <table class="budget-table">
+            <tr><td>~$500</td><td>Solid 1080p gaming on popular titles. Good starting point without overspending.</td></tr>
+            <tr><td>~$800</td><td>Smooth gameplay at higher frame rates. More headroom on demanding games.</td></tr>
+            <tr><td>~$1,200</td><td>Higher resolution and a stronger GPU. Handles modern titles at quality settings.</td></tr>
+          </table>
+          <p class="budget-note">
             Example ranges only. Actual cost depends on parts availability and your specific requirements.
           </p>
         </div>
 
       </div>
-    </div>
-  </section>
-
-
-  <!-- ============================================================
-       TESTING & SETUP PROCESS
-       ============================================================ -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Before Pickup</span>
-        <h2>Testing &amp; Setup Process</h2>
-        <p>Every system goes through the same checklist before it's ready to hand off.</p>
-        <div class="accent-line"></div>
-      </div>
-
-      <!-- Content lives in js/render/trustSection.js — shared with build.html. -->
-      <div id="process-steps"></div>
     </div>
   </section>
 
@@ -399,17 +403,12 @@
   <script src="js/data/faq.js"></script>
   <script src="js/render/galleryGrid.js"></script>
   <script src="js/render/buildCard.js"></script>
-  <script src="js/render/trustSection.js"></script>
   <script src="js/render/faqList.js"></script>
   <script src="js/render/eventBanner.js"></script>
   <script src="js/render/chrome.js"></script>
   <script src="js/render/faqAccordion.js"></script>
 
   <script>
-    // Shared trust content (also used on build.html)
-    document.getElementById('trust-cards').innerHTML = renderTrustCards();
-    document.getElementById('process-steps').innerHTML = renderProcessSteps();
-
     // FAQ preview (also used, in full, on faq.html)
     document.getElementById('home-faq').innerHTML =
       renderFaqList(faqItems.filter(function (f) { return f.featured; }));

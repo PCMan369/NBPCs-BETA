@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ryzen 5 3600 / RTX 2070 Super — Prototype 3</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="proto-ribbon">
+  DESIGN PROTOTYPE — build-detail layout. Real specs/photos/FPS estimates for this build (jul26-01) reused as-is. Motherboard/PSU/Case rows marked · demo · — not tracked in the real data model yet.
+  <a href="home.html">← Back to prototype home</a>
+</div>
+
+<header class="site">
+  <div class="wrap site-header-inner">
+    <a href="home.html" class="wordmark">North<span>Bridge</span></a>
+    <nav class="primary" id="nav">
+      <a href="home.html">Home</a>
+      <a href="home.html#available" class="current">For Sale</a>
+      <a href="home.html#services">Services</a>
+      <a href="home.html#about">About</a>
+      <a href="home.html#gallery">Gallery</a>
+      <a href="#" class="nav-cta">Contact</a>
+    </nav>
+    <a href="#" class="nav-cta header-cta">Contact</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Toggle menu">&#9776;</button>
+  </div>
+</header>
+
+<div class="wrap build-header">
+  <a href="home.html#available" class="breadcrumb">&larr; Gaming PCs</a>
+</div>
+
+<div class="wrap build-layout">
+  <div>
+    <div class="build-gallery-main">
+      <img src="../../images/3600_2070S.jpg" alt="Ryzen 5 3600 / RTX 2070 Super" id="mainPhoto">
+    </div>
+    <div class="build-thumbs">
+      <img src="../../images/3600_2070S.jpg" class="active" alt="View 1" data-full="../../images/3600_2070S.jpg">
+      <img src="../../images/3600_2070S_Front.jpg" alt="View 2" data-full="../../images/3600_2070S_Front.jpg">
+      <img src="../../images/3600_2070S_Side.jpg" alt="View 3" data-full="../../images/3600_2070S_Side.jpg">
+      <img src="../../images/3600_2070S_IO.jpg" alt="View 4" data-full="../../images/3600_2070S_IO.jpg">
+      <img src="../../images/3600_2070S_Back.jpg" alt="View 5" data-full="../../images/3600_2070S_Back.jpg">
+    </div>
+
+    <div class="testing-note">
+      <span class="eyebrow">TESTING</span>
+      Every system gets cleaned, stress tested under load, and temperatures checked before it goes anywhere. The specs here are accurate — performance estimates are based on real-world expectations for this hardware, not cherry-picked benchmark runs.
+    </div>
+  </div>
+
+  <div>
+    <span class="status-flag sold" style="position:static; display:inline-block; margin-bottom:1rem;">Sold — July 2026</span>
+    <h1 style="font-family:var(--head); font-weight:700; font-size:2.1rem; margin:0 0 0.5rem; line-height:1.1;">Ryzen 5 3600 / RTX 2070 Super</h1>
+    <p class="product-price">$625</p>
+
+    <table class="full-spec-table">
+      <tr><td>CPU</td><td>Ryzen 5 3600</td></tr>
+      <tr><td>GPU</td><td>RTX 2070 Super</td></tr>
+      <tr><td>RAM</td><td>16GB DDR4 2800MHz</td></tr>
+      <tr><td>Storage</td><td>512GB NVMe SSD</td></tr>
+      <tr class="demo"><td>Motherboard</td><td>B450 ATX</td></tr>
+      <tr class="demo"><td>PSU</td><td>600W 80+ Bronze</td></tr>
+      <tr class="demo"><td>Case</td><td>Mid-tower, tempered glass</td></tr>
+    </table>
+
+    <div class="perf-panel">
+      <h4>Estimated performance</h4>
+      <div class="perf-row"><span>Fortnite</span><span>~120fps @ 1080p High</span></div>
+      <div class="perf-row"><span>Minecraft</span><span>~220fps+ @ 1080p High</span></div>
+      <div class="perf-row"><span>Marvel Rivals</span><span>~90fps @ 1080p High</span></div>
+      <div class="perf-row"><span>Cyberpunk 2077</span><span>~65fps @ 1080p High</span></div>
+    </div>
+
+    <div class="sold-panel">
+      <p><strong>This system has already sold.</strong> Kept visible as a real example of what's come through recently — check current listings for what's available now.</p>
+      <a href="home.html#available" class="btn btn-secondary">Browse available systems</a>
+    </div>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <p>© 2026 North Bridge PCs — Southern Oregon. Prototype content for design review only.</p>
+  </div>
+</footer>
+
+<script>
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  var mainPhoto = document.getElementById('mainPhoto');
+  document.querySelectorAll('.build-thumbs img').forEach(function (thumb) {
+    function activate() {
+      document.querySelectorAll('.build-thumbs img').forEach(function (t) { t.classList.remove('active'); });
+      thumb.classList.add('active');
+      mainPhoto.src = thumb.getAttribute('data-full');
+    }
+    thumb.addEventListener('click', activate);
+    thumb.setAttribute('tabindex', '0');
+    thumb.setAttribute('role', 'button');
+    thumb.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  });
+</script>
+
+</body>
+</html>

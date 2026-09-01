@@ -1,0 +1,278 @@
+/*
+  ================================================================
+  PROTOTYPE 3 — "FORGE" (dark, bold, photography-led)
+  ================================================================
+  Design philosophy: treat the PCs themselves as the visual content,
+  the way a component manufacturer's product page treats a graphics
+  card — large, confident, precisely lit photography with minimal
+  surrounding decoration. Dark background so the RGB lighting in real
+  build photos does the work color theory would otherwise ask a
+  palette to do. Bold, heavy display type for a small amount of
+  moderate "gaming-adjacent" energy — without neon gradients,
+  diagonal slashes, or aggressive angular shapes.
+
+  Typography:
+    Headings — "Bricolage Grotesque" (Google Fonts). A bold, slightly
+      irregular display grotesk with real character — avoids both
+      generic-corporate (Inter/Helvetica) and stereotypical "gaming"
+      display fonts (no sharp angular/italic esports-logo faces).
+    Body — "Manrope" (Google Fonts). Clean, geometric, warm enough
+      not to feel clinical on a dark background.
+    Data / specs — "Space Mono" (Google Fonts). More character than a
+      neutral code font, still highly legible for aligned figures.
+
+  Color: near-black (not pure black, for depth) with off-white text
+  and ONE vivid accent — amber/gold. Chosen specifically because it's
+  complementary to the blue RGB lighting already present in the real
+  product photography (blue + amber is a classic contrast pairing
+  used on real component packaging), and because it reads as
+  "premium tech" rather than "gamer neon" when used sparingly.
+
+  Components deliberately NOT used: icon+heading+description cards,
+  numbered circular steps, pill badges, soft drop-shadow cards, emoji,
+  decorative underlines. Large photography blocks and dense data
+  tables carry the page instead.
+  ================================================================
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg: #0c0c0e;
+  --bg-raised: #17171a;
+  --bg-raised-2: #202024;
+  --ink: #f2efe9;
+  --ink-soft: #b6b2a9;
+  --ink-mute: #7c786f;
+  --line: #2c2c30;
+  --amber: #f2a71b;
+  --amber-deep: #c9860f;
+  --max: 1280px;
+  --head: 'Bricolage Grotesque', sans-serif;
+  --body: 'Manrope', -apple-system, sans-serif;
+  --mono: 'Space Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 2.5rem; }
+.bleed { width: 100%; }
+
+.proto-ribbon {
+  background: var(--amber);
+  color: #1a1200;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 0.65rem 1.25rem;
+  text-align: center;
+  line-height: 1.6;
+  font-weight: 700;
+}
+.proto-ribbon a { color: #1a1200; text-decoration: underline; }
+
+/* ---- Header --------------------------------------------------- */
+header.site {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.site-header-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 0; gap: 2rem; }
+.wordmark {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.wordmark span { color: var(--amber); }
+
+nav.primary { display: flex; align-items: center; gap: 2rem; }
+nav.primary a {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+nav.primary a:hover, nav.primary a:focus-visible, nav.primary a.current { color: var(--ink); }
+nav.primary a.nav-cta { display: none; }
+.nav-cta {
+  background: var(--amber);
+  color: #1a1200;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.7rem 1.4rem;
+  text-decoration: none;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.nav-cta:hover, .nav-cta:focus-visible { background: #ffbb3d; }
+.nav-toggle { display: none; background: none; border: none; color: var(--ink); font-size: 1.8rem; cursor: pointer; }
+
+/* ---- Hero: full-bleed photography, minimal overlay text ----------*/
+.hero { position: relative; }
+.hero-media { position: relative; height: 78vh; min-height: 480px; max-height: 800px; overflow: hidden; }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; }
+.hero-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(12,12,14,1) 0%, rgba(12,12,14,0.55) 42%, rgba(12,12,14,0.05) 75%);
+}
+.hero-copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 2.5rem 3.5rem; }
+.hero-copy-inner { max-width: var(--max); margin: 0 auto; }
+.hero-eyebrow { font-family: var(--mono); color: var(--amber); font-size: 0.85rem; letter-spacing: 0.04em; margin: 0 0 1rem; }
+.hero h1 {
+  font-family: var(--head);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 1.02;
+  margin: 0 0 1.25rem;
+  max-width: 16ch;
+}
+.hero p.lede { font-size: 1.15rem; color: var(--ink-soft); max-width: 46ch; margin: 0 0 2rem; }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn {
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.9rem 1.75rem;
+  border-radius: 2px;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary { background: var(--amber); color: #1a1200; }
+.btn-primary:hover, .btn-primary:focus-visible { background: #ffbb3d; }
+.btn-secondary { background: rgba(255,255,255,0.08); color: var(--ink); border: 1px solid var(--line); }
+.btn-secondary:hover, .btn-secondary:focus-visible { background: rgba(255,255,255,0.16); }
+
+/* ---- Section rhythm ------------------------------------------- */
+section { padding: 6rem 0; }
+section.raised { background: var(--bg-raised); }
+.section-head { max-width: 640px; margin-bottom: 3rem; }
+.section-head .eyebrow { font-family: var(--mono); color: var(--amber); font-size: 0.85rem; margin: 0 0 1rem; }
+.section-head h2 { font-family: var(--head); font-weight: 700; font-size: clamp(2rem, 3.6vw, 2.8rem); margin: 0 0 1rem; line-height: 1.08; }
+.section-head p { color: var(--ink-soft); font-size: 1.08rem; margin: 0; max-width: 56ch; }
+
+/* ---- Product spread — photo dominant, data secondary ------------*/
+.product-spread { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+@media (min-width: 960px) { .product-spread { grid-template-columns: 1.3fr 1fr; gap: 3.5rem; align-items: center; } }
+.product-photo { position: relative; border-radius: 4px; overflow: hidden; background: var(--bg-raised); }
+.product-photo img { width: 100%; }
+.status-flag {
+  position: absolute; top: 1.25rem; left: 1.25rem;
+  font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 0.4rem 0.8rem; border-radius: 2px; background: rgba(12,12,14,0.85); color: var(--amber);
+  border: 1px solid var(--amber);
+}
+.status-flag.sold { color: var(--ink-mute); border-color: var(--line); }
+.status-flag.demo { color: #ffbb3d; border-color: #ffbb3d; }
+
+.product-info h3 { font-family: var(--head); font-weight: 700; font-size: 2rem; margin: 0 0 0.5rem; line-height: 1.1; }
+.product-price { font-family: var(--mono); font-size: 1.5rem; color: var(--amber); margin: 0 0 1.75rem; }
+
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.5rem; margin-bottom: 1.75rem; font-family: var(--mono); font-size: 0.92rem; }
+.spec-grid div { padding: 0.65rem 0; border-bottom: 1px solid var(--line); }
+.spec-grid .k { color: var(--ink-mute); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 0.2rem; }
+
+.fps-line { font-family: var(--mono); font-size: 0.88rem; color: var(--ink-soft); margin: 0 0 1.75rem; }
+.fps-line b { color: var(--ink); }
+
+/* ---- Gallery — large asymmetric photography blocks ---------------*/
+.photo-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; }
+.photo-wall a { overflow: hidden; border-radius: 3px; }
+.photo-wall a img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.photo-wall a:hover img { transform: scale(1.04); }
+.photo-wall a:nth-child(1) { grid-column: span 4; aspect-ratio: 21/9; }
+@media (min-width: 700px) {
+  .photo-wall a:nth-child(1) { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+  .photo-wall a:nth-child(n+2) { grid-column: span 1; aspect-ratio: 1/1; }
+}
+
+/* ---- Trust / about — large statement + photo, no cards -----------*/
+.trust-layout { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center; }
+@media (min-width: 960px) { .trust-layout { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+.trust-statement { font-family: var(--head); font-weight: 600; font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.35; margin: 0 0 1.5rem; }
+.trust-statement .amber { color: var(--amber); }
+.trust-body p { color: var(--ink-soft); font-size: 1.02rem; }
+.about-portrait { border-radius: 4px; background: var(--bg-raised); aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center; color: var(--ink-mute); text-align: center; padding: 2rem; border: 1px dashed var(--line); font-size: 0.9rem; }
+
+/* ---- Services — dense list, dark rows ----------------------------*/
+.service-list { border-top: 1px solid var(--line); }
+.service-item { display: grid; grid-template-columns: 1fr; gap: 0.5rem; padding: 1.75rem 0; border-bottom: 1px solid var(--line); }
+@media (min-width: 800px) { .service-item { grid-template-columns: 0.8fr 1.6fr auto; align-items: center; gap: 2rem; } }
+.service-item h3 { font-family: var(--head); font-weight: 700; font-size: 1.25rem; margin: 0; }
+.service-item p { margin: 0; color: var(--ink-soft); }
+.service-item a { font-family: var(--mono); font-size: 0.85rem; color: var(--amber); text-decoration: none; white-space: nowrap; }
+.service-item a:hover { text-decoration: underline; }
+
+/* ---- CTA ----------------------------------------------------------*/
+.cta-block { background: var(--bg-raised-2); border-radius: 6px; padding: 4.5rem 3rem; text-align: center; }
+.cta-block h2 { font-family: var(--head); font-weight: 700; font-size: clamp(1.9rem, 3.6vw, 2.6rem); margin: 0 0 1rem; }
+.cta-block p { color: var(--ink-soft); max-width: 50ch; margin: 0 auto 2rem; font-size: 1.05rem; }
+
+/* ---- Footer ---------------------------------------------------------*/
+footer.site { border-top: 1px solid var(--line); padding: 3rem 0 2.5rem; font-size: 0.9rem; color: var(--ink-mute); }
+.footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.5rem; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; }
+.footer-links a { color: var(--ink-soft); text-decoration: none; }
+.footer-links a:hover { color: var(--amber); }
+
+/* ---- Build detail --------------------------------------------------*/
+.build-header { padding: 2rem 0 1rem; }
+.breadcrumb { font-size: 0.9rem; color: var(--ink-mute); text-decoration: none; font-family: var(--mono); }
+.breadcrumb:hover { color: var(--amber); }
+.build-layout { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+@media (min-width: 980px) { .build-layout { grid-template-columns: 1.35fr 1fr; gap: 4rem; } }
+.build-gallery-main { border-radius: 4px; overflow: hidden; margin-bottom: 1rem; background: var(--bg-raised); }
+.build-thumbs { display: flex; gap: 0.75rem; }
+.build-thumbs img { width: 76px; height: 76px; object-fit: cover; border-radius: 3px; cursor: pointer; opacity: 0.45; border: 2px solid transparent; transition: opacity 0.2s ease, border-color 0.2s ease; }
+.build-thumbs img.active, .build-thumbs img:hover { opacity: 1; border-color: var(--amber); }
+
+.full-spec-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.95rem; margin: 1.5rem 0 2rem; }
+.full-spec-table tr { border-bottom: 1px solid var(--line); }
+.full-spec-table td { padding: 0.9rem 0; }
+.full-spec-table td:first-child { color: var(--ink-mute); width: 40%; text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.03em; }
+.full-spec-table td:last-child { text-align: right; color: var(--ink); }
+.full-spec-table tr.demo td:first-child::after { content: " · demo"; color: var(--amber-deep); text-transform: none; }
+
+.perf-panel { background: var(--bg-raised); border-radius: 4px; padding: 1.5rem 1.75rem; margin-bottom: 1.75rem; }
+.perf-panel h4 { font-family: var(--head); font-weight: 700; font-size: 1.05rem; margin: 0 0 1rem; }
+.perf-row { display: flex; justify-content: space-between; padding: 0.45rem 0; font-family: var(--mono); font-size: 0.9rem; }
+.perf-row span:last-child { color: var(--amber); }
+
+.sold-panel { border: 1px solid var(--line); border-radius: 4px; padding: 1.5rem 1.75rem; margin-top: 1.5rem; }
+.sold-panel p { margin: 0 0 1rem; color: var(--ink-soft); }
+
+.testing-note { margin-top: 3rem; color: var(--ink-soft); max-width: 60ch; }
+.testing-note .eyebrow { font-family: var(--mono); color: var(--amber); font-size: 0.85rem; display: block; margin-bottom: 0.75rem; }
+
+/* ---- Mobile nav -------------------------------------------------- */
+@media (max-width: 780px) {
+  nav.primary { position: fixed; inset: 0; background: var(--bg); flex-direction: column; align-items: flex-start;
+    justify-content: center; padding: 2rem 2.5rem; gap: 2rem; transform: translateX(100%); transition: transform 0.25s ease; z-index: 50; }
+  nav.primary.open { transform: translateX(0); }
+  nav.primary a { font-size: 1.5rem; }
+  .header-cta { display: none; }
+  nav.primary a.nav-cta { display: inline-block; margin-top: 1rem; }
+  .nav-toggle { display: block; }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 1.5rem; }
+  section { padding: 3.5rem 0; }
+  .hero-copy { padding: 0 1.5rem 2.5rem; }
+  .cta-block { padding: 3rem 1.5rem; }
+}
+
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }

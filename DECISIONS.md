@@ -750,6 +750,124 @@ original audit's finding on `gallery.js`/`builds.js` duplication risk.
 
 ---
 
+### D23 — Redesign Batch 1: homepage visual redesign ("Forge" direction)
+
+**Context**: after the design-review phase and three disposable visual
+prototypes, owner chose Prototype 3 ("Forge" — dark, amber accent,
+Bricolage Grotesque/Manrope/Space Mono type system, photography-led,
+evidence-based trust) as the foundation for a real redesign. Explicit
+instruction: preserve the data/build architecture, but restructure
+presentation-level HTML where it's inherently tied to the old visual
+language (icon+heading+description cards, numbered circles). Batch 1
+scope: homepage only.
+
+**Architecture decision — isolation strategy**: rather than editing
+`tokens.css`/`base.css`/`style.css` in place (which would instantly
+change every other page's colors, since they're shared), added a new
+`css/homepage-forge.css`, loaded only by `index.html`, that redefines
+the site's existing CSS custom properties (`--bg`, `--accent`, etc.)
+scoped under a new `body.theme-forge` class. This re-themes every
+shared component (header, footer, nav, buttons, forms) automatically
+via the cascade, with zero changes to the shared stylesheets — that's
+exactly what the token system was built for. New typography tokens
+(`--font-heading`/`--font-mono`, new concepts) follow the same
+pattern. Confirmed by direct diff: all 9 other pages are byte-for-byte
+identical to before this batch; nothing outside `index.html` and the
+new CSS file references `theme-forge` anywhere.
+
+**A real structural conflict found and resolved**: `#trust-cards` and
+`#process-steps` (the old "Why North Bridge PCs" cards and 5-step
+numbered-circle process) are populated by `js/render/trustSection.js`
+— which is **shared with `build.html`**. Restructuring that file's
+output would have redesigned build.html's trust section too, violating
+the "homepage only" scope. Resolved by no longer calling that shared
+function from `index.html` at all (removed the script tag and the two
+container divs) and writing new, homepage-only markup instead — the
+file itself and build.html's usage of it are completely untouched.
+Same reasoning applied to `buildCard.js`'s `renderEmptyBuildsState()`:
+confirmed via grep that only `index.html` calls it (`builds.html` uses
+`renderNotifyBox()` for its own empty state instead), so it was safe
+to restyle directly without any risk to `builds.html`.
+
+**Changed** (`pages-src/index.html`, `js/render/buildCard.js`,
+new `css/homepage-forge.css`):
+- Hero: full-bleed-leaning photo treatment (dark scrim, text overlaid
+  at the bottom on desktop; stacks normally on mobile/tablet). Same
+  `onerror` fallback mechanism as before for the still-missing hero
+  photo, with non-developer-facing placeholder copy ("Photo coming
+  soon" instead of "Add hero-build.jpg to the images folder" — this
+  was already a flagged issue from the original audit, fixed as a
+  natural side effect of touching this section anyway).
+- Replaced the old "Why North Bridge PCs" cards + separate "Testing &
+  Setup Process" numbered-circle section with **one** new "Evidence"
+  section: a bold lead statement plus a plain, non-circular checklist
+  of the same 5 real testing steps. Built entirely from the exact same
+  real facts already in `trustSection.js` — nothing invented, just
+  restructured, and the two old sections' redundancy is gone.
+- "Custom Builds Around Your Budget": replaced the numbered-circle
+  process list and highlight-box pricing cards with a plain divided
+  list and a dense monospace price/description table. Same real copy.
+- Gallery preview: zero changes to the JS/data logic (D22's
+  available-first/sold-fallback/video-support behavior is completely
+  untouched) — only a new CSS-only asymmetric grid (one large photo +
+  two smaller ones) via `:nth-child` spans, scoped to `theme-forge`.
+- FAQ, waitlist form, back-to-top, nav, footer: unchanged structurally,
+  re-themed automatically via the token cascade plus a few explicit
+  overrides (see below).
+
+**Contrast fix required**: the old accent-driven components
+(`.btn-primary`, `.back-to-top`) hardcode `color: white` on top of
+`var(--accent-h)` — safe with the old blue, but white-on-amber fails
+contrast badly. Overrode those specific rules to dark text
+(`#1a1200`) within the new scope, matching what already worked well
+in the approved prototype.
+
+**Hardcoded-blue sweep**: searched the whole stylesheet for
+`rgba(59,130,246,...)` (the old blue, written as raw rgba instead of
+a token in several places) and found it in more places than expected:
+`.hero-eyebrow`, `.faq-icon`, `.faq-item.open`, `.form-privacy`,
+`.build-perf`, `.nav-link.active`/`.nav-dropdown-link.active`/
+`.nav-sublink.active`, on top of the buttons/back-to-top already
+mentioned. All overridden to amber-tinted equivalents within
+`theme-forge`. `.build-perf` doesn't render today (no available
+builds) but was fixed anyway for whenever inventory appears.
+
+**Bugs found and fixed during verification** (real screenshots, not
+just code review):
+- The empty-state box only filled one column of the underlying
+  3-column `.builds-grid`, leaving a large empty gap — added
+  `grid-column: 1 / -1` plus a max-width so it reads as one centered
+  box instead.
+- On mobile/tablet, the hero headline visually overlapped the photo
+  placeholder. Root cause: `.hero-copy` was nested *inside*
+  `.hero-media-frame`, whose `aspect-ratio` + `overflow: hidden`
+  prevented it from growing to fit the copy's content, so the two
+  overlapped instead of stacking. Fixed by making `.hero-copy` a
+  sibling of `.hero-media-frame` instead of a child, with
+  `.hero-inner` as their shared positioning context — confirmed via
+  computed-style inspection before and after, not just visually.
+- A first attempt at a full-page screenshot of the hero looked broken
+  (image tiny, oddly placed) even though computed styles were already
+  correct — a `full_page=True` capture artifact specific to the
+  `vh`-based hero height, not a real bug. Confirmed by cross-checking
+  a plain viewport screenshot and `getBoundingClientRect()` directly.
+  Switched to segment-by-segment viewport screenshots for the rest of
+  the review to avoid the same artifact recurring.
+
+**Verified**: real Chromium rendering (Playwright) at desktop
+(1440px), tablet (768px), and mobile (390px), plus the mobile nav open
+state and the FAQ open state — not just code inspection. Zero
+horizontal overflow at any breakpoint (checked via
+`scrollWidth`, not just visually). Full JS syntax sweep, HTML
+tag-balance check, `stitch.py` rebuild diffed byte-for-byte against
+shipped files for all 10 pages, and an explicit diff confirming the 9
+non-homepage pages are unchanged.
+
+**Decided by:** owner's redesign-implementation instructions (Batch 1
+of the "keep the engine, redesign the body" plan).
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
