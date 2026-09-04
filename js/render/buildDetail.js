@@ -221,19 +221,19 @@ function initBuildDetailPage() {
   }
 
   // ---- Trust section (shared content, own wrapper) ----
+  // Redesign Batch 2: was a 3-card icon/heading/description grid plus a
+  // numbered-circle 5-step strip (renderTrustCards() + renderProcessSteps()).
+  // Both are replaced by renderTrustEvidence(), one function in
+  // trustSection.js that outputs the same real facts as a lead statement
+  // plus a plain checklist — the "evidence" pattern already shipped on the
+  // homepage in Batch 1. See trustSection.js for why this was safe to change.
   var trustHtml =
     '<div class="trust-section">' +
       '<div class="section-header" style="text-align:left; margin-bottom:2rem;">' +
         '<span class="section-label">Why North Bridge PCs</span>' +
         '<h2 style="font-size:1.5rem;">What You\'re Getting</h2>' +
       '</div>' +
-      '<div style="margin-bottom:3rem;">' + renderTrustCards() + '</div>' +
-      '<div class="listing-process">' +
-        '<div class="section-label" style="display:block; margin-bottom:0.5rem;">Before Pickup</div>' +
-        '<h3 style="margin-bottom:0.25rem;">Testing &amp; Setup Process</h3>' +
-        '<p style="font-size:0.9rem; margin-bottom:0; line-height:1.6;">Every system goes through the same checklist before it\'s ready to hand off.</p>' +
-        renderProcessSteps() +
-      '</div>' +
+      renderTrustEvidence() +
     '</div>';
 
   // ---- Browse more CTA ----

@@ -18,15 +18,16 @@ site's constraint carries over — no server-side backend, no database).
 
 ## Current phase
 
-**Post-launch audit implementation** (in progress)
+**Visual redesign ("Forge")** — Batch 1 (homepage) and Batch 2 (rest of
+the site) are both implemented and self-tested. Nothing here has been
+seen by the owner yet in a real browser — see "Redesign implementation
+plan" below for exactly what changed and the honest limits of what
+could be tested in this environment.
 
-The original build (Phases 0–8) is functionally complete. Owner ran a
-full audit of the finished site (visual/design, UX/conversion,
-inventory, forms, accessibility, SEO, performance, architecture,
-maintainability, future-readiness, content accuracy, project
-cleanliness) and is now working through the findings in small,
-verified batches before any visual redesign. See "Audit implementation
-plan" below.
+The original build (Phases 0–8) and the full post-launch audit
+implementation are functionally complete (see "Completed so far"
+below). Everything from here on is visual redesign work, not audit
+follow-up.
 
 ## Completed so far
 
@@ -491,11 +492,73 @@ visual language. Working in small batches, one page group at a time,
 verified and documented before moving on.
 
 - [x] **Batch 1 — Homepage.** Done, see above / D23.
-- [ ] Remaining pages (builds/build-detail, services, about, contact,
-      gallery, FAQ, part-boxes) — not started, batched separately per
-      owner's direction. `js/render/trustSection.js` and
-      `buildCard.js`'s shared card renderer still serve their original
-      look on every page except the homepage until their turn comes.
+- [x] **Batch 2 — Rest of the site.** Done, see D24 for full rationale.
+      All 9 remaining customer-facing pages redesigned in one pass, as
+      the owner asked: builds.html, build.html, services.html,
+      about.html, contact.html, gallery.html, faq.html,
+      custom-build.html, part-boxes.html. Summary of what actually
+      changed (not just the plan — this is the as-shipped state):
+      - `css/homepage-forge.css` → `css/theme.css`, unscoped from
+        `body.theme-forge` to plain global rules (that class no
+        longer exists anywhere). Every page now loads
+        `<link rel="stylesheet" href="css/theme.css">` as its last
+        stylesheet. `pages-src/index.html`'s `<body class="theme-forge">`
+        is back to a plain `<body>`.
+      - `theme.css` picked up a few more hardcoded-blue instances only
+        reachable from the other 9 pages (`.page-hero` gradient,
+        `.tier-badge`, `.box-category`, `.listing-perf-card`,
+        `.listing-system-badge`, `.listing-form-card`) on top of
+        everything Batch 1 already swept.
+      - `js/render/trustSection.js` was rewritten (this was the
+        "safe to touch now" item flagged below) — the old 3
+        icon-cards + numbered 5-step strip are gone, replaced by one
+        `renderTrustEvidence()` function outputting the same
+        `.evidence`/`.evidence-checklist` pattern Batch 1 shipped on
+        the homepage, with the *same real copy* reused verbatim (not
+        reworded) — same facts, same visual language, both places.
+        `js/render/buildDetail.js` was updated to call it; the old
+        `.listing-process` boxed wrapper is gone too (the evidence
+        pattern doesn't need it).
+      - `custom-build.html`'s numbered-circle 6-step process
+        (`.process-list`/`.pl-num`) is now a `.cb-list`/`.cb-row`
+        divided list (same pattern as the homepage's custom-builds
+        section) with plain mono step numbers instead of filled
+        circles. Tier cards kept their existing markup — just
+        re-themed (badge color, border) via `theme.css`.
+      - `contact.html`'s 4 boxed `.contact-info-card`s are now a
+        `.cb-list`/`.cb-row` divided list too (same reasoning: no
+        icon, no card boundary needed for 4 short facts). The `h2`s
+        inside were preserved as `h2` (not downgraded) to keep the
+        heading-hierarchy fix from the post-audit pass intact.
+      - `about.html` got one small addition: a new `.lede` utility
+        class on the opening paragraph. No content changes.
+      - `services.html`, `builds.html`, `build.html`, `gallery.html`,
+        `faq.html`, `part-boxes.html` needed no markup changes beyond
+        the `theme.css` link — their existing cards/grids already read
+        colors from CSS custom properties, so they re-themed
+        automatically via the token cascade.
+      - Dead CSS from the removed patterns was cleaned up, not just
+        orphaned: `.card-icon`, `.process-list`/`.process-list-item`/
+        `.pl-num`/`.pl-content`, `.process-steps`/`.process-step`/
+        `.step-num`/`.step-icon` (all 4 of its responsive breakpoints
+        too), and `.listing-process` are all gone from
+        `style.css`/`build-detail.css`, confirmed zero remaining
+        references anywhere in the codebase before removal.
+      - **Testing performed, and its honest limits:** `stitch.py`
+        rebuild succeeded (10/10 pages). Every touched JS file passes
+        `node --check`. Every touched CSS file parses cleanly under a
+        real CSS parser (not just brace-counting). A jsdom-based smoke
+        test (`smoke-test.js`, left in the repo root) loads all 10
+        built pages, runs their real scripts, and asserts on the
+        resulting DOM — including loading `build.html?id=may26-01`
+        (a real inventory entry) and confirming the evidence section
+        renders with 5 rows and zero leftover old markup. **What this
+        is not:** real-browser visual verification. `npx playwright
+        install chromium` was attempted and fails cleanly at the
+        browser-binary download step — this sandbox's network
+        allowlist doesn't include Playwright's CDN. No screenshots
+        exist for Batch 2. The owner has not seen any of this in an
+        actual browser yet.
 
 **Explicitly deferred until after the above + a real visual redesign
 phase** (owner will provide screenshots/browser views for that phase):

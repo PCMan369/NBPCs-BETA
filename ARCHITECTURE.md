@@ -20,7 +20,12 @@ before you push, not in the browser. The output is still plain static HTML.
 ├── css/
 │   ├── tokens.css      — design tokens (colors, spacing, radii, shadows)
 │   ├── base.css         — reset, accessibility & responsive foundations
-│   └── style.css        — component styles (Phase 2+)
+│   ├── style.css        — component styles (Phase 2+)
+│   ├── gallery.css      — gallery grid + lightbox (gallery.html, build.html)
+│   └── homepage-forge.css — NEW visual redesign (see "Visual redesign
+│                            in progress" below) — currently homepage-only,
+│                            about to become sitewide and likely get
+│                            renamed to theme.css in the process
 ├── js/
 │   ├── data/             — YOUR CONTENT LIVES HERE. Edit these, not HTML.
 │   │   ├── config.js      — feature toggles + site identity + contact routing
@@ -129,6 +134,45 @@ derived from it). No JS-based theme switcher yet — pure CSS, so it works
 even with JS disabled. A manual toggle can be layered on later without
 restructuring the tokens, per the project brief's future-proofing
 requirement.
+
+## Visual redesign in progress (see DECISIONS.md D22/D23)
+
+The owner is redesigning the site's visual language (new dark/amber
+"Forge" direction) in batches, on top of the architecture above —
+this section exists so a new session picks up the *current*
+in-progress state correctly rather than assuming the original design
+described elsewhere in this doc is still final.
+
+**Pattern**: rather than editing `tokens.css`/`base.css`/`style.css`
+in place, the new look is layered on via `css/homepage-forge.css`,
+which redefines the site's existing CSS custom properties
+(`--bg`, `--accent`, etc.) plus new typography tokens
+(`--font-heading`, `--font-mono`). Because every existing component
+already reads its colors from these custom properties rather than
+hardcoded values, redefining the *values* re-themes the whole shared
+header/footer/button/form system automatically, with no changes
+needed to the base stylesheets. A few shared rules that hardcoded the
+old blue directly (raw `rgba(59,130,246,...)` instead of a token, or
+`color: white` assumed safe against the old accent) needed explicit
+overrides — see D23 for the full list found so far.
+
+**Status as of this note**: Batch 1 (homepage only) is done and
+shipped. It's scoped to `body.theme-forge` (only `index.html` has that
+class) specifically so it couldn't affect any other page while only
+one page was redesigned — confirmed by diffing that the other 9 pages
+were byte-for-byte unchanged. The remaining pages
+(builds/build-detail/services/about/contact/gallery/faq/custom-build/
+part-boxes) are planned but **not started** — see PROJECT_STATUS.md's
+"Redesign implementation plan" for the concrete next-session plan,
+including renaming this file to `theme.css` and dropping the
+`theme-forge` scoping once it goes sitewide (the scoping was only
+needed to isolate Batch 1, not a permanent pattern).
+
+**Also still using the old visual language until their turn comes**:
+`js/render/trustSection.js` (icon-card trust section + numbered-circle
+testing steps, currently only called by `build.html` since the
+homepage stopped using it in Batch 1) and the general card/badge
+styling in `style.css` that every non-homepage page still uses as-is.
 
 ## What's deliberately NOT built yet
 

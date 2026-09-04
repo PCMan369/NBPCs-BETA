@@ -868,6 +868,113 @@ of the "keep the engine, redesign the body" plan).
 
 ---
 
+### D24 — Redesign Batch 2: rest of the site, same "Forge" direction
+
+**Context:** With D23 (homepage) shipped and approved as a direction,
+owner asked for the remaining 9 customer-facing pages redesigned in
+one pass — not the page-by-page/owner-sign-off-between-each-page
+approach Batch 1 used, since the direction itself was already settled.
+
+**What changed:**
+- `css/homepage-forge.css` renamed to `css/theme.css`, and every rule
+  unscoped from `body.theme-forge` to a plain global selector. That
+  class doesn't exist anywhere in the codebase anymore. Every page
+  (not just the homepage) now loads `theme.css` as its last
+  stylesheet, so the dark/amber palette applies sitewide.
+- New hardcoded-blue sweep entries only reachable from the other 9
+  pages: `.page-hero`'s background gradient, `.tier-badge`,
+  `.box-category`, `.listing-perf-card`, `.listing-system-badge`,
+  `.listing-form-card`. Same reasoning as D23's sweep — these set a
+  raw `rgba(59,130,246,...)` instead of referencing a token, so they
+  didn't pick up the palette change automatically.
+- `js/render/trustSection.js` — the shared "Why North Bridge PCs"
+  content — was redesigned directly, per the finding recorded in the
+  Batch 2 plan: it had exactly one remaining caller (`build.html`,
+  via `buildDetail.js`) since D23 already moved the homepage onto its
+  own hardcoded evidence section. The old output (3 icon+heading+
+  description cards, then a numbered-circle 5-step strip under a
+  second heading) is replaced by one `renderTrustEvidence()` function
+  that outputs the same `.evidence` lead-statement-plus-checklist
+  pattern already shipped on the homepage — and reuses that exact
+  copy verbatim, since it's the same real facts already written and
+  approved once. `buildDetail.js` was updated to call it and to drop
+  the now-unnecessary `.listing-process` box wrapper.
+- `custom-build.html`'s 6-step "How a Custom Build Works" list: the
+  numbered-circle `.process-list`/`.pl-num` markup is replaced with
+  the `.cb-list`/`.cb-row` divided-list pattern (the same one the
+  homepage uses for its custom-builds section) — plain mono step
+  numbers (`01`–`06`) inline with each heading instead of filled
+  circles. The `h3` on each step was kept (not flattened to a plain
+  `<strong>`), so the page's heading hierarchy is unchanged. Tier
+  cards (the 3-column pricing examples) kept their existing markup —
+  only their badge/border colors were re-themed via `theme.css`; a
+  full restructure wasn't judged necessary since they're not an
+  icon-card or numbered-circle pattern, just a card with real
+  structured content (features list, price, CTA) that a plain list
+  would have flattened awkwardly.
+- `contact.html`'s 4 `.contact-info-card` boxes (Response Time,
+  Pickup Location, Custom Builds, Linux Available) are replaced with
+  the same `.cb-list`/`.cb-row` pattern — no icon, no numbered circle,
+  but a boxed-card treatment for 4 one-line facts didn't fit Forge's
+  "plain divided list over card grid" language either. The `h2` on
+  each item was kept as `h2` specifically to preserve the
+  heading-hierarchy fix from the post-audit accessibility pass (those
+  were promoted from `h3` to `h2` in that earlier work — see the
+  Phase 7 testing section above).
+- `about.html` got one small, low-risk addition: a `.lede` utility
+  class (new, not tied to removing any old pattern) on the opening
+  paragraph for a bit of editorial weight. No copy changes.
+- `services.html`, `builds.html`, `build.html`, `gallery.html`,
+  `faq.html`, `part-boxes.html` needed no markup restructuring at
+  all — every card/grid on those pages already reads its colors from
+  CSS custom properties, so they re-themed automatically once
+  `theme.css` was linked. This was confirmed by grep before assuming
+  it, not just assumed: a sweep for the old card/icon/numbered-circle
+  class names (`card-icon`, `process-list`, `process-step`,
+  `tier-card`, `contact-info-card`, bare `class="card"`) turned up
+  exactly the instances listed above and nothing else.
+- Dead CSS from every removed pattern was deleted, not left behind:
+  `.card-icon`, `.process-list`/`.process-list-item`/`.pl-num`/
+  `.pl-content`, `.process-steps`/`.process-step`/`.step-num`/
+  `.step-icon` (including all 4 of its responsive-breakpoint
+  overrides), and `.listing-process` are gone from
+  `style.css`/`build-detail.css`. Confirmed via grep that nothing in
+  any HTML or JS file referenced them before removing them.
+
+**Verified:** `stitch.py` rebuild succeeded for all 10 pages, no
+stale `homepage-forge`/`theme-forge` references and no unfilled
+`{{...}}` build tokens left in the output. Every JS file in the
+project passes `node --check`. Every CSS file touched this batch
+parses cleanly under a real CSS parser (not just brace-counting —
+a brace-matching mistake made mid-edit while removing dead CSS was
+caught this way and fixed immediately). A jsdom-based smoke test
+(`smoke-test.js`, left in the repo root for reuse) loads all 10 built
+pages, executes their real scripts, and asserts on the resulting DOM:
+no script errors on any page, the homepage's `theme-forge` class is
+gone, `custom-build.html` has exactly 6 `.cb-row` steps and zero
+`.process-list` markup, `contact.html` has exactly 4 `.cb-row` items
+and zero `.contact-info-card` markup, and — loading
+`build.html?id=may26-01` (a real inventory entry, not a placeholder)
+— the evidence section renders with exactly 5 rows and zero leftover
+`.card`/`.process-steps` markup in the trust section.
+
+**What was NOT verified, and why:** real-browser visual rendering.
+Unlike Batch 1 (D23 above), this session's sandbox has no working
+browser — `npx playwright install chromium` was attempted and fails
+cleanly at the browser-binary download step (its CDN isn't in this
+environment's network allowlist; the `playwright` npm package itself
+installs fine, only the actual Chromium binary download is blocked).
+No screenshots exist for Batch 2, at any breakpoint. Everything above
+is DOM-structure and no-JS-error verification, not "does it look
+right." The owner has not seen any of Batch 1 or Batch 2 in an actual
+browser yet — that's the natural next step, not something this
+session could complete on its own.
+
+**Decided by:** owner's redesign-implementation instructions ("start
+Batch 2" — the remaining 9-page redesign, all in one pass).
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

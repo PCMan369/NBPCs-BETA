@@ -385,3 +385,38 @@ verification.
 Remaining from this critique round: #2 (pre-render JS-driven content
 into static HTML), #3 (blocked on a real hero photo from the owner),
 and the homepage gallery-preview logic change.
+
+## Phase 8 onward — post-launch audit, accessibility/reliability batches, visual redesign (see DECISIONS.md / PROJECT_STATUS.md for full detail)
+
+This changelog fell behind the project's actual pace after Phase 7 —
+DECISIONS.md and PROJECT_STATUS.md are the up-to-date, authoritative
+record from this point forward; this entry is a pointer, not a full
+backfill. Since Phase 7:
+
+- A full owner-requested audit of the finished site (visual, UX,
+  accessibility, SEO, performance, architecture, content accuracy,
+  cleanliness) — see the audit findings folded into DECISIONS.md
+  D16 onward.
+- Four verified implementation batches: waitlist/SITE_URL reliability
+  fixes (D16–D18), keyboard-accessible galleries + `aria-live` form
+  status (D19), lightbox focus management (D20), touch target sizing
+  (D21).
+- Homepage gallery-preview rebuilt to source directly from `builds.js`
+  instead of a separate, already-drifted photo list, with sold-PC
+  fallback and video-clip support added to the shared lightbox (D22).
+- A design-review phase: three disposable visual-direction prototypes
+  built in `design-prototypes/` (not part of the production site) —
+  owner chose Prototype 3 ("Forge": dark, amber accent, Bricolage
+  Grotesque/Manrope/Space Mono type system) as the redesign direction.
+- Redesign Batch 1 (homepage only) implemented and shipped — new
+  evidence-based trust section replacing icon cards and numbered
+  circles, restructured custom-builds section, asymmetric gallery
+  grid, all built from existing real content (D23).
+- Redesign Batch 2 (every other customer-facing page) implemented and
+  self-tested — same evidence pattern and divided-list pattern
+  extended sitewide, `homepage-forge.css` renamed to `theme.css` and
+  unscoped globally, dead CSS from the removed patterns cleaned up
+  (D24). Not yet seen by the owner in a real browser — see
+  PROJECT_STATUS.md's "Redesign implementation plan" for the full
+  as-shipped detail and the honest limits of what could be tested in
+  this environment.

@@ -346,23 +346,16 @@ video.gallery-main-img.active {
   font-size: 0.88rem;
 }
 
-/* ---- Trust section (shared content via js/render/trustSection.js) ---- */
+/* ---- Trust section (shared content via js/render/trustSection.js) ----
+   Was a boxed .listing-process card wrapping the numbered-circle
+   .process-steps strip. Redesign Batch 2 replaced both the 3 trust
+   cards and the 5-step strip with the .evidence pattern (see
+   theme.css) — trustSection.js now renders that directly, so no
+   extra box wrapper is needed here. See DECISIONS.md D24. */
 .trust-section {
   border-top: 1px solid var(--border);
   padding-top: 4rem;
   margin-top: 1rem;
-}
-
-.listing-process {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  margin-top: 3rem;
-}
-
-.listing-process .process-steps {
-  margin-top: 1.5rem;
 }
 
 /* ---- Sold state ---- */

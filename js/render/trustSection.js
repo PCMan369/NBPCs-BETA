@@ -2,64 +2,57 @@
   ================================================================
   js/render/trustSection.js — Shared Trust Content
   ================================================================
-  The "Why North Bridge PCs" cards and "Testing & Setup Process" steps
-  appear on both the homepage and every build detail page. The old site
-  had this copy-pasted verbatim in both places — this is the single
-  source of truth now. Each page keeps its own surrounding section
-  markup/heading (they're laid out slightly differently), but the actual
-  card/step content comes from here.
+  The "Why North Bridge PCs" content appears on build detail pages.
+  This is the single source of truth for that real content — as of
+  Redesign Batch 2, presented as one lead statement + a plain
+  checklist (the "evidence" pattern), matching what Batch 1 shipped
+  on the homepage. Same real facts, same visual language, both places.
+
+  Batch 1 moved the homepage off this shared function entirely (its
+  own evidence section is hardcoded directly in pages-src/index.html —
+  see the comment there) specifically so this file could be
+  redesigned later without any risk to the homepage. build.html is
+  now the only caller — see js/render/buildDetail.js.
+
+  Previously exported renderTrustCards() (3 icon+heading+description
+  cards) and renderProcessSteps() (5 numbered-circle steps)
+  separately; buildDetail.js assembled them under two headings. Both
+  are replaced by the single function below — buildDetail.js was
+  updated in the same pass, so this is not a breaking change to any
+  other caller (grep-confirmed: build.html/buildDetail.js is the only
+  consumer of this file).
   ================================================================
 */
 
-function renderTrustCards() {
+function renderTrustEvidence() {
   return (
-    '<div class="grid-3">' +
-      '<div class="card">' +
-        '<div class="card-icon">&#128269;</div>' +
-        '<h3>Tested Before It Leaves</h3>' +
-        '<p>Every system gets cleaned, stress tested under load, and temperatures checked ' +
-        'before it goes anywhere. You\'re not getting a gamble — you\'re getting a machine ' +
-        'that\'s been run through its paces.</p>' +
+    '<div class="evidence evidence-compact">' +
+      '<div>' +
+        '<p class="evidence-lead">Every system gets <span class="accent">cleaned, stress tested under load, and temperature-checked</span> before it goes anywhere.</p>' +
+        '<p class="evidence-sub">The specs listed are accurate — performance estimates are based on real-world expectations for that hardware, not cherry-picked benchmark runs. If a system has a limitation, I\'ll tell you. Based in Southern Oregon, pickup is in person — if you hit a snag after getting it home, you\'re reaching an actual person, not a ticket queue.</p>' +
       '</div>' +
-      '<div class="card">' +
-        '<div class="card-icon">&#128203;</div>' +
-        '<h3>Honest Specs, Realistic Numbers</h3>' +
-        '<p>The specs listed are accurate. The performance estimates are based on real-world ' +
-        'expectations for that hardware — not cherry-picked benchmark runs. If a system has ' +
-        'a limitation, I\'ll tell you.</p>' +
+      '<div class="evidence-checklist">' +
+        '<div class="evidence-row">' +
+          '<span class="mark">01</span>' +
+          '<div><h4>Cleaned</h4><p>Dust removed, thermal paste refreshed where needed. Clean inside and out.</p></div>' +
+        '</div>' +
+        '<div class="evidence-row">' +
+          '<span class="mark">02</span>' +
+          '<div><h4>Stress tested</h4><p>CPU and GPU pushed under sustained load to check for stability issues.</p></div>' +
+        '</div>' +
+        '<div class="evidence-row">' +
+          '<span class="mark">03</span>' +
+          '<div><h4>Temps checked</h4><p>Thermals verified under load. Nothing runs hot, no surprises after pickup.</p></div>' +
+        '</div>' +
+        '<div class="evidence-row">' +
+          '<span class="mark">04</span>' +
+          '<div><h4>Drivers updated</h4><p>GPU and system drivers current before handoff. Ready to game the same day.</p></div>' +
+        '</div>' +
+        '<div class="evidence-row">' +
+          '<span class="mark">05</span>' +
+          '<div><h4>Ready to use</h4><p>Plugged in and confirmed working on pickup. A finished computer, not a box of parts.</p></div>' +
+        '</div>' +
       '</div>' +
-      '<div class="card">' +
-        '<div class="card-icon">&#128205;</div>' +
-        '<h3>Local Pickup, Real Support</h3>' +
-        '<p>Based in Southern Oregon. Pickup is in person. If you hit a snag after getting ' +
-        'it home, reach out over email and I\'ll do my best to help. Not a ticket queue — ' +
-        'an actual person.</p>' +
-      '</div>' +
-    '</div>'
-  );
-}
-
-function renderProcessSteps() {
-  var steps = [
-    ['&#129535;', 'Cleaned', 'Dust removed, thermal paste refreshed where needed. Clean inside and out.'],
-    ['&#9889;', 'Stress Tested', 'CPU and GPU pushed under sustained load to check for stability issues.'],
-    ['&#127777;&#65039;', 'Temps Checked', 'Thermals verified under load. Nothing runs hot, no surprises after pickup.'],
-    ['&#128190;', 'Drivers Updated', 'GPU and system drivers current before handoff. Ready to game the same day.'],
-    ['&#9989;', 'Ready to Use', 'Plugged in and confirmed working on pickup. A finished computer, not a box of parts.']
-  ];
-
-  return (
-    '<div class="process-steps">' +
-      steps.map(function (s, i) {
-        return (
-          '<div class="process-step">' +
-            '<div class="step-num">' + (i + 1) + '</div>' +
-            '<div class="step-icon">' + s[0] + '</div>' +
-            '<h4>' + s[1] + '</h4>' +
-            '<p>' + s[2] + '</p>' +
-          '</div>'
-        );
-      }).join('') +
     '</div>'
   );
 }
