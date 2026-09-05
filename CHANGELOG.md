@@ -412,11 +412,36 @@ backfill. Since Phase 7:
   evidence-based trust section replacing icon cards and numbered
   circles, restructured custom-builds section, asymmetric gallery
   grid, all built from existing real content (D23).
-- Redesign Batch 2 (every other customer-facing page) implemented and
-  self-tested — same evidence pattern and divided-list pattern
-  extended sitewide, `homepage-forge.css` renamed to `theme.css` and
-  unscoped globally, dead CSS from the removed patterns cleaned up
-  (D24). Not yet seen by the owner in a real browser — see
+- Redesign Batch 2 (every other customer-facing page) implemented,
+  self-tested, and screenshot-checked in a real Chromium instance
+  across desktop/tablet/mobile (zero overflow, no regressions found)
+  — same evidence pattern and divided-list pattern extended sitewide,
+  `homepage-forge.css` renamed to `theme.css` and unscoped globally,
+  dead CSS from the removed patterns cleaned up (D24). The owner
+  hasn't reviewed it on their own machine/phone yet — see
   PROJECT_STATUS.md's "Redesign implementation plan" for the full
-  as-shipped detail and the honest limits of what could be tested in
-  this environment.
+  as-shipped detail.
+- Owner review of Batch 2 caught one real bug: `services.html`'s
+  "Request a Service" form-card had `max-width:640px` with no
+  centering margin, so it sat flush against the left edge of the
+  (much wider) container instead of centering under its heading like
+  every other constrained-width block on the site. Fixed by adding
+  `margin:0 auto` to match the same pattern already used correctly on
+  `about.html` and `custom-build.html`. Confirmed via a fresh
+  screenshot and re-run of `smoke-test.js`.
+- Owner then flagged a second, related-looking but actually different
+  centering issue: `part-boxes.html`'s "No Part Boxes Available Right
+  Now" empty state. Root cause wasn't a missing margin this time —
+  `.part-boxes-layout` is a fixed 2-column grid (content + 300px
+  "Your Request" sidebar), and hiding the sidebar via JS when there's
+  no inventory didn't collapse that column track, so the content area
+  stayed short of the full container width, shifted left. Fixed by
+  also collapsing `.part-boxes-layout` to a single column in that
+  same JS branch, and gave the shared `.empty-state` class (also used
+  by `build.html`'s "System Not Found" state) a `max-width:560px;
+  margin:0 auto` — matching the already-established
+  `.empty-state-forge` pattern from the homepage — so it reads as an
+  intentional centered card instead of a full-width stretch. Both
+  empty states improved as a result; re-verified with fresh
+  screenshots and a full-site overflow re-check (all 10 pages, still
+  zero overflow).

@@ -61,12 +61,11 @@
 
 ## Recommended
 
-- [ ] Review the Batch 1 + Batch 2 visual redesign in a real browser
-      (desktop and mobile) — everything so far has only been
-      structurally/functionally verified in this sandbox (jsdom, no
-      real browser available); see PROJECT_STATUS.md's "Redesign
-      implementation plan" for exactly what changed and what wasn't
-      tested
+- [ ] Take a look at the Batch 1 + Batch 2 visual redesign yourself, on
+      your own machine and phone — it's been screenshot-checked in a
+      real Chromium instance at desktop/tablet/mobile (zero overflow,
+      no visual regressions found), but that's Claude's own review,
+      not yours; see DECISIONS.md D24 for the full detail
 - [x] Fill in `[Your Name]` placeholder in `about.html` — done, "Jacob Skrove"
 - [ ] Decide whether to carry over the "sold" builds from the old site into
       the new sold-PC gallery, or start that section fresh

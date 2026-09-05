@@ -958,17 +958,47 @@ and zero `.contact-info-card` markup, and — loading
 — the evidence section renders with exactly 5 rows and zero leftover
 `.card`/`.process-steps` markup in the trust section.
 
-**What was NOT verified, and why:** real-browser visual rendering.
-Unlike Batch 1 (D23 above), this session's sandbox has no working
-browser — `npx playwright install chromium` was attempted and fails
-cleanly at the browser-binary download step (its CDN isn't in this
-environment's network allowlist; the `playwright` npm package itself
-installs fine, only the actual Chromium binary download is blocked).
-No screenshots exist for Batch 2, at any breakpoint. Everything above
-is DOM-structure and no-JS-error verification, not "does it look
-right." The owner has not seen any of Batch 1 or Batch 2 in an actual
-browser yet — that's the natural next step, not something this
-session could complete on its own.
+**Also verified, in a follow-up pass — real Chromium rendering.** The
+first pass of this batch (write-up above, kept as-is for the record)
+tried real-browser verification via `npx playwright install chromium`
+(Node/npm route) and that download failed cleanly — looked like a
+genuine environment limitation at the time. It wasn't: the correct
+route in this sandbox is Python, not Node. `pip install playwright
+--break-system-packages` came back "Requirement already satisfied"
+(the package is pre-baked into the image), and
+`python3 -m playwright install chromium` succeeded silently because
+the browser binary is *also* pre-baked, at a non-default location the
+`PLAYWRIGHT_BROWSERS_PATH` environment variable points to
+(`/opt/pw-browsers`) — not the default `~/.cache/ms-playwright` the
+Node CLI checks, which is why that route failed while this one
+didn't. **For any future session that needs real-browser verification
+in this environment: use `python3 -m playwright install chromium` +
+Playwright's Python API, not the Node/npx CLI.**
+
+With that working, all 10 pages were screenshotted at desktop
+(1440px), tablet (768px), and mobile (390px) — 30 screenshots total —
+plus a `scrollWidth` vs `clientWidth` check at every breakpoint on
+every page. Zero horizontal overflow anywhere. Visual spot-check
+confirmed: the evidence section on `build.html` renders correctly
+(lead statement, 5-row checklist, no leftover card/circle markup);
+`custom-build.html`'s `cb-list` steps and re-themed tier cards
+(amber badge, amber highlight border on the featured tier) render
+correctly at all 3 breakpoints, tier cards collapsing to one column
+on mobile; `contact.html`'s info list sits cleanly alongside the form
+card; the unscoped asymmetric gallery-grid rule (first item spanning
+2×2) now applies correctly to `gallery.html`'s real grids, not just
+the homepage preview; and the pages that got no markup changes
+(`services.html`, `builds.html`, `faq.html`, `part-boxes.html`,
+`about.html`) all re-themed automatically exactly as predicted, with
+no visual regressions. One cosmetic-only caveat: Google Fonts
+(Bricolage Grotesque/Manrope/Space Mono) don't load in this sandbox
+(no network access to `fonts.googleapis.com`), so screenshots show
+system-font fallback — this is a sandbox artifact, not a site bug;
+production will load the real fonts. Screenshots themselves weren't
+saved into the repo (a point-in-time QA artifact, not a project
+file), but the script that generates them was: `visual-check.py` in
+the repo root. Re-run it after future visual changes rather than
+trusting old screenshots.
 
 **Decided by:** owner's redesign-implementation instructions ("start
 Batch 2" — the remaining 9-page redesign, all in one pass).

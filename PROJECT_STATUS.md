@@ -19,10 +19,12 @@ site's constraint carries over — no server-side backend, no database).
 ## Current phase
 
 **Visual redesign ("Forge")** — Batch 1 (homepage) and Batch 2 (rest of
-the site) are both implemented and self-tested. Nothing here has been
-seen by the owner yet in a real browser — see "Redesign implementation
-plan" below for exactly what changed and the honest limits of what
-could be tested in this environment.
+the site) are both implemented, self-tested, and screenshot-checked
+across desktop/tablet/mobile in a real Chromium instance (see D24 for
+how — Playwright works in this sandbox, just not via the route tried
+first). The owner hasn't looked at it on their own machine/phone yet —
+see "Redesign implementation plan" below for exactly what changed and
+what testing covered.
 
 The original build (Phases 0–8) and the full post-launch audit
 implementation are functionally complete (see "Completed so far"
@@ -544,21 +546,30 @@ verified and documented before moving on.
         too), and `.listing-process` are all gone from
         `style.css`/`build-detail.css`, confirmed zero remaining
         references anywhere in the codebase before removal.
-      - **Testing performed, and its honest limits:** `stitch.py`
-        rebuild succeeded (10/10 pages). Every touched JS file passes
-        `node --check`. Every touched CSS file parses cleanly under a
-        real CSS parser (not just brace-counting). A jsdom-based smoke
-        test (`smoke-test.js`, left in the repo root) loads all 10
-        built pages, runs their real scripts, and asserts on the
-        resulting DOM — including loading `build.html?id=may26-01`
-        (a real inventory entry) and confirming the evidence section
-        renders with 5 rows and zero leftover old markup. **What this
-        is not:** real-browser visual verification. `npx playwright
-        install chromium` was attempted and fails cleanly at the
-        browser-binary download step — this sandbox's network
-        allowlist doesn't include Playwright's CDN. No screenshots
-        exist for Batch 2. The owner has not seen any of this in an
-        actual browser yet.
+      - **Testing performed:** `stitch.py` rebuild succeeded (10/10
+        pages). Every touched JS file passes `node --check`. Every
+        touched CSS file parses cleanly under a real CSS parser (not
+        just brace-counting). A jsdom-based smoke test
+        (`smoke-test.js`, left in the repo root) loads all 10 built
+        pages, runs their real scripts, and asserts on the resulting
+        DOM — including loading `build.html?id=may26-01` (a real
+        inventory entry) and confirming the evidence section renders
+        with 5 rows and zero leftover old markup. **Real-browser
+        visual verification was also done**, in a follow-up pass:
+        Playwright works in this sandbox via Python
+        (`pip install playwright --break-system-packages` +
+        `python3 -m playwright install chromium` — both are pre-baked
+        into this image; the Node/npx route tried first genuinely
+        doesn't work here, see D24 for why). 30 screenshots (10 pages
+        × desktop/tablet/mobile) plus a `scrollWidth`/`clientWidth`
+        check confirmed zero horizontal overflow anywhere and no
+        visual regressions on any page. See D24 for the full write-up
+        and the one cosmetic-only caveat found (Google Fonts don't
+        load in this sandbox — system-font fallback in screenshots,
+        not a real site issue). The owner still hasn't seen this on
+        their own machine/phone, which is worth doing before treating
+        it as final, but "no browser available to check this at all"
+        is no longer true of this environment.
 
 **Explicitly deferred until after the above + a real visual redesign
 phase** (owner will provide screenshots/browser views for that phase):

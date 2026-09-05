@@ -195,9 +195,16 @@
 
       // An empty "Your Request" panel next to an empty-state message
       // would look broken rather than intentional — hide it entirely
-      // when there's nothing orderable.
+      // when there's nothing orderable. Hiding it alone isn't enough,
+      // though: .part-boxes-layout is a fixed 2-column grid (content +
+      // 300px sidebar), so the sidebar's column track stays reserved
+      // even with nothing visible in it, leaving the content column
+      // short of the full container width and looking off-center.
+      // Collapsing the layout to a single column when empty removes
+      // that orphaned gap.
       if (!available.length) {
         document.getElementById('order-summary').style.display = 'none';
+        document.querySelector('.part-boxes-layout').style.gridTemplateColumns = '1fr';
       }
     })();
   </script>
