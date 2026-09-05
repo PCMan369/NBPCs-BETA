@@ -445,3 +445,14 @@ backfill. Since Phase 7:
   empty states improved as a result; re-verified with fresh
   screenshots and a full-site overflow re-check (all 10 pages, still
   zero overflow).
+- Built `404.html` (D25) — simple, follows the site design exactly
+  (shared header/footer, `theme.css`, the same `.empty-state` card
+  pattern used elsewhere), no nav item shows active, has a `noindex`
+  tag, and is excluded from `sitemap.xml`. 11 pages now.
+- Owner confirmed the last 3 open items in DECISIONS.md: D2 (Services
+  page structure), D3 (per-event countdown toggle), and D5 (brand
+  colors carried forward from the old site — though D5 is also now
+  moot in practice since the Forge redesign already replaced that
+  palette). Nothing in `TODO.md`'s "Required" list needs owner
+  confirmation anymore — what's left there is blocked on external
+  things (a real domain, a hero photo) rather than a decision.

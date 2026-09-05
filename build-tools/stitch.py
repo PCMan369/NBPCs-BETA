@@ -25,7 +25,8 @@ WHAT IT DOES
          structured data — title/description are read from each page's
          own <title>/<meta name="description">, not duplicated by hand
        - writes the result to the project root, same filename
-  4. Writes sitemap.xml and robots.txt covering every page just built.
+  4. Writes sitemap.xml and robots.txt covering every page just built,
+     except 404.html (deliberately excluded — see below).
   5. Prints a summary, including the SITE_URL that was used.
 
 This script itself never gets deployed — only its OUTPUT (the .html/
@@ -247,9 +248,14 @@ def main() -> int:
         built.append(src_file.name)
 
     # Sitemap + robots.txt cover every page just built, using the same
-    # single site_url source as everything else above.
-    if built:
-        (ROOT / "sitemap.xml").write_text(build_sitemap(site_url, built), encoding="utf-8")
+    # single site_url source as everything else above. 404.html is
+    # deliberately excluded from the sitemap — it's not real content to
+    # be indexed, just the error page GitHub Pages serves for unmatched
+    # URLs. It still gets the full header/footer/build treatment above
+    # like every other page; it's just left out of this one list.
+    sitemap_pages = [name for name in built if name != "404.html"]
+    if sitemap_pages:
+        (ROOT / "sitemap.xml").write_text(build_sitemap(site_url, sitemap_pages), encoding="utf-8")
         (ROOT / "robots.txt").write_text(build_robots_txt(site_url), encoding="utf-8")
 
     print(f"Built {len(built)} page(s): {', '.join(built) if built else '(none)'}")

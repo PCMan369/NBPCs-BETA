@@ -2,8 +2,11 @@
 
 ## Required (blocks launch)
 
-- [ ] Confirm the 3 proposed-but-unconfirmed items in DECISIONS.md (D2
+- [x] Confirm the 3 proposed-but-unconfirmed items in DECISIONS.md (D2
       Services page structure, D3 countdown toggle, D5 brand carryover)
+      — all 3 confirmed by owner. D5 is also now moot in practice since
+      the Forge redesign replaced the carried-forward blue palette
+      anyway, but the confirmation stands for the historical record.
 - [x] Nav restructuring: flat nav → "For Sale" dropdown/accordion (see
       DECISIONS.md D6) — Services deliberately stayed flat, see D6 note
 - [x] Part Boxes system: `js/data/partBoxes.js`, card renderer, multi-item
@@ -55,9 +58,12 @@
       when nothing's available, empty state if neither, sourced from
       `builds.js` directly (not the separate `gallery.js`) — done, see
       DECISIONS.md D22
-- [ ] Create a real `404.html` (doesn't exist yet — `ARCHITECTURE.md`'s
-      directory layout mentions one, but it was never actually built) —
-      deferred, owner will do later
+- [x] Create a real `404.html` — done. Follows the same design system
+      as every other page (theme.css, shared header/footer, the same
+      centered `.empty-state` card pattern used elsewhere), highlights
+      no nav item as active, has a `noindex` tag, and is deliberately
+      excluded from `sitemap.xml` (see `stitch.py` and DECISIONS.md
+      D25). Buttons back to the homepage and the gaming-PC listings.
 
 ## Recommended
 

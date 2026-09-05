@@ -92,6 +92,14 @@ const pages = [
       assert(doc.querySelector('main'), 'part-boxes page renders');
     },
   },
+  {
+    file: '404.html',
+    check: (doc) => {
+      assert(doc.querySelector('.empty-state'), '404 page renders its empty-state card');
+      assert(doc.querySelector('meta[name="robots"][content*="noindex"]'), '404 page has a noindex tag');
+      assert(!doc.querySelector('.nav-link.active'), '404 page highlights no nav item as active');
+    },
+  },
 ];
 
 let failures = 0;
