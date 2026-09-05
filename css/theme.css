@@ -364,3 +364,20 @@ h1, h2, h3, h4 {
 @media (max-width: 640px) {
   .section { padding: 3rem 0; }
 }
+
+/* ================================================================
+   404 page — a styled numeral instead of an icon glyph. Deliberately
+   not an emoji: emoji rendering differs across operating systems
+   (different systems ship different emoji sets/artwork for the same
+   character), so a decorative icon here would look inconsistent
+   depending on the visitor's device. Plain type in the site's own
+   fonts renders identically everywhere.
+   ================================================================ */
+.error-code {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 3.5rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.75rem;
+}

@@ -456,3 +456,10 @@ backfill. Since Phase 7:
   palette). Nothing in `TODO.md`'s "Required" list needs owner
   confirmation anymore — what's left there is blocked on external
   things (a real domain, a hero photo) rather than a decision.
+- Owner asked for the compass emoji on `404.html` to be removed —
+  emoji rendering varies by OS, and a page meant to feel simple and
+  on-brand shouldn't look different on different visitors' devices.
+  Replaced with a plain `404` numeral in the site's own mono font at
+  accent color (new `.error-code` class in `theme.css`). Other pages'
+  `.empty-state` emoji icons are untouched — this was scoped to just
+  the page owner flagged.

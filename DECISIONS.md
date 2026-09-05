@@ -1027,6 +1027,24 @@ text, two buttons) — reusing an established, already-centered pattern
 rather than inventing a one-off layout, in the spirit of "simple."
 Buttons go to the homepage and the gaming-PC listings.
 
+**Follow-up (same day):** the initial version used an emoji (a
+compass) for the icon, matching the emoji used in the other
+`.empty-state` instances sitewide. Owner asked for it removed —
+emoji glyphs are drawn by the operating system, not the page, so the
+same character can look noticeably different (or, on older systems,
+fail to render as a color glyph at all) depending on the visitor's
+device. Replaced with a plain `404` numeral in the site's own mono
+font (`--font-mono`, i.e. Space Mono) at accent color — a new
+`.error-code` class in `theme.css`, specific to this page rather than
+a change to the shared `.empty-icon` class other pages still use.
+Since it's just styled type in an already-loaded web font rather than
+a font-dependent glyph, it renders identically everywhere. The other
+`.empty-state` instances (`build.html`, `part-boxes.html`) still use
+their emoji icons — owner only asked about this page, so that's the
+intentionally scoped fix rather than a sitewide sweep. Worth revisiting
+if the same OS-inconsistency concern applies there too, but that's the
+owner's call to raise, not an assumption to make on their behalf.
+
 **Two things needed to *not* just fall out of the normal page
 pipeline, handled deliberately:**
 - No nav item should show as active — a `<!--HEADER:404-->` page-id
