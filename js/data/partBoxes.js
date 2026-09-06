@@ -47,6 +47,23 @@
 
 const partBoxes = [
 
-  // No part box inventory has been added yet.
+  {
+    id: "box-01",                    // unique, never reuse even after
+                                      // a box type sells out
+    brand: "AMD",
+    model: "Ryzen 5 5500",
+    category: "CPU Box",             // optional short label shown on
+                                      // the card — omit if not useful
+    quantity: 3,                     // how many you actually have
+    price: "$5",                     // price per box
+    condition: "decent, includes CPU tray and fan box",                   // optional — e.g. "includes foam
+                                      // inserts", "some shelf wear"
+    media: {
+      images: [],                    // optional photos
+      videos: []
+    },
+    notes: ""                        // optional, anything else worth
+                                      // knowing
+  },
 
 ];
