@@ -64,8 +64,8 @@ const CONTACT = {
 const features = {
 
   phone: {
-    show: true,
-    number: "541-555-0123", // e.g. "541-555-0123" — only used if show is true
+    show: false,
+    number: "", // e.g. "541-555-0123" — only used if show is true
     displayFormat: "" // optional, e.g. "(541) 555-0123" for display vs. tel: link
   },
 
@@ -84,7 +84,7 @@ const features = {
   },
 
   expandedServiceArea: {
-    show: false
+    show: true
     // When this flips true, update SITE.serviceArea above too.
   },
 
