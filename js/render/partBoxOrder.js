@@ -145,7 +145,7 @@ function initPartBoxOrder() {
           if (data.success === 'true' || data.success === true) {
             summary.innerHTML =
               '<div class="notify-success">' +
-                '<span class="success-icon">&#9989;</span>' +
+                '<span class="success-icon" style="color:var(--accent);">&#10003;</span>' +
                 '<h3>Request Sent</h3>' +
                 '<p>I\'ll follow up by email to arrange pickup and payment.</p>' +
               '</div>';

@@ -463,3 +463,15 @@ backfill. Since Phase 7:
   accent color (new `.error-code` class in `theme.css`). Other pages'
   `.empty-state` emoji icons are untouched — this was scoped to just
   the page owner flagged.
+- Owner then asked for the same treatment sitewide (D26). All 17
+  remaining emoji occurrences (monitor, camera, clapperboard, package,
+  play-triangle, checkmark — 9 files) replaced: the checkmark became
+  the same plain `✓` character already used in tier-card feature
+  lists (already proven consistent, not a new pattern), everything
+  else became small inline SVG line icons that inherit their
+  container's existing size and color, no new CSS needed. Three of
+  these sit inside `onerror="..."` attributes, which needed
+  `&quot;`-encoded SVG attribute quotes to avoid the browser reading
+  the SVG's own quotes as closing the outer attribute early — verified
+  with a real-Chromium test that actually triggers those failure
+  paths against nonexistent images, not just a syntax check.

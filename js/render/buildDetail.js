@@ -41,7 +41,7 @@ function initBuildDetailPage() {
   if (!build) {
     contentEl.innerHTML =
       '<div class="empty-state" style="margin-top:2rem;">' +
-        '<span class="empty-icon">&#128421;&#65039;</span>' +
+        '<span class="empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg></span>' +
         '<h3>System Not Found</h3>' +
         '<p>This listing may have been removed or the link is incorrect.</p>' +
         '<a href="builds.html" class="btn btn-primary" style="margin-top:1.5rem;">Browse Available Systems &rarr;</a>' +
@@ -88,7 +88,7 @@ function initBuildDetailPage() {
           'loading="' + (i === 0 ? 'eager' : 'lazy') + '" ' +
           'onload="this.classList.add(\'loaded\')" onerror="this.style.display=\'none\'">';
       }).join('')
-    : '<div class="gallery-main-placeholder">&#128421;&#65039;</div>';
+    : '<div class="gallery-main-placeholder"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg></div>';
 
   var arrowsHtml = media.length > 1
     ? '<div class="gallery-arrows">' +
@@ -106,7 +106,7 @@ function initBuildDetailPage() {
           return '<div class="gallery-thumb' + (i === 0 ? ' active' : '') + '" data-idx="' + i + '" ' +
             'tabindex="0" role="button" aria-label="' + label + '">' +
             '<img src="' + thumbSrc + '" alt="Photo ' + (i + 1) + '" loading="lazy">' +
-            (m.type === 'video' ? '<span class="gallery-thumb-video-icon">&#9654;</span>' : '') +
+            (m.type === 'video' ? '<span class="gallery-thumb-video-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5Z"/></svg></span>' : '') +
           '</div>';
         }).join('') +
       '</div>'
@@ -321,7 +321,7 @@ function initBuildDetailPage() {
     if (form) {
       form.innerHTML =
         '<div style="text-align:center; padding:2rem 1rem;">' +
-          '<div style="font-size:2.5rem; margin-bottom:1rem;">&#9989;</div>' +
+          '<div style="font-size:2.5rem; margin-bottom:1rem; color:var(--accent);">&#10003;</div>' +
           '<h3 style="margin-bottom:0.5rem; font-size:1.1rem;">Message Sent</h3>' +
           '<p style="font-size:0.9rem; margin-bottom:1.5rem;">Thanks for reaching out. I\'ll get back to you by email within a day or two.</p>' +
           '<a href="builds.html" class="btn btn-secondary btn-sm">Browse More Systems</a>' +

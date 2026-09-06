@@ -25,8 +25,8 @@ function renderBuildCard(build) {
   var imageHtml = image
     ? '<img src="' + image + '" alt="' + build.title + '" loading="lazy" ' +
       'onload="this.classList.add(\'loaded\')" ' +
-      'onerror="this.parentElement.innerHTML=\'<div class=build-img-placeholder>&#128421;</div>\'">'
-    : '<div class="build-img-placeholder">&#128421;</div>';
+      'onerror="this.parentElement.innerHTML=\'<div class=build-img-placeholder><svg width=&quot;1em&quot; height=&quot;1em&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;><rect x=&quot;2.5&quot; y=&quot;4&quot; width=&quot;19&quot; height=&quot;13&quot; rx=&quot;1.5&quot;/><line x1=&quot;8&quot; y1=&quot;20&quot; x2=&quot;16&quot; y2=&quot;20&quot;/><line x1=&quot;12&quot; y1=&quot;17&quot; x2=&quot;12&quot; y2=&quot;20&quot;/></svg></div>\'">'
+    : '<div class="build-img-placeholder"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg></div>';
 
   // ---- Spec lines: CPU / GPU / RAM / Storage, each optional ----
   var c = build.components || {};
@@ -87,7 +87,7 @@ function renderBuildCard(build) {
 function renderEmptyBuildsState() {
   return (
     '<div class="empty-state-forge">' +
-      '<span class="icon">&#128421;&#65039;</span>' +
+      '<span class="icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg></span>' +
       '<h3>No Systems Listed Right Now</h3>' +
       '<p>Nothing available at the moment — check back soon, or get notified when something comes in.</p>' +
       '<div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.5rem;">' +

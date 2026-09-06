@@ -1072,6 +1072,98 @@ following the site design").
 
 ---
 
+### D26 — Every decorative emoji sitewide replaced with inline SVG icons
+
+**Context:** Owner asked for the 404 page's compass emoji removed
+first (see D25's follow-up note), then asked for the same treatment
+everywhere else: "swap the other emojis, keeping the general theme and
+style of the site." Reasoning throughout: emoji glyphs are drawn by
+the visitor's operating system, not the page, so the same character
+can look noticeably different — or fail to render as a color glyph at
+all on older systems — depending on the device. This affected every
+page, not just one.
+
+**Full inventory (grep-confirmed complete before starting, and
+re-confirmed at zero remaining afterward):** 17 occurrences across 9
+files, six distinct icons:
+- Desktop/monitor (hero photo placeholder, two different "no builds"
+  empty states, build-detail "not found" and gallery placeholder) —
+  `pages-src/index.html`, `js/render/buildCard.js` (×2),
+  `js/render/buildDetail.js` (×2)
+- Camera (gallery "no photos" placeholder, ×2 spots) and clapperboard
+  (gallery video-without-thumbnail placeholder) —
+  `js/render/galleryGrid.js`
+- Package/box (part-box image placeholder ×2, empty inventory state) —
+  `js/render/partBoxCard.js`
+- Play triangle (video badge overlay on gallery thumbnails, ×2 spots)
+  — `js/render/galleryGrid.js`, `js/render/buildDetail.js`
+- Checkmark (form-success confirmation, ×5 spots) —
+  `js/render/notifyBox.js`, `js/render/partBoxOrder.js`,
+  `js/render/buildDetail.js`, `pages-src/contact.html`,
+  `pages-src/services.html`
+
+**Two different replacement approaches, deliberately:**
+- **Checkmark → plain `✓` character (`&#10003;`), not an SVG,** styled
+  `color:var(--accent)`. This isn't a new pattern — it's the *same*
+  character already used for tier-card feature-list bullets
+  (`.tier-features li::before` in `style.css`, styled
+  `var(--accent-text)`), which was already proven to render
+  consistently: it's a plain Dingbat-block character, not one with an
+  emoji-style default presentation the way ✅ (U+2705) has, so it
+  doesn't have the problem being fixed in the first place. Reusing an
+  already-established sitewide pattern beat inventing a new one, in
+  the spirit of "keeping the general theme and style."
+- **Everything else → small inline SVGs,** `width="1em" height="1em"`
+  so each one scales with whatever `font-size` its container already
+  sets (no need to hunt down and hardcode the ~8 different existing
+  sizes), `stroke="currentColor"`/`fill="currentColor"` so each one
+  picks up whatever `color` its container already sets. Every
+  container involved already had an explicit or sensibly-inherited
+  color (`.box-img-placeholder`/`.gallery-main-placeholder`:
+  `var(--dim)`; `.gallery-item-video-icon`/`.gallery-thumb-video-icon`:
+  `white`, deliberately, since they sit on top of photos), so no new
+  CSS rules were needed to get correct, theme-consistent coloring —
+  only the markup itself changed. Style is simple line-art (1.5px
+  stroke, rounded joins) rather than filled/detailed icons, matching
+  the site's existing minimal, geometric feel rather than introducing
+  a busier icon style.
+
+**The one real complication: two of these seventeen sit inside
+`onerror="..."` attributes** (`buildCard.js`, `galleryGrid.js`,
+`partBoxCard.js` — one each), which is HTML embedded inside an HTML
+attribute value embedded inside a JS string embedded inside a JS
+string. An SVG's own `"`-quoted attributes (`viewBox="0 0 24 24"`,
+etc.) can't be written literally at that depth — the browser's HTML
+parser would read the first `"` inside the SVG as closing the
+*outer* `onerror="..."` attribute early, silently truncating
+everything after it. Fixed by writing those three SVGs' attribute
+quotes as `&quot;` instead of `"` — the HTML parser decodes that back
+to a literal `"` when it first reads the `onerror` attribute's value,
+before the browser ever executes the handler, so by the time the
+`onerror` code actually runs (on a real image-load failure) it sees
+correctly-quoted SVG markup. This is standard, correct HTML
+entity-decoding behavior, not a workaround.
+
+**Verified:** every touched JS file passes `node --check`; a full
+grep for all the old emoji entities came back empty; `stitch.py`
+rebuild succeeded (11 pages); `smoke-test.js` passes with zero script
+errors on every page; a full-site overflow re-check at desktop width
+came back clean. The two trickiest, `onerror`-nested cases (the ones
+actually at risk from the quoting problem above) were verified with a
+dedicated real-Chromium test that deliberately points at nonexistent
+image files, waits for the real `onerror` handler to actually fire,
+and inspects the resulting DOM — confirming exactly one well-formed
+`<svg>` element lands in each fallback, with no JS errors beyond the
+expected "file not found" network messages. Real-Chromium screenshots
+of the homepage hero, "no builds" empty state, gallery placeholder,
+and part-boxes empty state confirm all four read cleanly and
+consistently against the dark/amber palette.
+
+**Decided by:** owner ("plz do swap the other emojis, keeping the
+general theme and style of the site").
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
