@@ -56,7 +56,7 @@ const partBoxes = [
                                       // the card — omit if not useful
     quantity: 3,                     // how many you actually have
     price: "$5",                     // price per box
-    condition: "decent, includes CPU tray and fan box",                   // optional — e.g. "includes foam
+    condition: "decent condition, includes CPU tray and fan box",                   // optional — e.g. "includes foam
                                       // inserts", "some shelf wear"
     media: {
       images: [],                    // optional photos
