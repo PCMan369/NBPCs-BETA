@@ -84,7 +84,7 @@ const features = {
   },
 
   expandedServiceArea: {
-    show: true
+    show: false
     // When this flips true, update SITE.serviceArea above too.
   },
 
