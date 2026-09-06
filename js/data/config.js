@@ -64,8 +64,8 @@ const CONTACT = {
 const features = {
 
   phone: {
-    show: false,
-    number: "", // e.g. "541-555-0123" — only used if show is true
+    show: true,
+    number: "541-555-0123", // e.g. "541-555-0123" — only used if show is true
     displayFormat: "" // optional, e.g. "(541) 555-0123" for display vs. tel: link
   },
 
