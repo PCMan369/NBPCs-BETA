@@ -53,6 +53,26 @@
   --border-l: #3a3a3f;
   --accent-2: #f7c467;
   --accent-text: #f2b93d;
+  /* .badge-sold's text color. Originally just a small nudge from
+     #ef4444 was tried (4.3:1 in isolation, matching the audit), but
+     verifying against the actual rendered page revealed the real
+     problem: .build-card.is-sold also has opacity:0.72 (a separate,
+     intentional "de-emphasize sold cards" design choice, left alone
+     here), which further dims the badge's effective on-screen color
+     to ~3.1:1 — worse than the isolated calculation showed. Reaching
+     4.5:1 through that compounding needs more than a subtle
+     adjustment; #fca5a5 clears it with some margin (~5:1) while
+     staying a clearly reddish "sold/unavailable" tint. Text-only
+     change — the badge's background/border and everywhere else this
+     hue might read are untouched. */
+  --danger: #fca5a5;
+  /* .spec-label ("CPU", "GPU", etc. row labels) inherits --dim, which
+     is fine at full opacity — but .build-card.is-sold's opacity:0.72
+     (unchanged, a separate/intentional "de-emphasize sold cards"
+     choice) dims it further, to a real measured ~3.3:1. Scoped to
+     just sold cards, not a --dim change, since .spec-label is shared
+     with available (non-dimmed, already-fine) cards too. */
+  --sold-spec-label: #b3aea1;
   --hover-tint: rgba(255,255,255,0.06);
   --header-bg: rgba(12,12,14,0.98);
   --placeholder-start: #1a1a1d;
@@ -83,6 +103,22 @@ h1, h2, h3, h4 {
 .back-to-top:hover {
   color: #1a1200;
   box-shadow: 0 6px 20px rgba(242,167,27,0.38);
+}
+/* .nav-cta (header "Contact" button, incl. mobile menu) and .skip-link
+   both hardcode white text on an amber background. Under the old blue
+   palette --accent-h was a genuinely darker shade than --accent, so
+   white worked; under Forge, --accent-h equals --accent (see :root
+   above), so white text only reaches 2.04:1 — badly fails WCAG AA
+   (needs 4.5:1). Same dark text already used for .btn-primary/
+   .back-to-top fixes it here too: 9.13:1 at rest, 6.1:1 on the darker
+   :hover/.active state (white was failing there too, at 3.04:1 — not
+   caught by a static contrast scan since it only checks the resting
+   state, but real regardless). */
+.nav-cta,
+.nav-cta:hover,
+.nav-cta.active,
+.skip-link {
+  color: #1a1200 !important;
 }
 .btn-ghost {
   border-color: rgba(242,167,27,0.35);
@@ -139,6 +175,9 @@ h1, h2, h3, h4 {
 }
 .tier-card.featured {
   border-color: rgba(242,167,27,0.45);
+}
+.build-card.is-sold .spec-label {
+  color: var(--sold-spec-label);
 }
 .box-category {
   background: rgba(242,167,27,0.12);
@@ -274,7 +313,7 @@ h1, h2, h3, h4 {
 .evidence-row .mark {
   font-family: var(--font-mono); color: var(--accent); font-size: 0.85rem; flex-shrink: 0; width: 1.6rem; padding-top: 0.15rem;
 }
-.evidence-row h4 { margin: 0 0 0.3rem; font-size: 1.05rem; font-family: var(--font-heading); font-weight: 600; }
+.evidence-row h3 { margin: 0 0 0.3rem; font-size: 1.05rem; font-family: var(--font-heading); font-weight: 600; }
 .evidence-row p { margin: 0; color: var(--muted); font-size: 0.97rem; }
 
 /* Compact variant — build.html's evidence section sits under its own

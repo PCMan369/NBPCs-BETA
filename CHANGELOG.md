@@ -475,3 +475,16 @@ backfill. Since Phase 7:
   the SVG's own quotes as closing the outer attribute early — verified
   with a real-Chromium test that actually triggers those failure
   paths against nonexistent images, not just a syntax check.
+- Full-site QA/visual audit (D27) — 10 page types, desktop+mobile,
+  axe-core + link crawl + manual review, screenshots-only ZIP
+  delivered. Then 7 fixes from that audit (6 requested + 1 found
+  during verification): header "Contact" button contrast (2.04:1 →
+  9.13:1, was failing sitewide), 5 heading-hierarchy skips retargeted
+  to correct levels with visual size preserved, 2 in-text links given
+  underlines, invalid `role="status"` removed from 2 forms (kept the
+  same aria-live announcement behavior), build.html's "not found"
+  state given a real h1, and `.badge-sold`/`.spec-label` contrast in
+  sold build cards fixed — the latter two needed real rendered-pixel
+  verification to get right, since `.build-card.is-sold`'s existing
+  `opacity:0.72` compounds with any text color choice in a way the
+  audit's isolated calculation didn't catch. Full detail in D27.

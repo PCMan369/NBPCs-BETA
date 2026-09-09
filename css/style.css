@@ -923,7 +923,15 @@ strong {
   opacity: 0.6;
 }
 
-.empty-state h3 {
+/* h1 here = build.html's "System Not Found" state (the page's only
+   heading in that state — was h3, promoted for a real page-level
+   heading, see DECISIONS.md); h2 = part-boxes.html's empty-inventory
+   heading (was h3, skipping h2 with nothing between it and the page's
+   own h1). Same visual size either way — only the semantic level
+   changed. */
+.empty-state h1,
+.empty-state h2 {
+  font-size: clamp(1rem, 2vw, 1.35rem);
   margin-bottom: 0.5rem;
 }
 
@@ -1257,7 +1265,7 @@ strong {
   background-color: rgba(255,255,255,0.025);
 }
 
-.faq-question h3 {
+.faq-question h2 {
   font-size: 0.97rem;
   font-weight: 600;
   color: var(--text);
@@ -1785,7 +1793,7 @@ strong {
   padding: 3rem;
 }
 
-.notify-copy h3 {
+.notify-copy h2 {
   font-size: 1.4rem;
   margin-bottom: 0.75rem;
 }
@@ -1817,7 +1825,7 @@ strong {
   margin-bottom: 1rem;
 }
 
-.notify-success h3 {
+.notify-success h2 {
   margin-bottom: 0.5rem;
 }
 

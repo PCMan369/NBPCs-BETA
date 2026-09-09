@@ -42,7 +42,7 @@ function initBuildDetailPage() {
     contentEl.innerHTML =
       '<div class="empty-state" style="margin-top:2rem;">' +
         '<span class="empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg></span>' +
-        '<h3>System Not Found</h3>' +
+        '<h1>System Not Found</h1>' +
         '<p>This listing may have been removed or the link is incorrect.</p>' +
         '<a href="builds.html" class="btn btn-primary" style="margin-top:1.5rem;">Browse Available Systems &rarr;</a>' +
       '</div>';

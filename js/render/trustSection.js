@@ -34,23 +34,23 @@ function renderTrustEvidence() {
       '<div class="evidence-checklist">' +
         '<div class="evidence-row">' +
           '<span class="mark">01</span>' +
-          '<div><h4>Cleaned</h4><p>Dust removed, thermal paste refreshed where needed. Clean inside and out.</p></div>' +
+          '<div><h3>Cleaned</h3><p>Dust removed, thermal paste refreshed where needed. Clean inside and out.</p></div>' +
         '</div>' +
         '<div class="evidence-row">' +
           '<span class="mark">02</span>' +
-          '<div><h4>Stress tested</h4><p>CPU and GPU pushed under sustained load to check for stability issues.</p></div>' +
+          '<div><h3>Stress tested</h3><p>CPU and GPU pushed under sustained load to check for stability issues.</p></div>' +
         '</div>' +
         '<div class="evidence-row">' +
           '<span class="mark">03</span>' +
-          '<div><h4>Temps checked</h4><p>Thermals verified under load. Nothing runs hot, no surprises after pickup.</p></div>' +
+          '<div><h3>Temps checked</h3><p>Thermals verified under load. Nothing runs hot, no surprises after pickup.</p></div>' +
         '</div>' +
         '<div class="evidence-row">' +
           '<span class="mark">04</span>' +
-          '<div><h4>Drivers updated</h4><p>GPU and system drivers current before handoff. Ready to game the same day.</p></div>' +
+          '<div><h3>Drivers updated</h3><p>GPU and system drivers current before handoff. Ready to game the same day.</p></div>' +
         '</div>' +
         '<div class="evidence-row">' +
           '<span class="mark">05</span>' +
-          '<div><h4>Ready to use</h4><p>Plugged in and confirmed working on pickup. A finished computer, not a box of parts.</p></div>' +
+          '<div><h3>Ready to use</h3><p>Plugged in and confirmed working on pickup. A finished computer, not a box of parts.</p></div>' +
         '</div>' +
       '</div>' +
     '</div>'

@@ -18,12 +18,13 @@ site's constraint carries over — no server-side backend, no database).
 
 ## Current phase
 
-**Visual redesign ("Forge")** — Batch 1 (homepage) and Batch 2 (rest of
-the site) are both implemented, self-tested, and screenshot-checked
-across desktop/tablet/mobile in a real Chromium instance (see D24 for
-how — Playwright works in this sandbox, just not via the route tried
-first). The owner hasn't looked at it on their own machine/phone yet —
-see "Redesign implementation plan" below for exactly what changed and
+**Post-redesign QA and fixes** — the Forge redesign (Batch 1 + 2) is
+done. A full-site audit (D27) found a handful of real accessibility/
+contrast issues (notably the header Contact button failing contrast
+sitewide) and some heading-hierarchy/ARIA-validity issues; all of
+those are now fixed and re-verified. See D27 for the complete list.
+The owner still hasn't reviewed the site on their own machine/phone —
+that's the natural next step.
 what testing covered.
 
 The original build (Phases 0–8) and the full post-launch audit

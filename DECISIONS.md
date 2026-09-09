@@ -1164,6 +1164,122 @@ general theme and style of the site").
 
 ---
 
+### D27 — Full-site QA/visual audit, then 7 concrete fixes
+
+**Context:** Owner asked for a full customer-facing audit (all page
+types, desktop+mobile, broken links/forms/JS, accessibility,
+responsive issues, content/wording, SEO) as an audit-only pass —
+explicitly no fixes yet. Live site (GitHub Pages) couldn't be
+screenshotted directly — this sandbox's browser has no network route
+to `*.github.io` (confirmed: `host_not_allowed`) — but its text
+content was fetchable and matched the local files closely, so the
+audit ran against local files rendered in real Chromium, with that
+caveat stated upfront. Method: `axe-core` injected into every page at
+real desktop/mobile viewports, plus a full internal-link crawl, console/
+network error capture, and manual screenshot review. Findings were
+reported as Must Fix / Should Fix / Minor, with a screenshots-only ZIP
+delivered separately (no source/notes, per owner's request).
+
+Owner then asked for 6 of those findings fixed, explicitly *not* as a
+redesign pass — same layouts/content/visual direction, targeted fixes
+only:
+
+1. **`.nav-cta`/`.skip-link` contrast (Must Fix).** White text on the
+   amber accent measured 2.04:1 (need 4.5:1) — badly fails, and it's
+   the header "Contact" button, present on every page. Root cause:
+   `--accent-h` was a genuinely darker shade than `--accent` under the
+   old blue palette, so white text worked; under Forge (D23/D24) it's
+   identical to `--accent`, so that assumption silently broke. Fixed
+   by reusing the dark text (`#1a1200`) already proven on
+   `.btn-primary`/`.back-to-top` for the same reason — 9.13:1 at rest,
+   6.1:1 on hover. Bonus catch: white on the hover/active shade was
+   *also* failing (3.04:1), not caught by the original audit since a
+   static contrast scan doesn't simulate `:hover`.
+2. **Heading-order skips (Should Fix), 3 separate spots.** Evidence-row
+   `h4` retargeted to `h3` (homepage's own markup + the shared
+   `trustSection.js`, so both homepage and build.html got fixed
+   together) — was jumping straight from the section's `h2`. Empty-
+   state headings retargeted `h3`→`h2` in `notifyBox.js` (builds.html)
+   and `partBoxCard.js` (part-boxes.html) — both were jumping straight
+   from the page's own `h1` with nothing at `h2`. FAQ questions
+   retargeted `h3`→`h2` in `faqList.js` — same pattern. Every one of
+   these had its own explicit CSS selector (not relying on the tag's
+   global default size), so the selectors were updated alongside the
+   markup — confirmed visually unchanged, only the semantic level
+   moved.
+3. **Two in-text links with no non-color distinguishing feature
+   (Should Fix).** The notify-box's "custom builds" link (`notifyBox.js`)
+   had zero styling at all — not even a color difference from the
+   surrounding paragraph. Services' "general contact page" link had
+   color only. Both now get `text-decoration: underline` added
+   alongside `color:var(--accent)`, so both read the same way and
+   don't rely on color alone.
+4. **Invalid `role="status"` on `<form>` (Should Fix), contact.html +
+   services.html.** `role="status"` isn't an allowed ARIA role for a
+   `<form>` element. Fix was simpler than expected: `aria-live`/
+   `aria-atomic` are global ARIA attributes that don't need a role to
+   function at all, so the fix was just deleting `role="status"` and
+   keeping the rest — the same JS (`form.innerHTML = ...`) still
+   triggers the same screen-reader announcement, now through
+   spec-valid markup. **Not fixed, out of scope:** `buildDetail.js`'s
+   inquiry form has the identical issue and wasn't in the owner's
+   list — left alone, flagged in the report instead.
+5. **build.html "not found" state had zero H1 (Should Fix).** Was
+   `<h3>System Not Found</h3>` with no other heading on that page
+   state (confirmed: it's an early-return branch in `buildDetail.js`
+   that never reaches the normal `<h1 class="listing-title">`).
+   Retagged to `<h1>` — same visual size as before (no separate CSS
+   needed to preserve appearance; see the shared `.empty-state h1,
+   .empty-state h2` rule added for this and item 2's part-boxes fix
+   together, both replacing the old shared `.empty-state h3` rule).
+6. **`.badge-sold` borderline contrast (Minor → turned out bigger than
+   it looked).** The original audit calculated 4.3:1 for the badge
+   text *in isolation* — borderline, hence "Minor." Verifying the
+   actual fix against real rendered pixels (not just the isolated
+   calculation) surfaced something the audit missed: `.build-card.
+   is-sold` has `opacity:0.72` (a separate, pre-existing, intentional
+   "de-emphasize sold cards" choice — left untouched), which further
+   dims everything inside it. The *real* effective contrast was
+   3.11:1, not 4.3:1. A small hue nudge (`#f25555`, tried first)
+   verified at only 3.07:1 post-opacity — nowhere close. Reaching
+   4.5:1 through that compounding genuinely needs a lighter shade, not
+   a subtle one: `--danger: #fca5a5`, verified against actual rendered
+   pixels at 5.15:1. This is a text-only token change; `--danger` is
+   used nowhere else in the codebase (grep-confirmed both times).
+   **Discovered as a side effect, fixed too (owner asked for it
+   explicitly after the initial report):** the same `opacity:0.72`
+   was independently dimming `.spec-label` (the "CPU"/"GPU"/etc. row
+   labels) inside sold cards to a real ~3.3:1. Since `.spec-label`
+   is shared with *available* (non-dimmed, already-fine) cards too,
+   this couldn't be a `--dim` token change — scoped instead to
+   `.build-card.is-sold .spec-label` specifically, new
+   `--sold-spec-label: #b3aea1` token, verified at 4.78:1 against
+   real rendered pixels.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` passes; a
+fresh `axe-core` pass across all 8 affected pages (home, builds
+listing, build-detail sold, build-detail not-found, part-boxes,
+services, faq, contact) found zero remaining instances of any of the
+6 originally-targeted violation types, plus the `.spec-label` one;
+every page confirmed to have exactly one `h1`; real-Chromium
+screenshots at desktop+mobile for every affected page, zero
+horizontal overflow. Where a number is claimed above (contrast
+ratios), it's from either the WCAG relative-luminance formula on the
+actual composited colors or from sampling real rendered pixel values
+with Pillow — not just reading a token's nominal hex value, which is
+exactly what led the original audit's `.badge-sold` number astray in
+the first place.
+
+**Explicitly not touched, per owner's instructions:** hero image
+behavior, Google Fonts, overall visual design, services page
+structure, the empty inventory states, any working interaction or
+data architecture.
+
+**Decided by:** owner (full audit request, then the 6-item fix list,
+then "fix the extra one you discovered" for `.spec-label`).
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

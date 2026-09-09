@@ -14,7 +14,7 @@ function renderFaqList(items) {
     return (
       '<div class="faq-item">' +
         '<div class="faq-question">' +
-          '<h3>' + item.question + '</h3>' +
+          '<h2>' + item.question + '</h2>' +
           '<div class="faq-icon">+</div>' +
         '</div>' +
         '<div class="faq-answer">' +

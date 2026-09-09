@@ -54,7 +54,7 @@ function renderEmptyPartBoxesState() {
   return (
     '<div class="empty-state">' +
       '<span class="empty-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 20 7.5v9L12 21 4 16.5v-9Z"/><path d="M12 3v9m0 0-8-4.5M12 12l8-4.5"/></svg></span>' +
-      '<h3>No Part Boxes Available Right Now</h3>' +
+      '<h2>No Part Boxes Available Right Now</h2>' +
       '<p>Nothing listed at the moment — check back later, or reach out directly if you\'re looking for something specific.</p>' +
       '<a href="contact.html" class="btn btn-primary" style="margin-top:1.5rem;">Contact Me &rarr;</a>' +
     '</div>'
