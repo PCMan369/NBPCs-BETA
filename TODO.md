@@ -67,15 +67,19 @@
 
 ## Recommended
 
-- [ ] Take a look at the Batch 1 + Batch 2 visual redesign yourself, on
-      your own machine and phone — it's been screenshot-checked in a
-      real Chromium instance at desktop/tablet/mobile (zero overflow,
-      no visual regressions found), but that's Claude's own review,
-      not yours; see DECISIONS.md D24 for the full detail
+- [x] Take a look at the Batch 1 + Batch 2 visual redesign (and the
+      D27 audit fixes) yourself, on your own machine — done, confirmed
+      it looks fine; see DECISIONS.md D24/D27/D28
 - [x] Fill in `[Your Name]` placeholder in `about.html` — done, "Jacob Skrove"
 - [ ] Decide whether to carry over the "sold" builds from the old site into
       the new sold-PC gallery, or start that section fresh
-- [ ] Decide on business email handling (see DECISIONS.md open item)
+- [ ] Decide on business email handling — personal Gmail vs. another
+      free address (`northbridgepcs@gmail.com` is taken, no domain
+      budget right now); see DECISIONS.md "Still open"
+- [ ] Before actual launch: replace the placeholder phone number,
+      email address, and Facebook URL (`config.js`) added for visual
+      testing with real values — or set their `show` flags back to
+      `false` if a feature isn't ready yet; see DECISIONS.md D28
 - [ ] Testimonials — collect any real ones that exist, or leave the
       section off (toggle is already safe either way; owner confirmed
       leaving it off for now)

@@ -4,7 +4,7 @@
   ================================================================
   Handles behavior that's identical on every page: mobile nav toggle,
   scroll progress bar, back-to-top button, footer year, and the
-  toggle-driven phone/social links in the footer.
+  toggle-driven phone/email/social links in the footer.
 
   The old site had a version of this copy-pasted inline into all 8
   HTML files. Load this one file on every page instead.
@@ -143,6 +143,14 @@
         links.push('<a href="tel:' + telHref + '">' + display + '</a>');
       } else {
         console.warn('config.js: features.phone.show is true but no number is set.');
+      }
+    }
+
+    if (features.email && features.email.show) {
+      if (features.email.address) {
+        links.push('<a href="mailto:' + features.email.address + '">' + features.email.address + '</a>');
+      } else {
+        console.warn('config.js: features.email.show is true but no address is set.');
       }
     }
 

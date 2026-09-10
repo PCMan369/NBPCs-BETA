@@ -18,19 +18,24 @@ site's constraint carries over — no server-side backend, no database).
 
 ## Current phase
 
-**Post-redesign QA and fixes** — the Forge redesign (Batch 1 + 2) is
-done. A full-site audit (D27) found a handful of real accessibility/
-contrast issues (notably the header Contact button failing contrast
-sitewide) and some heading-hierarchy/ARIA-validity issues; all of
-those are now fixed and re-verified. See D27 for the complete list.
-The owner still hasn't reviewed the site on their own machine/phone —
-that's the natural next step.
-what testing covered.
+**Pre-launch prep.** The Forge redesign (Batch 1 + 2) is done, and a
+full-site audit (D27) found a handful of real accessibility/contrast
+issues (notably the header Contact button failing contrast sitewide)
+and some heading-hierarchy/ARIA-validity issues; all of those are now
+fixed and re-verified. See D27 for the complete list. The owner has
+now reviewed the site on their own machine and confirmed it looks
+fine — that open item is closed.
+
+Current work is getting ready for launch: `SITE.url` now points at
+the destination repo (`pcman369.github.io/North-Bridge-PCs`) the
+owner will deploy to, and phone/email/Facebook are toggled on with
+placeholder values so the owner can visually test the footer before
+picking real ones. See D28.
 
 The original build (Phases 0–8) and the full post-launch audit
 implementation are functionally complete (see "Completed so far"
-below). Everything from here on is visual redesign work, not audit
-follow-up.
+below). Everything from here on is visual redesign work plus launch
+prep, not audit follow-up.
 
 ## Completed so far
 
@@ -452,6 +457,31 @@ follow-up.
       trust section is a component shared with `build.html`) and three
       real bugs caught and fixed during screenshot verification.
 
+## Completed so far (continued, launch prep)
+
+- [x] **Owner reviewed the finished redesign + D27 audit fixes on
+      their own machine and confirmed it looks fine.** Closes the
+      "owner hasn't seen this themselves" open item.
+- [x] `SITE.url` updated to the destination repo
+      (`https://pcman369.github.io/North-Bridge-PCs`) the owner will
+      deploy the finished site to (no custom domain for now). Not
+      live yet — this only changes what the build points at.
+      `stitch.py` re-run: sitemap.xml, robots.txt, canonical/OG/
+      Twitter tags, homepage JSON-LD, and every form's baked-in
+      `_url` redirect all confirmed updated in the built output.
+- [x] Phone, email, and Facebook toggled on with clearly-marked
+      placeholder values so the owner can visually test the footer
+      before choosing real ones. Added a new `features.email` toggle
+      (footer `mailto:` link) since no config existed for visibly
+      displaying an email anywhere on the site before now —
+      `CONTACT.email` already existed but only as the forms'
+      submission destination, never rendered as text. Verified via a
+      direct jsdom check of the built homepage: footer renders
+      exactly the three expected links, zero console errors. Full
+      write-up in DECISIONS.md D28 — **all three are placeholders,
+      not real values, and need to be swapped (or turned back off)
+      before actual launch.**
+
 ## Not started yet
 
 - Phase 6 remainder: general visual/micro-interaction polish (image
@@ -465,8 +495,11 @@ follow-up.
 - Business email handling: still the personal Gmail, sourced from one
   place (`config.js`) everywhere now instead of scattered, but the
   underlying exposure in client-side source is inherent to the
-  no-backend FormSubmit approach regardless. Still needs an explicit
-  owner call on whether that's fine long-term.
+  no-backend FormSubmit approach regardless. `northbridgepcs@gmail.com`
+  is already taken and a custom domain isn't affordable right now, so
+  the live options are the personal Gmail or another free address.
+  See DECISIONS.md "Still open" — actively being discussed, not
+  decided yet.
 
 ## Audit implementation plan (current)
 
@@ -567,10 +600,8 @@ verified and documented before moving on.
         visual regressions on any page. See D24 for the full write-up
         and the one cosmetic-only caveat found (Google Fonts don't
         load in this sandbox — system-font fallback in screenshots,
-        not a real site issue). The owner still hasn't seen this on
-        their own machine/phone, which is worth doing before treating
-        it as final, but "no browser available to check this at all"
-        is no longer true of this environment.
+        not a real site issue). The owner has since reviewed this on
+        their own machine and confirmed it looks fine.
 
 **Explicitly deferred until after the above + a real visual redesign
 phase** (owner will provide screenshots/browser views for that phase):

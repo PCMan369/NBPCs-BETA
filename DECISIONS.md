@@ -1280,14 +1280,64 @@ then "fix the extra one you discovered" for `.spec-label`).
 
 ---
 
+### D28 — Destination URL set; phone/email/Facebook turned on with placeholders for visual testing
+
+**Context:** Owner confirmed the site looks fine on their own machine
+after the D27 audit fixes — closes the "owner hasn't reviewed it
+themselves yet" open item from PROJECT_STATUS.md/TODO.md.
+
+Owner then asked for two things ahead of an eventual launch:
+
+1. **`SITE.url` updated** from the `NBPCs-BETA` testing URL to
+   `https://pcman369.github.io/North-Bridge-PCs` — the repo the owner
+   will push this project to once it's ready, replacing the old live
+   site there (no custom domain for now; can't currently afford one).
+   `stitch.py` re-run: sitemap.xml, robots.txt, canonical/OG/Twitter
+   tags, homepage JSON-LD, and the contact/services/build-inquiry
+   forms' baked-in `_url` redirect all updated together, confirmed by
+   inspecting the built output directly. This is **not yet live** —
+   nothing is deployed to that repo, it's just what the build now
+   points at, per the owner's plan to move it there after completion.
+2. **Phone, email, and Facebook toggled on with placeholder values**
+   so the owner can see how the footer looks with contact info
+   populated, before deciding on real values. `features.phone` and
+   `features.facebook` already existed (`541-555-0123` /
+   `facebook.com/placeholder`); added a new `features.email` toggle
+   (`show`/`address`, same shape as the others) since no config
+   existed for *visibly displaying* an email anywhere on the site —
+   `CONTACT.email` already existed but is only ever used as the
+   forms' submission destination, never rendered as text. `chrome.js`
+   extended to render a `mailto:` link for it in the footer alongside
+   phone/Facebook, using the same "renders nothing if not both
+   enabled and filled in" pattern. Placeholder used
+   (`placeholder@example.com`) deliberately does not reuse
+   `CONTACT.email`'s real address, since which address to show
+   publicly is exactly the open question below — showing the real one
+   now would presume an answer to it.
+   **All three are placeholder values, not real ones — flagged inline
+   in config.js comments. Must be swapped for real values (or turned
+   back off) before actual launch.**
+
+**Verified:** `stitch.py` rebuild clean (11 pages); `smoke-test.js`
+all pages pass; a direct jsdom check of the built `index.html`
+confirmed the footer renders exactly the three expected links
+(`tel:`, `mailto:`, and the Facebook URL) with no console errors.
+
+**Decided by:** owner.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
   confirmed: not yet — leave disabled).
-- How to handle the business email being visible in client-side source
-  (inherent to the FormSubmit approach without a backend — needs an
-  explicit owner call on whether that's acceptable). Owner is now
-  actively deciding between a couple of concrete free options — see
-  the conversation record / TODO.md rather than this file for the
-  specifics, since nothing's been chosen yet and there's no code
-  change to document until there is.
+- **Business/contact email — which address to use.** Current state:
+  `CONTACT.email` (the real, functioning form-submission address) is
+  the owner's personal Gmail; `northbridgepcs@gmail.com` is already
+  taken by someone else, and a custom domain isn't affordable right
+  now. Owner asked directly for a recommendation on using the
+  personal Gmail — see the conversation record for the full
+  discussion, since this is a judgment call rather than a code change
+  to log here. Whatever's decided, the underlying exposure of
+  whichever address is used in client-side source is inherent to the
+  no-backend FormSubmit approach regardless of which address it is.

@@ -22,10 +22,15 @@ before you push, not in the browser. The output is still plain static HTML.
 │   ├── base.css         — reset, accessibility & responsive foundations
 │   ├── style.css        — component styles (Phase 2+)
 │   ├── gallery.css      — gallery grid + lightbox (gallery.html, build.html)
-│   └── homepage-forge.css — NEW visual redesign (see "Visual redesign
-│                            in progress" below) — currently homepage-only,
-│                            about to become sitewide and likely get
-│                            renamed to theme.css in the process
+│   ├── build-detail.css — build.html-specific styling
+│   ├── services.css     — services.html-specific styling
+│   ├── part-boxes.css   — part-boxes.html-specific styling
+│   └── theme.css        — the "Forge" visual redesign (dark/amber), loaded
+│                          sitewide as the last stylesheet on all 11 pages.
+│                          Was `homepage-forge.css` and homepage-only through
+│                          Redesign Batch 1; renamed and unscoped from
+│                          `body.theme-forge` in Batch 2 (see D23/D24) once
+│                          it went sitewide.
 ├── js/
 │   ├── data/             — YOUR CONTENT LIVES HERE. Edit these, not HTML.
 │   │   ├── config.js      — feature toggles + site identity + contact routing
@@ -135,44 +140,51 @@ even with JS disabled. A manual toggle can be layered on later without
 restructuring the tokens, per the project brief's future-proofing
 requirement.
 
-## Visual redesign in progress (see DECISIONS.md D22/D23)
+## Visual redesign ("Forge") — complete, then audited (see DECISIONS.md D22–D24, D27)
 
-The owner is redesigning the site's visual language (new dark/amber
-"Forge" direction) in batches, on top of the architecture above —
-this section exists so a new session picks up the *current*
-in-progress state correctly rather than assuming the original design
-described elsewhere in this doc is still final.
+The owner redesigned the site's visual language (dark/amber "Forge"
+direction) in two batches, on top of the architecture above. Both are
+done and shipped; this section is history/rationale now, not an
+in-progress note.
 
 **Pattern**: rather than editing `tokens.css`/`base.css`/`style.css`
-in place, the new look is layered on via `css/homepage-forge.css`,
-which redefines the site's existing CSS custom properties
-(`--bg`, `--accent`, etc.) plus new typography tokens
-(`--font-heading`, `--font-mono`). Because every existing component
-already reads its colors from these custom properties rather than
-hardcoded values, redefining the *values* re-themes the whole shared
-header/footer/button/form system automatically, with no changes
-needed to the base stylesheets. A few shared rules that hardcoded the
-old blue directly (raw `rgba(59,130,246,...)` instead of a token, or
-`color: white` assumed safe against the old accent) needed explicit
-overrides — see D23 for the full list found so far.
+in place, the new look is layered on via `css/theme.css`, which
+redefines the site's existing CSS custom properties (`--bg`,
+`--accent`, etc.) plus new typography tokens (`--font-heading`,
+`--font-mono`). Because every existing component already reads its
+colors from these custom properties rather than hardcoded values,
+redefining the *values* re-themes the whole shared header/footer/
+button/form system automatically, with no changes needed to the base
+stylesheets. A few shared rules that hardcoded the old blue directly
+(raw `rgba(59,130,246,...)` instead of a token, or `color: white`
+assumed safe against the old accent) needed explicit overrides — see
+D23 for the Batch 1 list and D24 for the additional ones only
+reachable from the other 9 pages.
 
-**Status as of this note**: Batch 1 (homepage only) is done and
-shipped. It's scoped to `body.theme-forge` (only `index.html` has that
-class) specifically so it couldn't affect any other page while only
-one page was redesigned — confirmed by diffing that the other 9 pages
-were byte-for-byte unchanged. The remaining pages
-(builds/build-detail/services/about/contact/gallery/faq/custom-build/
-part-boxes) are planned but **not started** — see PROJECT_STATUS.md's
-"Redesign implementation plan" for the concrete next-session plan,
-including renaming this file to `theme.css` and dropping the
-`theme-forge` scoping once it goes sitewide (the scoping was only
-needed to isolate Batch 1, not a permanent pattern).
+**Batch 1** (homepage only): scoped to `body.theme-forge`
+(`css/homepage-forge.css` at the time) so it couldn't affect any
+other page while only one page was redesigned.
 
-**Also still using the old visual language until their turn comes**:
-`js/render/trustSection.js` (icon-card trust section + numbered-circle
-testing steps, currently only called by `build.html` since the
-homepage stopped using it in Batch 1) and the general card/badge
-styling in `style.css` that every non-homepage page still uses as-is.
+**Batch 2** (the other 9 customer-facing pages, all in one pass):
+`homepage-forge.css` → `css/theme.css`, unscoped from
+`body.theme-forge` to plain global rules — that class no longer
+exists anywhere, and all 11 pages (10 then, 404.html since) load
+`theme.css` as their last stylesheet. `js/render/trustSection.js`
+(previously the old icon-card trust section + numbered-circle
+testing steps, still used by `build.html` after Batch 1) was
+rewritten into one shared `renderTrustEvidence()` function so
+`build.html` and the homepage render the same evidence pattern from
+the same real copy. Full list of what changed page-by-page is in
+PROJECT_STATUS.md's "Redesign implementation plan" and DECISIONS.md
+D24.
+
+**Since then**: a full-site QA/visual audit (D27) found and fixed 7
+issues on top of the finished redesign — most notably the header
+"Contact" button's white-on-amber text badly failing contrast
+sitewide (2.04:1, fixed to 9.13:1) — plus several heading-hierarchy,
+ARIA-validity, and sold-card-contrast fixes. See D27 for the full
+list. The owner has not yet reviewed the redesign + audit fixes on
+their own machine/phone — see PROJECT_STATUS.md's "Not started yet."
 
 ## What's deliberately NOT built yet
 

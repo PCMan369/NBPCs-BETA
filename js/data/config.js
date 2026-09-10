@@ -34,7 +34,7 @@ const SITE = {
   // IMPORTANT: update this the day you get a custom domain, and nowhere
   // else needs to change. Used to build the sitemap, canonical URLs, and
   // Open Graph tags.
-  url: "https://pcman369.github.io/NBPCs-BETA", // current live testing URL — owner will update again when the final domain/repo is ready (see DECISIONS.md D17/D18)
+  url: "https://pcman369.github.io/North-Bridge-PCs", // destination repo — owner will push the finished site here to replace the old live site (no custom domain for now; see DECISIONS.md D28)
 
   // Current service area copy — keep this in sync with what's true today.
   // Do not expand this until the business actually expands its area.
@@ -64,14 +64,23 @@ const CONTACT = {
 const features = {
 
   phone: {
-    show: false,
-    number: "", // e.g. "541-555-0123" — only used if show is true
-    displayFormat: "" // optional, e.g. "(541) 555-0123" for display vs. tel: link
+    show: true, // PLACEHOLDER VALUES for visual testing — set back to a real number (or false) before launch
+    number: "541-555-0123",
+    displayFormat: "(541) 555-0123"
+  },
+
+  // Visible email display (footer, etc.) — separate from CONTACT.email
+  // above, which is real and already routes form submissions regardless
+  // of this toggle. This only controls whether an address is *shown* to
+  // visitors.
+  email: {
+    show: true, // PLACEHOLDER for visual testing — see DECISIONS.md D28 for the open question of which real address to put here
+    address: "placeholder@example.com"
   },
 
   facebook: {
-    show: false,
-    url: ""
+    show: true, // PLACEHOLDER for visual testing — no real Facebook page yet
+    url: "https://facebook.com/placeholder"
   },
 
   // Any other future social platform can follow the same shape:

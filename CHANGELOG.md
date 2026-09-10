@@ -488,3 +488,18 @@ backfill. Since Phase 7:
   verification to get right, since `.build-card.is-sold`'s existing
   `opacity:0.72` compounds with any text color choice in a way the
   audit's isolated calculation didn't catch. Full detail in D27.
+- Owner confirmed the redesign + D27 fixes look fine on their own
+  machine — closes that open item.
+- `SITE.url` updated to the destination repo the owner will deploy
+  to, `https://pcman369.github.io/North-Bridge-PCs` (D28). Not live
+  yet — still no custom domain. `stitch.py` re-run: sitemap.xml,
+  robots.txt, canonical/OG/Twitter tags, homepage JSON-LD, and every
+  form's baked-in `_url` redirect all confirmed updated.
+- Phone, email, and Facebook toggled on with placeholder values for
+  the owner's visual testing (D28). Added a new `features.email`
+  toggle + a `mailto:` footer link in `chrome.js` — no prior config
+  existed for visibly displaying an email anywhere on the site.
+  Verified via a direct jsdom check of the built homepage: footer
+  renders all three links correctly, zero console errors.
+  **Placeholders only — need real values (or `show: false`) before
+  actual launch.**
