@@ -481,6 +481,30 @@ prep, not audit follow-up.
       write-up in DECISIONS.md D28 — **all three are placeholders,
       not real values, and need to be swapped (or turned back off)
       before actual launch.**
+- [x] **Business email decided**: personal Gmail, owner managing it
+      with inbox rules rather than a second dedicated address. Phone
+      and Facebook reverted from D28's placeholder state back to off
+      (values cleared); the email display toggle switched from its
+      placeholder to the real decided address. See DECISIONS.md D29.
+
+## V1 finishing pass (current)
+
+Owner asked for the three remaining items to close out "Version 1,"
+one at a time — implement, verify, stop, then move to the next on the
+owner's go-ahead.
+
+- [x] **Part 1 — Availability/site notice.** Small general notice
+      added to the shared footer (all 11 pages): availability
+      changes, message if unsure. No visual redesign — reuses the
+      existing `.footer-copy` styling. See DECISIONS.md D30.
+- [ ] **Part 2 — Contact forms.** Evaluate all customer-facing forms
+      as a system; preserve the build-detail inquiry form unless a
+      real issue turns up; clear purposes per form, no unnecessary
+      fields, an "Other" option where it helps. Not started.
+- [ ] **Part 3 — Services page.** Rework content/structure (it reads
+      crowded right now) so a customer can find what they need before
+      contacting the owner — same visual direction, no broad redesign.
+      Not started.
 
 ## Not started yet
 
@@ -492,14 +516,8 @@ prep, not audit follow-up.
 
 ## Known open questions (not yet blocking, but will be before their phase)
 
-- Business email handling: still the personal Gmail, sourced from one
-  place (`config.js`) everywhere now instead of scattered, but the
-  underlying exposure in client-side source is inherent to the
-  no-backend FormSubmit approach regardless. `northbridgepcs@gmail.com`
-  is already taken and a custom domain isn't affordable right now, so
-  the live options are the personal Gmail or another free address.
-  See DECISIONS.md "Still open" — actively being discussed, not
-  decided yet.
+- (none currently — business email handling was the last one; decided,
+  see DECISIONS.md D29)
 
 ## Audit implementation plan (current)
 

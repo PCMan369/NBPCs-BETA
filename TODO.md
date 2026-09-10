@@ -64,6 +64,11 @@
       no nav item as active, has a `noindex` tag, and is deliberately
       excluded from `sitemap.xml` (see `stitch.py` and DECISIONS.md
       D25). Buttons back to the homepage and the gaming-PC listings.
+- [ ] **V1 finishing pass**, one part at a time — see PROJECT_STATUS.md
+      for the live checklist:
+      - [x] Part 1 — sitewide availability notice (D30)
+      - [ ] Part 2 — contact-forms system review
+      - [ ] Part 3 — services page content/structure rework
 
 ## Recommended
 
@@ -73,13 +78,11 @@
 - [x] Fill in `[Your Name]` placeholder in `about.html` — done, "Jacob Skrove"
 - [ ] Decide whether to carry over the "sold" builds from the old site into
       the new sold-PC gallery, or start that section fresh
-- [ ] Decide on business email handling — personal Gmail vs. another
-      free address (`northbridgepcs@gmail.com` is taken, no domain
-      budget right now); see DECISIONS.md "Still open"
-- [ ] Before actual launch: replace the placeholder phone number,
-      email address, and Facebook URL (`config.js`) added for visual
-      testing with real values — or set their `show` flags back to
-      `false` if a feature isn't ready yet; see DECISIONS.md D28
+- [x] Decide on business email handling — going with the personal
+      Gmail for now, managed with inbox rules; see DECISIONS.md D29
+- [ ] Before actual launch: turn phone/Facebook back on with real
+      values whenever those are ready (currently off, per D29) — the
+      display email is already real (`jacobskrove@gmail.com`)
 - [ ] Testimonials — collect any real ones that exist, or leave the
       section off (toggle is already safe either way; owner confirmed
       leaving it off for now)

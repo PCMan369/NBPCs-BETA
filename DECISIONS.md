@@ -1327,17 +1327,71 @@ confirmed the footer renders exactly the three expected links
 
 ---
 
+### D29 — Business email decided (personal Gmail); phone/Facebook placeholders reverted, display email switched to real address
+
+**Context:** Owner decided to use the personal Gmail for now (already
+`CONTACT.email`'s real value) rather than creating a second address,
+and will use inbox rules to keep it manageable. This resolves the
+"Business/contact email" item that was open above.
+
+Two config changes followed:
+
+1. `features.phone` and `features.facebook` reverted from D28's
+   placeholder testing values back to their original off state
+   (`show: false`, values cleared) — the owner was done visually
+   testing them and neither is a real feature yet.
+2. `features.email.address` (the new D28 footer display toggle,
+   previously the placeholder `placeholder@example.com`) switched to
+   the real decided address, matching `CONTACT.email`. `show` stays
+   `true` — this one's real now, not a placeholder.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass; direct jsdom check of the built homepage confirmed
+`#footer-extra` now renders only the email `mailto:` link (no
+phone/Facebook), with the real address.
+
+**Decided by:** owner.
+
+---
+
+### D30 — V1 finishing pass, Part 1: sitewide availability notice
+
+**Context:** Owner asked for the three remaining items to close out
+the "Version 1" pass, done one at a time (implement, verify, stop,
+repeat) rather than all at once. This is Part 1.
+
+**Ask:** a small, professional notice — general, no specific
+inventory claims, doesn't make the business sound bigger or smaller
+than it is — telling visitors availability changes and inviting them
+to message if they're unsure.
+
+**Implementation:** one line added to `js/partials/footer.html`
+(shared across all 11 pages via `stitch.py`, so one edit propagates
+everywhere): *"Availability changes regularly — if you don't see
+what you're looking for, or aren't sure what's currently available,
+just send a message."* Placed above the existing copyright line
+inside `.footer-copy`, reusing that class's existing styling
+(`0.78rem`, `var(--dim)`) — no new CSS, no new visual pattern, matches
+the "keep the design system intact" instruction exactly. Deliberately
+avoids any number, "always in stock," "limited stock," or similar
+claim — just the fact that availability moves and an invitation to
+ask.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass; real-Chromium screenshots (Playwright) at desktop (1440px) and
+mobile (390px) of the homepage, `builds.html`, `build.html`,
+`services.html`, `contact.html`, `custom-build.html`, and
+`part-boxes.html` — zero horizontal overflow on any page/viewport,
+footer reads cleanly at both sizes (close-up screenshots of both
+confirmed the notice wraps normally and doesn't crowd the nav links,
+email link, or copyright line above/below it).
+
+**Decided by:** owner (spec given directly; wording is Claude's,
+within the stated constraints).
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
   confirmed: not yet — leave disabled).
-- **Business/contact email — which address to use.** Current state:
-  `CONTACT.email` (the real, functioning form-submission address) is
-  the owner's personal Gmail; `northbridgepcs@gmail.com` is already
-  taken by someone else, and a custom domain isn't affordable right
-  now. Owner asked directly for a recommendation on using the
-  personal Gmail — see the conversation record for the full
-  discussion, since this is a judgment call rather than a code change
-  to log here. Whatever's decided, the underlying exposure of
-  whichever address is used in client-side source is inherent to the
-  no-backend FormSubmit approach regardless of which address it is.

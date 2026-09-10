@@ -503,3 +503,13 @@ backfill. Since Phase 7:
   renders all three links correctly, zero console errors.
   **Placeholders only — need real values (or `show: false`) before
   actual launch.**
+- Business email decided (personal Gmail, owner using inbox rules) —
+  D29. Phone/Facebook reverted to off with values cleared; the footer
+  email display switched from its placeholder to the real address.
+- V1 finishing pass, Part 1 (D30): sitewide availability notice added
+  to the shared footer partial — "Availability changes regularly — if
+  you don't see what you're looking for, or aren't sure what's
+  currently available, just send a message." No new CSS, reuses
+  `.footer-copy`'s existing styling. Verified with real-Chromium
+  screenshots (desktop + mobile) across 7 pages — zero overflow,
+  footer reads cleanly at both sizes.

@@ -64,9 +64,9 @@ const CONTACT = {
 const features = {
 
   phone: {
-    show: true, // PLACEHOLDER VALUES for visual testing — set back to a real number (or false) before launch
-    number: "541-555-0123",
-    displayFormat: "(541) 555-0123"
+    show: false,
+    number: "", // e.g. "541-555-0123" — only used if show is true
+    displayFormat: "" // optional, e.g. "(541) 555-0123" for display vs. tel: link
   },
 
   // Visible email display (footer, etc.) — separate from CONTACT.email
@@ -74,13 +74,13 @@ const features = {
   // of this toggle. This only controls whether an address is *shown* to
   // visitors.
   email: {
-    show: true, // PLACEHOLDER for visual testing — see DECISIONS.md D28 for the open question of which real address to put here
-    address: "placeholder@example.com"
+    show: true,
+    address: "jacobskrove@gmail.com" // decided: personal Gmail for now, owner is using inbox rules to keep it manageable — see DECISIONS.md D29
   },
 
   facebook: {
-    show: true, // PLACEHOLDER for visual testing — no real Facebook page yet
-    url: "https://facebook.com/placeholder"
+    show: false,
+    url: ""
   },
 
   // Any other future social platform can follow the same shape:
