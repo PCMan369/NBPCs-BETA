@@ -183,7 +183,7 @@ function initBuildDetailPage() {
         '<div class="listing-form-title">Inquire About This System</div>' +
         '<div class="listing-form-sub">Fill out the form and I\'ll get back to you by email.</div>' +
         '<div class="listing-system-badge"><span>Asking about:</span> <strong>' + build.title + '</strong></div>' +
-        '<form action="https://formsubmit.co/' + CONTACT.email + '" method="POST" role="status" aria-live="polite" aria-atomic="true">' +
+        '<form action="https://formsubmit.co/' + CONTACT.email + '" method="POST" aria-live="polite" aria-atomic="true">' +
           '<input type="hidden" name="_subject" value="Inquiry: ' + build.title + ' \u2014 North Bridge PCs">' +
           '<input type="hidden" name="_captcha" value="false">' +
           '<input type="hidden" name="_template" value="table">' +

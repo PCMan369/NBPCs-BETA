@@ -121,17 +121,37 @@
           </div>
 
           <div id="order-form-wrap" style="display:none;">
-            <form id="order-form">
+            <!--
+              Form action and the _next redirect below are baked in at
+              build time by stitch.py (reading CONTACT.email/SITE.url from
+              config.js), same pattern as contact.html/services.html — a
+              real POST + redirect, not a fetch()/AJAX call, so it doesn't
+              depend on that specific request succeeding at submit time.
+              items_requested/estimated_total are hidden fields kept in
+              sync by partBoxOrder.js's updateSummary() every time the
+              selection changes, so the real submission always matches
+              what's shown in the summary above.
+            -->
+            <form id="order-form" method="POST" action="https://formsubmit.co/jacobskrove@gmail.com" aria-live="polite" aria-atomic="true">
+              <input type="hidden" name="_subject" value="Part box order request &mdash; North Bridge PCs">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="hidden" name="_next" id="order-next" value="https://pcman369.github.io/North-Bridge-PCs/part-boxes.html?ordered=true">
+              <input type="hidden" name="_url" id="order-url" value="https://pcman369.github.io/North-Bridge-PCs/part-boxes.html">
+              <input type="hidden" name="items_requested" id="order-items-hidden" value="">
+              <input type="hidden" name="estimated_total" id="order-total-hidden" value="">
+
+              <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">
+
               <div class="form-group">
                 <label class="form-label" for="order-name">Your Name</label>
-                <input type="text" id="order-name" class="form-input" placeholder="First name is fine" required autocomplete="name">
+                <input type="text" id="order-name" name="name" class="form-input" placeholder="First name is fine" required autocomplete="name">
               </div>
               <div class="form-group">
                 <label class="form-label" for="order-email">Your Email</label>
-                <input type="email" id="order-email" class="form-input" placeholder="So I can follow up" required autocomplete="email">
+                <input type="email" id="order-email" name="email" class="form-input" placeholder="So I can follow up" required autocomplete="email">
               </div>
               <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Send Request &rarr;</button>
-              <p id="order-error" style="color:var(--danger); font-size:0.85rem; display:none; text-align:center; margin-top:0.5rem;"></p>
               <p style="font-size:0.72rem; color:var(--dim); margin-top:0.75rem; text-align:center; line-height:1.5;">
                 This sends a request, not a payment. I'll follow up by email to arrange pickup and payment.
               </p>

@@ -1391,6 +1391,101 @@ within the stated constraints).
 
 ---
 
+### D31 — V1 finishing pass, Part 2: full forms evaluation and fixes
+
+**Ask:** evaluate every customer-facing form as a system — clear
+purposes, no unnecessary fields, an "Other" option where people might
+not know what fits. Preserve the build-detail inquiry form unless a
+real issue turned up. Don't overcomplicate it.
+
+**Full inventory (5 forms found):**
+
+1. **Contact form** (contact.html)
+2. **Service request form** (services.html)
+3. **Build-detail inquiry form** (buildDetail.js, on build.html)
+4. **Waitlist/notify form** (notifyBox.js, on builds.html)
+5. **Part-boxes order form** (partBoxOrder.js, on part-boxes.html)
+
+**Findings and fixes:**
+
+1. **Contact form — real issue: no clear purpose.** It quietly serves
+   two different intents (general questions and custom-build
+   inquiries — custom-build.html has no form of its own and links
+   here for everything) with no way to tell which a given message is,
+   and a wall of PC-spec optional fields even for someone with a
+   one-line question. Fix: added one required field at the very top,
+   `reason_for_contact` — "Buying a listed system" / "Custom build" /
+   "General question" / "Something else / not sure". Deliberately no
+   conditional show/hide logic (would need JS the rest of this form
+   doesn't require) — every existing field stays exactly as it was,
+   just now labeled by intent for triage. The catch-all option covers
+   the required "Other" case directly.
+2. **Services form — real issue: no catch-all.** The service dropdown
+   only lists the 4 actual in-house services, so a request that
+   doesn't cleanly fit one of those has to force a pick or leave.
+   Fix: added an "Other / not sure — I'll explain below" option,
+   generated alongside the real ones so it can't drift out of sync;
+   pairs with the existing required "What's Going On?" field, which
+   was already the place to elaborate. No other fields touched.
+3. **Build-detail inquiry form — preserved as asked, one real issue
+   found.** Fields (name, email, OS, notes) are genuinely lean and
+   well-scoped to "inquire about this specific system" — left alone.
+   But it still had the invalid `role="status"` on its `<form>` tag
+   that D27 already fixed on contact.html/services.html, explicitly
+   left here at the time because it wasn't in the owner's original
+   audit list (see D27 item 4). Fixed now to match — `aria-live`/
+   `aria-atomic` don't need the role to work, confirmed via a direct
+   DOM check (temporarily forcing a build to `status: "available"` in
+   memory, since every real listing is currently sold and the form
+   doesn't render at all otherwise).
+4. **Waitlist/notify form — no issue found.** Minimal, single clear
+   purpose, no multi-choice field that would need an "Other" option.
+   Left untouched.
+5. **Part-boxes order form — real issue, already flagged.** The one
+   form still submitting via JS-only `fetch()` with no `<form action>`
+   fallback (D19 explicitly deferred this: "revisit once that gets
+   its own reliability fix"). A `fetch()`/XHR call to a third-party
+   endpoint is also more commonly blocked by ad-blockers/privacy
+   extensions than a plain top-level form POST, independent of the
+   JS-availability question. Converted to the same real-form pattern
+   as every other form: added `method`/`action` (build-time tokens),
+   the standard hidden fields, `name`/`email` attributes on the
+   visible inputs (they only had `id` before — never actually
+   submittable), and two new hidden fields (`items_requested`,
+   `estimated_total`) that `updateSummary()` keeps in sync on every
+   quantity change so the real POST always matches the visible
+   summary. This let the old custom fetch/JSON/error-handling logic
+   in `partBoxOrder.js` be deleted rather than patched — net simpler,
+   not more complex, and now shares the aria-live confirmation pattern
+   the other four forms already had (D19 had explicitly excluded this
+   form from that treatment for the same reason). The confirmation
+   state is a fresh check for `?ordered=true` on page load (selections
+   don't survive FormSubmit's redirect), returning early before the
+   normal quantity-picker wiring runs.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass, no script errors anywhere. Targeted jsdom checks: contact.html's
+new field renders required with the 4 correct options and the form
+action still resolves correctly; services.html's dropdown includes
+the new option alongside the 4 real services; build-detail form
+confirmed to have the role removed and aria-live/atomic/action/fields
+all intact (via the temporary in-memory "available" override above);
+part-boxes form simulated end-to-end — injected a test box (real
+inventory is currently empty), clicked quantity up twice, confirmed
+the hidden fields exactly matched the visible summary (`"MSI Test GPU
+Box x2"` / `"$10"` both places), and confirmed the `?ordered=true`
+thank-you state renders with zero script errors even against the
+current empty-inventory state. Real-Chromium screenshots (desktop +
+mobile) of all three changed forms (including the part-boxes form
+with an item selected, and its thank-you state) — zero horizontal
+overflow, all render cleanly, no visual change to anything not
+explicitly listed above.
+
+**Decided by:** owner (spec given directly; evaluation, plan, and
+implementation are Claude's, within the stated constraints).
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

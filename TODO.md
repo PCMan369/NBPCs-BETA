@@ -67,7 +67,7 @@
 - [ ] **V1 finishing pass**, one part at a time — see PROJECT_STATUS.md
       for the live checklist:
       - [x] Part 1 — sitewide availability notice (D30)
-      - [ ] Part 2 — contact-forms system review
+      - [x] Part 2 — contact-forms system review (D31)
       - [ ] Part 3 — services page content/structure rework
 
 ## Recommended

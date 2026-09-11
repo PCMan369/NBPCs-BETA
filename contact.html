@@ -130,7 +130,7 @@
 
         <div class="form-card">
           <h2 style="margin-bottom:0.4rem; font-size:1.4rem;">Send a Message</h2>
-          <p style="margin-bottom:2rem; font-size:0.93rem;">Fill out what's relevant and skip anything that doesn't apply.</p>
+          <p style="margin-bottom:2rem; font-size:0.93rem;">Let me know what this is about, then fill in whatever's relevant below — skip anything that doesn't apply.</p>
 
           <!--
             Form action and the _next redirect below are baked in at
@@ -152,6 +152,17 @@
             <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">
 
             <div class="form-grid">
+
+              <div class="form-group full">
+                <label class="form-label" for="reason">What's This About?</label>
+                <select id="reason" name="reason_for_contact" class="form-select" required>
+                  <option value="" disabled selected>Select one</option>
+                  <option value="Buying a listed system">Buying a listed system</option>
+                  <option value="Custom build">Custom build</option>
+                  <option value="General question">General question</option>
+                  <option value="Something else / not sure">Something else / not sure</option>
+                </select>
+              </div>
 
               <div class="form-group">
                 <label class="form-label" for="name">Your Name</label>

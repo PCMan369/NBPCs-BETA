@@ -157,7 +157,9 @@
       document.getElementById('service-detail-cards').innerHTML = detail.map(renderServiceDetailCard).join('');
 
       // Populate the service dropdown from the same data — can't list a
-      // service here that doesn't actually exist above.
+      // service here that doesn't actually exist above. An explicit
+      // catch-all option is added after, for anyone whose issue doesn't
+      // cleanly fit one of the listed services.
       var select = document.getElementById('sr-service');
       detail.forEach(function (svc) {
         var opt = document.createElement('option');
@@ -165,6 +167,10 @@
         opt.textContent = svc.name;
         select.appendChild(opt);
       });
+      var otherOpt = document.createElement('option');
+      otherOpt.value = "Other / not sure — see details below";
+      otherOpt.textContent = "Other / not sure — I'll explain below";
+      select.appendChild(otherOpt);
 
       // Each detail card's "Request This Service" button pre-selects
       // that service and scrolls down to the form.

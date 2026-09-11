@@ -497,10 +497,18 @@ owner's go-ahead.
       added to the shared footer (all 11 pages): availability
       changes, message if unsure. No visual redesign — reuses the
       existing `.footer-copy` styling. See DECISIONS.md D30.
-- [ ] **Part 2 — Contact forms.** Evaluate all customer-facing forms
-      as a system; preserve the build-detail inquiry form unless a
-      real issue turns up; clear purposes per form, no unnecessary
-      fields, an "Other" option where it helps. Not started.
+- [x] **Part 2 — Contact forms.** Evaluated all 5 customer-facing
+      forms as a system. Added a required "what's this about" field
+      to the contact form (it quietly served 2 unrelated intents with
+      no way to tell them apart); added an "Other/not sure" option to
+      the services dropdown; preserved the build-detail inquiry
+      form's fields as asked but fixed one real pre-existing issue
+      (invalid `role="status"`, same class of bug D27 already fixed
+      elsewhere); converted the part-boxes order form off its
+      JS-only `fetch()` pattern onto the same real-form-POST pattern
+      every other form uses (a pre-flagged gap from D19) — this
+      removed code rather than adding it. Waitlist form: no issue
+      found, untouched. See DECISIONS.md D31.
 - [ ] **Part 3 — Services page.** Rework content/structure (it reads
       crowded right now) so a customer can find what they need before
       contacting the owner — same visual direction, no broad redesign.

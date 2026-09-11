@@ -2,14 +2,25 @@
   ================================================================
   js/render/partBoxOrder.js — Order Request Builder
   ================================================================
-  Tracks quantities selected across all box cards on part-boxes.html,
-  keeps the "Your Request" summary panel in sync, and submits the
-  whole itemized request as one message. No payment processing, no
-  real cart or checkout — this just turns several quantity pickers
-  into one clean inquiry, the same way every other form on this site
-  works. Fulfillment (payment, pickup) still happens in person.
+  Tracks quantities selected across all box cards on part-boxes.html
+  and keeps the "Your Request" summary panel in sync. No payment
+  processing, no real cart or checkout — this just turns several
+  quantity pickers into one clean inquiry. Fulfillment (payment,
+  pickup) still happens in person.
 
-  Requires: js/data/config.js (for CONTACT.email), and the box cards
+  Reliability: the actual submission is a real <form action="..."> POST
+  (baked in at build time by stitch.py from config.js, same pattern as
+  contact.html/services.html/the build-detail inquiry form), not a
+  fetch()/AJAX call — it doesn't depend on that specific request
+  succeeding at submit time the way the old fetch()-based version did.
+  updateSummary() below keeps two hidden fields (items_requested,
+  estimated_total) in sync with the visible summary on every selection
+  change, so the real POST always matches what's shown on screen. See
+  DECISIONS.md D31 for the reliability fix and why part-boxes.html was
+  the one form still on the old pattern.
+
+  Requires: js/data/config.js (for CONTACT.email — used only as a
+  fallback if the build-time token wasn't replaced), and the box cards
   (from partBoxCard.js) already in the DOM.
   ================================================================
 */
@@ -18,12 +29,32 @@ function initPartBoxOrder() {
   var grid = document.getElementById('part-boxes-grid');
   var summary = document.getElementById('order-summary');
   if (!grid || !summary) return;
+
+  // Thank-you state (progressive enhancement — the form itself already
+  // works via a plain POST + redirect with zero custom JS; this just
+  // swaps in a nicer confirmation when JS is available). Checked first
+  // and returns early: box selections don't survive a page reload, so
+  // the normal empty-selection rendering below would otherwise hide
+  // this panel right back out.
+  if (window.location.search.indexOf('ordered=true') !== -1) {
+    summary.style.display = '';
+    summary.innerHTML =
+      '<div class="notify-success">' +
+        '<span class="success-icon" style="color:var(--accent);">&#10003;</span>' +
+        '<h3>Request Sent</h3>' +
+        '<p>I\'ll follow up by email to arrange pickup and payment.</p>' +
+      '</div>';
+    return;
+  }
+
   if (!grid.querySelector('.box-card')) return; // nothing orderable — empty state only
 
   var itemsEl = document.getElementById('order-summary-items');
   var totalWrap = document.getElementById('order-summary-total');
   var totalAmountEl = document.getElementById('order-total-amount');
   var formWrap = document.getElementById('order-form-wrap');
+  var itemsHiddenEl = document.getElementById('order-items-hidden');
+  var totalHiddenEl = document.getElementById('order-total-hidden');
 
   var selections = {}; // box id -> selected quantity
 
@@ -56,6 +87,8 @@ function initPartBoxOrder() {
       itemsEl.innerHTML = '<p class="order-summary-empty">No boxes selected yet.</p>';
       totalWrap.style.display = 'none';
       formWrap.style.display = 'none';
+      if (itemsHiddenEl) itemsHiddenEl.value = '';
+      if (totalHiddenEl) totalHiddenEl.value = '';
       return;
     }
 
@@ -69,6 +102,11 @@ function initPartBoxOrder() {
     totalAmountEl.textContent = formatMoney(total);
     totalWrap.style.display = 'flex';
     formWrap.style.display = 'block';
+
+    // Keep the real form's hidden fields in sync so the actual POST
+    // always matches what's shown in the summary above.
+    if (itemsHiddenEl) itemsHiddenEl.value = lines.map(function (l) { return l.label + ' x' + l.qty; }).join(', ');
+    if (totalHiddenEl) totalHiddenEl.value = formatMoney(total);
   }
 
   function setQty(card, val) {
@@ -94,73 +132,6 @@ function initPartBoxOrder() {
     var card = e.target.closest('.box-card');
     setQty(card, parseInt(e.target.value, 10) || 0);
   });
-
-  // ---- Submit ----
-  var form = document.getElementById('order-form');
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      var name = document.getElementById('order-name').value.trim();
-      var email = document.getElementById('order-email').value.trim();
-      var errEl = document.getElementById('order-error');
-      errEl.style.display = 'none';
-
-      if (!name || !email || !email.includes('@')) {
-        errEl.textContent = 'Please fill in your name and a valid email.';
-        errEl.style.display = 'block';
-        return;
-      }
-
-      var cards = grid.querySelectorAll('.box-card');
-      var itemLines = [];
-      var total = 0;
-      cards.forEach(function (card) {
-        var id = card.getAttribute('data-id');
-        var qty = selections[id] || 0;
-        if (qty > 0) {
-          total += parsePrice(card.getAttribute('data-price')) * qty;
-          itemLines.push(card.getAttribute('data-label') + ' x' + qty);
-        }
-      });
-      if (!itemLines.length) return;
-
-      var submitBtn = form.querySelector('button[type=submit]');
-      submitBtn.textContent = 'Sending\u2026';
-      submitBtn.disabled = true;
-
-      fetch('https://formsubmit.co/ajax/' + CONTACT.email, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _subject: 'Part box order request \u2014 North Bridge PCs',
-          name: name,
-          email: email,
-          items_requested: itemLines.join(', '),
-          estimated_total: formatMoney(total)
-        })
-      })
-        .then(function (res) { return res.json(); })
-        .then(function (data) {
-          if (data.success === 'true' || data.success === true) {
-            summary.innerHTML =
-              '<div class="notify-success">' +
-                '<span class="success-icon" style="color:var(--accent);">&#10003;</span>' +
-                '<h3>Request Sent</h3>' +
-                '<p>I\'ll follow up by email to arrange pickup and payment.</p>' +
-              '</div>';
-          } else {
-            throw new Error('Submission failed');
-          }
-        })
-        .catch(function () {
-          submitBtn.textContent = 'Send Request \u2192';
-          submitBtn.disabled = false;
-          errEl.textContent = 'Something went wrong \u2014 try again or use the contact page instead.';
-          errEl.style.display = 'block';
-        });
-    });
-  }
 
   updateSummary();
 }

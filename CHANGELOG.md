@@ -513,3 +513,17 @@ backfill. Since Phase 7:
   `.footer-copy`'s existing styling. Verified with real-Chromium
   screenshots (desktop + mobile) across 7 pages — zero overflow,
   footer reads cleanly at both sizes.
+- V1 finishing pass, Part 2 (D31): full forms evaluation across all 5
+  customer-facing forms. Contact form gained a required "what's this
+  about" field (it was quietly serving both general questions and
+  custom-build inquiries with no way to tell them apart). Services
+  form gained an "Other / not sure" dropdown option. Build-detail
+  inquiry form's fields preserved untouched as asked, but its invalid
+  `role="status"` (same bug D27 fixed elsewhere, deliberately skipped
+  here at the time) is now fixed too. Part-boxes order form converted
+  from JS-only `fetch()` to a real `<form action>` POST — the one
+  form still on the old pattern (flagged back in D19) — which let the
+  old custom fetch/error-handling JS be deleted rather than patched.
+  Waitlist form: evaluated, no issue found, untouched. Verified with
+  rebuild + full smoke test + targeted jsdom checks of each changed
+  form + real-Chromium screenshots at desktop/mobile.
