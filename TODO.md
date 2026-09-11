@@ -64,11 +64,11 @@
       no nav item as active, has a `noindex` tag, and is deliberately
       excluded from `sitemap.xml` (see `stitch.py` and DECISIONS.md
       D25). Buttons back to the homepage and the gaming-PC listings.
-- [ ] **V1 finishing pass**, one part at a time — see PROJECT_STATUS.md
-      for the live checklist:
+- [x] **V1 finishing pass**, done one part at a time — see
+      PROJECT_STATUS.md for full detail:
       - [x] Part 1 — sitewide availability notice (D30)
       - [x] Part 2 — contact-forms system review (D31)
-      - [ ] Part 3 — services page content/structure rework
+      - [x] Part 3 — services page content/structure rework (D32)
 
 ## Recommended
 

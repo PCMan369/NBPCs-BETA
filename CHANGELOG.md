@@ -527,3 +527,16 @@ backfill. Since Phase 7:
   Waitlist form: evaluated, no issue found, untouched. Verified with
   rebuild + full smoke test + targeted jsdom checks of each changed
   form + real-Chromium screenshots at desktop/mobile.
+- V1 finishing pass, Part 3 (D32): services page content/structure
+  rework. Each of the 4 service detail cards had 3 near-identical
+  "note" blocks (Pricing/Turnaround/Worth Knowing) mostly restating
+  the same generic promise the page's general policy paragraph
+  already made once below the cards. Trimmed to one "Worth knowing"
+  caveat per card; the 2 genuinely distinct details (Upgrades' parts/
+  install cost split, Support's "not unlimited support") moved into
+  `included`/`notCovered` rather than being lost. Gave the previously
+  headerless policy paragraph a proper section header, reusing the
+  same pattern already used twice above it on the page, and tightened
+  a duplicated sentence inside it. No visual/CSS changes — content
+  and structure only. This completes the V1 finishing pass (Parts
+  1–3, D30–D32).

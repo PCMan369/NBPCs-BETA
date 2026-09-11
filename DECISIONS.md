@@ -1486,6 +1486,69 @@ implementation are Claude's, within the stated constraints).
 
 ---
 
+### D32 — V1 finishing pass, Part 3: services page content/structure rework
+
+**Ask:** the page felt crowded. Rework functionally/content-wise —
+keep the current visual direction and design system, no broad
+redesign — prioritizing what a customer needs to know before
+contacting over adding more content.
+
+**What was actually crowded:** each of the 4 service detail cards
+(Repair, Upgrades, Cleaning, Support) carried three separate labeled
+"note" blocks — Pricing, Turnaround, and Worth Knowing — each with
+its own divider line. Across all four cards the Pricing and
+Turnaround notes were near-identical restatements of the same
+generic idea ("depends on the job, no flat rate, you'll know before
+starting" / "depends on scope, realistic estimate, not a guess") —
+and that same idea was *also* stated once already, clearly, in the
+`.service-policy` paragraph below both card grids. A customer reading
+top to bottom hit the same promise five times in slightly different
+words before ever reaching the form.
+
+**Fix — removed the redundancy, kept the substance:**
+
+- Dropped `pricingNote`/`turnaroundNote` from all 4 services in
+  `services.js` and simplified `renderServiceDetailCard()` in
+  `serviceCard.js` to match — each card now shows one "Worth
+  knowing" caveat instead of three notes. Nothing generic was lost:
+  it was already covered once by the policy paragraph.
+- The two genuinely distinct details buried in those notes were
+  preserved, not deleted: Upgrades' "hardware cost and installation
+  accounted for separately" moved into its `included` list (a real,
+  specific fact, not boilerplate); Support's "this isn't unlimited
+  support" folded into its existing `notCovered` sentence (a real
+  boundary worth knowing, not a restatement of the general policy).
+- Tightened the policy paragraph itself, which had a smaller version
+  of the same problem — it said "realistic estimate" twice in three
+  sentences. Merged into one sentence; no facts changed or added.
+- That paragraph also had no section header at all — it just sat as
+  a floating paragraph between the card grids and the form. Gave it
+  the exact same `.section-header` pattern already used by the two
+  sections above it on this same page ("Before You Reach Out" / "How
+  Pricing & Turnaround Work") so it reads as its own clearly-labeled
+  section instead of an afterthought. This is the one structural
+  addition — reusing an existing pattern already on the page, not a
+  new visual element.
+- `services.js`'s own "how to edit this" header comment updated to
+  match the simplified schema, so a future edit doesn't try to add
+  a pricing/turnaround note back per service out of habit.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass. Direct DOM check confirmed each of the 4 detail cards now
+renders exactly 1 "Worth knowing" note (down from 3), the service
+dropdown still lists all 4 real services plus D31's "Other" option
+unaffected, and the "Request This Service" pre-select-and-scroll flow
+still correctly sets the dropdown value. Before/after real-Chromium
+screenshots of the card grid at desktop confirmed the visible
+decluttering; full-page screenshots at desktop (1440px) and mobile
+(390px) — zero horizontal overflow, new section header reads cleanly
+at both sizes, nothing outside the services page touched.
+
+**Decided by:** owner (spec given directly; evaluation and specific
+content cuts are Claude's, within the stated constraints).
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

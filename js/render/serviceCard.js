@@ -7,8 +7,10 @@
       their own dedicated page.
     - Detail cards (repair, upgrades, cleaning, support) — full
       content lives right here since these don't have their own pages.
-      Every section (included list, pricing/turnaround/caveat notes)
-      only renders if that field is actually filled in.
+      The included list and the "Worth knowing" caveat note each only
+      render if that field is actually filled in. General pricing/
+      turnaround policy lives once, in services.html's
+      `.service-policy` paragraph — not repeated per card here.
   ================================================================
 */
 
@@ -29,16 +31,9 @@ function renderServiceDetailCard(svc) {
       '</ul>'
     : '';
 
-  var notes = '';
-  if (svc.pricingNote) {
-    notes += '<div class="service-note"><strong>Pricing:</strong> ' + svc.pricingNote + '</div>';
-  }
-  if (svc.turnaroundNote) {
-    notes += '<div class="service-note"><strong>Turnaround:</strong> ' + svc.turnaroundNote + '</div>';
-  }
-  if (svc.notCovered) {
-    notes += '<div class="service-note service-caveat"><strong>Worth knowing:</strong> ' + svc.notCovered + '</div>';
-  }
+  var notes = svc.notCovered
+    ? '<div class="service-note service-caveat"><strong>Worth knowing:</strong> ' + svc.notCovered + '</div>'
+    : '';
 
   return (
     '<div class="service-detail-card" id="' + svc.id + '">' +

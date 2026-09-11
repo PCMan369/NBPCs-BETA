@@ -28,9 +28,13 @@ fine — that open item is closed.
 
 Current work is getting ready for launch: `SITE.url` now points at
 the destination repo (`pcman369.github.io/North-Bridge-PCs`) the
-owner will deploy to, and phone/email/Facebook are toggled on with
-placeholder values so the owner can visually test the footer before
-picking real ones. See D28.
+owner will deploy to. Phone and Facebook were briefly toggled on with
+placeholders for visual testing (D28), then reverted back off once
+that testing was done; the footer email display is real now
+(personal Gmail, decided — see D29). The three-part "V1 finishing
+pass" the owner asked for after that — a sitewide availability
+notice, a full forms evaluation, and a services-page content rework —
+is now complete (D30/D31/D32).
 
 The original build (Phases 0–8) and the full post-launch audit
 implementation are functionally complete (see "Completed so far"
@@ -509,10 +513,20 @@ owner's go-ahead.
       every other form uses (a pre-flagged gap from D19) — this
       removed code rather than adding it. Waitlist form: no issue
       found, untouched. See DECISIONS.md D31.
-- [ ] **Part 3 — Services page.** Rework content/structure (it reads
-      crowded right now) so a customer can find what they need before
-      contacting the owner — same visual direction, no broad redesign.
-      Not started.
+- [x] **Part 3 — Services page.** The 4 detail cards each had 3
+      near-identical "note" blocks (Pricing/Turnaround/Worth Knowing)
+      that mostly restated the same generic promise the general
+      policy paragraph below them already made once. Trimmed each
+      card to just its one genuinely distinct "Worth knowing" caveat;
+      the 2 details actually worth keeping from the removed notes
+      moved into `included`/`notCovered` instead of being lost. Also
+      gave the previously-headerless policy paragraph a proper
+      section header (reusing the exact pattern already used twice
+      above it on the same page) and tightened a duplicated sentence
+      within it. No visual/CSS changes — this was entirely a content
+      and structure pass. See DECISIONS.md D32.
+
+This completes the V1 finishing pass — all three parts done.
 
 ## Not started yet
 
