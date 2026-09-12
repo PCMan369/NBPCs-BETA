@@ -73,6 +73,17 @@
       to existing dedicated forms (Service/Repair, Part Box), 4 map to
       3 real form panels (Buying, Custom PC, shared General/Other).
       Supersedes D31's dropdown. See DECISIONS.md D33.
+- [x] Migrated 2 remaining builds from the old live site's leftover
+      legacy `js/builds.js` (Ryzen 5 5500/RX 5700 XT, HP EliteBook 840
+      G10) into the current `builds.js` schema, with their real
+      photos. Laptop's old performance-section disclaimer moved to
+      `notes` per owner request. Found and fixed a real bug along the
+      way: `notes` was never wired up to render anywhere on the site.
+      See DECISIONS.md D34.
+- [ ] **Reminder (owner asked to be reminded):** decide what belongs
+      in the EliteBook's (`aug26-02`) now-empty performance-estimate
+      section, if anything — see PROJECT_STATUS.md "Known open
+      questions."
 
 ## Recommended
 

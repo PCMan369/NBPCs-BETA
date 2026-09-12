@@ -543,6 +543,20 @@ D33 for the complete field-by-field breakdown, the reasoning behind
 which situations got their own panel vs. a link out, and the
 no-JS-fallback verification.
 
+## Remaining builds migrated from the old live site
+
+2 real listings existed on the old live site (in a leftover legacy
+`js/builds.js`, not the current `js/data/builds.js`) but were never
+migrated during the rebuild: a Ryzen 5 5500/RX 5700 XT desktop and an
+HP EliteBook 840 G10 laptop, both "available." Both added to
+`builds.js` (`aug26-01`/`aug26-02`) with their real photos. The
+laptop's old performance-section disclaimer moved to `notes` per the
+owner's request — which surfaced a real pre-existing bug: `notes` had
+never actually been wired up to render anywhere on the site despite
+being a documented schema field. Fixed as part of this pass (now
+renders in `buildDetail.js`'s "Good to Know" card). See DECISIONS.md
+D34 for full detail.
+
 ## Not started yet
 
 - Phase 6 remainder: general visual/micro-interaction polish (image
@@ -553,8 +567,13 @@ no-JS-fallback verification.
 
 ## Known open questions (not yet blocking, but will be before their phase)
 
-- (none currently — business email handling was the last one; decided,
-  see DECISIONS.md D29)
+- **Reminder (owner explicitly asked to be reminded):** the EliteBook
+  laptop (`aug26-02`)'s performance-estimate section is now genuinely
+  empty — its old disclaimer moved to `notes` (D34), and nothing was
+  put in its place since a real gaming PC's fps-estimate format
+  doesn't fit a non-gaming laptop anyway. Needs a decision on what,
+  if anything, belongs there (a different kind of note entirely,
+  general productivity/battery comments, or just leave it empty).
 
 ## Audit implementation plan (current)
 

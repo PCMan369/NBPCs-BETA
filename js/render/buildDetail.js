@@ -5,7 +5,7 @@
   Renders build.html?id=X entirely from one entry in js/data/builds.js.
   This is the "complete build card" system: full component spec sheet
   (not just RAM/Storage), a photo+video gallery, performance estimates,
-  condition/testing notes when present, and a status-aware CTA (an
+  condition/testing/other notes when present, and a status-aware CTA (an
   inquiry form for available systems, a sold notice for sold ones).
 
   Every section is genuinely optional — a build with no photos, no
@@ -149,13 +149,14 @@ function initBuildDetailPage() {
     '</div>';
   }
 
-  // ---- Condition / testing notes (only if provided) ----
+  // ---- Condition / testing / other notes (only if provided) ----
   var conditionHtml = '';
-  if (build.condition || build.testingNotes) {
+  if (build.condition || build.testingNotes || build.notes) {
     conditionHtml = '<div class="listing-specs-card">' +
-      '<div class="listing-specs-title">Condition &amp; Testing</div>' +
-      (build.condition ? '<p style="font-size:0.9rem; margin-bottom:' + (build.testingNotes ? '0.75rem' : '0') + ';">' + build.condition + '</p>' : '') +
-      (build.testingNotes ? '<p style="font-size:0.9rem;">' + build.testingNotes + '</p>' : '') +
+      '<div class="listing-specs-title">Good to Know</div>' +
+      (build.condition ? '<p style="font-size:0.9rem; margin-bottom:0.75rem;">' + build.condition + '</p>' : '') +
+      (build.testingNotes ? '<p style="font-size:0.9rem; margin-bottom:0.75rem;">' + build.testingNotes + '</p>' : '') +
+      (build.notes ? '<p style="font-size:0.9rem;">' + build.notes + '</p>' : '') +
     '</div>';
   }
 

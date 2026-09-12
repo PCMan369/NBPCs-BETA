@@ -562,3 +562,19 @@ backfill. Since Phase 7:
   their wrapping section's own padding behind) during the same pass.
   Real-Chromium screenshots at desktop/mobile of the picker and every
   form state.
+- Migrated 2 remaining builds from the old live site (D34): a Ryzen 5
+  5500/RX 5700 XT desktop and an HP EliteBook 840 G10 laptop, both
+  found sitting in a leftover legacy `js/builds.js` (old pre-rebuild
+  schema, not the current `js/data/builds.js`) with real photos never
+  brought into this project. Added as `aug26-01`/`aug26-02` with their
+  11 real photos copied over. Laptop's old performance-section
+  disclaimer moved to `notes` per the owner's request, which surfaced
+  a real pre-existing bug: `notes` was documented in the schema but
+  had zero rendering code anywhere on the site. Fixed by extending
+  `buildDetail.js`'s condition/testing card (renamed "Condition &
+  Testing" → "Good to Know") to also render it. Verified: rebuild +
+  full smoke test pass; confirmed via screenshots that both new
+  listings render correctly (5700XT with its performance box,
+  EliteBook cleanly without one), the disclaimer now actually
+  displays, and builds with no notes/condition/testingNotes still
+  correctly show no card at all.

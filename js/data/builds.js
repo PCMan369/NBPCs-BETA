@@ -90,7 +90,10 @@
                                         // process already described sitewide
     listedDate: "2026-08-01",
     notes: ""                          // optional, anything else worth
-                                        // knowing that doesn't fit elsewhere
+                                        // knowing that doesn't fit elsewhere —
+                                        // shown to customers on the listing's
+                                        // detail page (build.html), same
+                                        // section as condition/testingNotes
   },
 
   ================================================================
@@ -111,6 +114,93 @@
 */
 
 const builds = [
+
+  {
+    id: "aug26-01",
+    title: "Ryzen 5 5500 / RX 5700 XT",
+    status: "available",
+    price: "$550",
+    eventId: null,
+    eventPrice: null,
+
+    summary: "Cleaned and stress tested 1080p/1440p gaming build.",
+
+    components: {
+      cpu: { model: "AMD Ryzen 5 5500" },
+      gpu: { model: "AMD RX 5700 XT" },
+      ram: { model: "16GB DDR4 2800MHz" },
+      storage: { model: "512GB NVMe SSD" }
+    },
+
+    performance: {
+      isEstimate: true,
+      items: [
+        { game: "Fortnite",       fps: "~130fps", settings: "1080p High" },
+        { game: "Minecraft",      fps: "~240fps+", settings: "1080p High" },
+        { game: "Marvel Rivals",  fps: "~90fps",  settings: "1080p High" },
+        { game: "Cyberpunk 2077", fps: "~65fps",  settings: "1080p High" }
+      ]
+    },
+
+    media: {
+      images: [
+        "images/5500_5700XT.jpg",
+        "images/5500_5700XT_FRONT.jpg",
+        "images/5500_5700XT_SIDE.jpg",
+        "images/5500_5700XT_IO.jpg",
+        "images/5500_5700XT_BACK.jpg"
+      ],
+      videos: []
+    },
+
+    condition: "",
+    testingNotes: "",
+    listedDate: "2026-08-01",
+    notes: ""
+  },
+
+  {
+    id: "aug26-02",
+    title: "HP EliteBook 840 G10",
+    status: "available",
+    price: "$400",
+    eventId: null,
+    eventPrice: null,
+
+    summary: "A lightweight business laptop, cleaned and tested. Not built for gaming.",
+
+    components: {
+      cpu: { model: "Intel Core i5" }, // exact generation/SKU not confirmed — visible on the unit's palm-rest badge but not fully legible in the source photos
+      ram: { model: "24GB DDR5 5200MHz" },
+      storage: { model: "512GB NVMe SSD" },
+      os:  { model: "Windows" } // visibly running Windows in the source photos; exact version (10 vs 11) not confirmed
+    },
+
+    // No performance section for this one — see notes below. Deliberately
+    // left empty rather than guessing; flagged for the owner to fill in
+    // properly (see PROJECT_STATUS.md).
+    performance: {
+      isEstimate: true,
+      items: []
+    },
+
+    media: {
+      images: [
+        "images/EliteBook.jpg",
+        "images/EliteBook_screen.jpg",
+        "images/EliteBook_keyboard.jpg",
+        "images/EliteBook_left.jpg",
+        "images/EliteBook_right.jpg",
+        "images/EliteBook_bottom.jpg"
+      ],
+      videos: []
+    },
+
+    condition: "",
+    testingNotes: "",
+    listedDate: "2026-08-01",
+    notes: "Given that this is not a gaming PC and does not have dedicated graphics, it will not perform very well in most PC games."
+  },
 
   {
     id: "jul26-01",

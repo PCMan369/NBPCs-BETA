@@ -1674,6 +1674,88 @@ the stated constraints).
 
 ---
 
+### D34 — Migrated 2 remaining builds from the old live site; found and fixed a real bug (notes field never rendered anywhere)
+
+**Ask:** move over all remaining builds from the old live site
+(`pcman369.github.io/North-Bridge-PCs`). The laptop's disclaimer,
+currently sitting in its performance-estimate section, should move to
+notes — then a reminder to deal with the now-empty performance section.
+
+**What was actually there:** the live site's current `js/data/builds.js`
+(checked both `main` and `master` branches, identical) only has the
+same 3 sold builds already in our project — nothing new there. The
+real find was a leftover **legacy** `js/builds.js` (old flat pre-
+rebuild schema, not the current `js/data/builds.js` — a different
+file, still sitting in the repo unused by the live pages) containing
+2 real listings that were apparently never migrated when this project
+did its ground-up rebuild:
+
+- **Ryzen 5 5500 / RX 5700 XT** — a normal gaming desktop, $550,
+  status "available," real fps estimates already present.
+- **HP EliteBook 840 G10** — a business laptop, $400, status
+  "available." Its old "fps" field (meant for real performance
+  numbers) instead contained a hand-written disclaimer split across
+  5 array entries: "Given that this is not a gaming PC and does not
+  have dedicated graphics, it will not perform very well in most PC
+  games." — exactly the disclaimer the owner flagged.
+
+Both had real photos already sitting in the repo's `images/` folder
+(11 total) that were never referenced by anything live — copied all
+11 into this project's `images/` folder.
+
+**Added as `aug26-01` (5700XT) and `aug26-02` (EliteBook)** in the
+current schema. For the EliteBook specifically: `cpu: "Intel Core
+i5"` and `os: "Windows"` are both directly visible in the source
+photos (a palm-rest badge and the on-screen desktop respectively) —
+included with an inline comment noting the exact CPU generation/OS
+version aren't confirmed, rather than guessing further. No
+motherboard/GPU fields added since nothing in the source data or
+photos confirms them for this unit — left blank per the schema's own
+"every component field is optional" rule rather than fabricated.
+
+**The disclaimer**: moved verbatim into `notes`; `performance.items`
+left as an empty array (renders nothing at all, confirmed — not an
+empty box) per the owner's explicit instruction.
+
+**Real bug found while doing this:** `notes` has existed in the
+schema since early in this project (documented in `builds.js`'s own
+header comment) but had **zero rendering code anywhere** — every
+existing build always had `notes: ""`, so nobody would have noticed
+it was silently swallowed. The owner's request to move real,
+customer-relevant text into this field was the first time it
+mattered. Fixed by extending the existing `condition`/`testingNotes`
+card in `buildDetail.js` (renamed "Condition & Testing" → "Good to
+Know" since it now covers a third, more general kind of content) to
+also render `notes` when present. Confirmed via direct check that
+builds with no condition/testingNotes/notes still correctly show no
+card at all — this isn't a new always-on section.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass. Real-Chromium screenshots (desktop 1440px + mobile 390px) of
+the builds listing page (both new systems show correctly — 5700XT
+with its performance box, EliteBook cleanly without one) and both
+detail pages, including a close-up confirming the "Good to Know"
+card now actually displays the disclaimer text. Cross-checked an
+existing build with no notes/condition/testingNotes to confirm the
+card still doesn't render for it.
+
+**Reminder for the owner, as requested:** the EliteBook's performance-
+estimate section is now genuinely empty by design. Worth revisiting
+whenever there's a plan for what (if anything) belongs there for a
+non-gaming laptop — see PROJECT_STATUS.md.
+
+**Not done as part of this:** anything to do with the scroll bar/
+loading bar or the part-boxes inventory — owner asked for these one
+at a time, in order, and the scroll bar change specifically needs a
+plan presented before any implementation.
+
+**Decided by:** owner (which builds to move, the notes-migration
+instruction, and the reminder request given directly; the discovery
+that this required checking a legacy file, the specific fields filled
+in for the EliteBook, and the notes-rendering fix are Claude's).
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
