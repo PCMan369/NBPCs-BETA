@@ -1549,6 +1549,131 @@ content cuts are Claude's, within the stated constraints).
 
 ---
 
+### D33 — Contact page rebuilt as a situation router (supersedes D31's dropdown)
+
+**Ask:** the contact page should act as a router — customer picks
+what they need help with first, then sees only the fields relevant
+to that situation, instead of one generic form. Six situations:
+Buying a Gaming PC, Custom PC, PC Service/Repair, Part Box, General
+Question, Other/Not Sure. Use existing dedicated forms where they
+already do the job well rather than duplicating them. Keep each
+form short. Buying a Gaming PC needs a short, honest (not salesy,
+no availability promises) explanation up top. No inventory-connected
+picker yet — that's an explicitly deferred future improvement.
+
+**This replaces D31's "What's This About?" dropdown entirely** — that
+dropdown labeled intent without acting on it (everyone still saw
+every field); this routes to genuinely different, shorter field sets
+per situation instead.
+
+**Architecture — 3 real forms + 2 links, not 6 of everything:**
+
+Two of the six situations already have a better, purpose-built
+destination elsewhere on the site, so those cards are plain links
+rather than a second, weaker copy of something that already works:
+
+- **PC Service/Repair** → links to services.html, which already has
+  a live-synced dropdown of the 4 real services (plus D31's "Other"
+  option), optional system description, and a required description
+  field. Nothing to duplicate.
+- **Part Box** → links to part-boxes.html, which shows real current
+  inventory and quantities — a text field on contact.html guessing
+  at stock would be strictly worse than the live picker that already
+  exists there.
+
+The other four became 3 real `<form>` panels (General Question and
+Other/Not Sure share one — see below):
+
+- **Buying a Gaming PC**: name, email (required); budget, games you
+  play, Windows/Linux, anything else (all optional). Explanation
+  paragraph above the fields, exact wording requested: "Tell me a
+  bit about what you're looking for, and I'll check it against
+  what's currently available. If nothing currently listed is a good
+  fit, I'll let you know — and can put together a custom build
+  instead if that makes more sense for what you need." Deliberately
+  doesn't promise a specific system will be available.
+- **Custom PC**: name, email (required); budget, games, Wi-Fi,
+  monitor, Windows/Linux, RGB preference, anything else (all
+  optional) — this is the field set that used to be on every
+  submission of the old monolithic form, now scoped only to the one
+  situation where all of it is actually relevant. "Extra storage"
+  and "quiet operation" (both mentioned on custom-build.html's own
+  process copy but never a dedicated field even before this change)
+  stay folded into the freeform "anything else" field rather than
+  getting 2 more dedicated fields — flagged for the owner to revisit
+  if tighter structure is wanted later.
+- **General Question / Other-Not-Sure**: name, email, message (all
+  required) — one shared panel rather than two identical ones, since
+  both ask for exactly the same information. Clicking either button
+  relabels the shared panel's heading, intro line, hidden `_subject`,
+  and a hidden `situation_type` tag to match which was actually
+  clicked, so the owner's inbox still shows the distinction even
+  though the visible fields are identical. Default (pre-JS,
+  pre-click) copy covers both cases at once so the no-JS fallback
+  still makes sense.
+
+**Subject-line differentiation** — every other form on the site
+already sends a distinct FormSubmit `_subject` (build title, "Service
+request," "Part box order request," etc.); the old contact form was
+the one outlier always sending "New inquiry" regardless of what it
+was about. Now: "Buying inquiry," "Custom build inquiry," and
+"General question — North Bridge PCs" / "Other inquiry — North
+Bridge PCs" (the shared panel, set dynamically per click same as the
+heading/lead above).
+
+**Reliability, consistent with every other form on the site:** all 3
+panels are real `<form action="...">` elements with build-time-baked
+`{{CONTACT_EMAIL}}`/`{{SITE_URL}}` tokens — not JS-rendered, not
+fetch()-based. Nothing in the raw HTML hides them; `contactRouter.js`
+hides all three (and the whole wrapping section, so an empty section
+doesn't leave dead padding behind) on load and reveals one on click.
+If JS never runs at all, every panel is simply visible already and
+the page degrades to "three real forms stacked, pick the one that
+applies" — confirmed by loading the built page with scripts disabled
+entirely and checking for zero inline `display:none` in the raw
+markup. The thank-you confirmation uses the same dynamic-injection-
+into-a-`role="status"`-region pattern already established elsewhere
+on the site (notifyBox.js, services.html, the build-detail form)
+rather than a plain visibility toggle, since that's the pattern
+already confirmed to announce correctly to screen readers.
+
+**Visual reuse, not a redesign:** the 6-option picker reuses
+`.service-hub-card` verbatim (contact.html now also loads
+`services.css` for this one class) — same card component already
+used for services.html's own hub cards, just with 6 instead of 2.
+Zero new CSS written.
+
+**Untouched by this change:** the build-detail inquiry form on
+individual listings (build.html) — separate, preserved exactly as
+it was, not part of this router at all.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` updated
+(the old assertion checked for the single `#contact-form` id, which
+no longer exists — replaced with checks for the 6 picker options, 3
+panels, and each panel's form having a resolved `action`) and all
+pages pass. Direct simulation: clicking each of the 4 in-page buttons
+shows the correct panel and hides the others; clicking either shared-
+panel button correctly relabels heading/lead/hidden tag/hidden
+subject; `?sent=true` correctly hides the whole flow and shows the
+confirmation; loading the page with scripts disabled confirmed all 3
+panels have no inline `display:none` and all 3 forms have a resolved
+`action` attribute, i.e. the true no-JS fallback actually works, not
+just in theory. Real-Chromium screenshots at desktop (1440px) and
+mobile (390px) of the picker, all 3 panel states (including the
+relabeled shared panel), and the thank-you state — zero horizontal
+overflow anywhere, and a dead visual gap between the picker and the
+footer (caused by the wrapping section's own padding surviving even
+with all children hidden) was found and fixed during this same pass
+by hiding the section itself, not just its children.
+
+**Decided by:** owner (situations, use-existing-forms-where-they-fit
+principle, and the Buying explanation wording constraints given
+directly; field lists within each situation, the shared-panel
+simplification, and the technical architecture are Claude's, within
+the stated constraints).
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner

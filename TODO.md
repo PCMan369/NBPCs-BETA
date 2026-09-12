@@ -69,6 +69,10 @@
       - [x] Part 1 — sitewide availability notice (D30)
       - [x] Part 2 — contact-forms system review (D31)
       - [x] Part 3 — services page content/structure rework (D32)
+- [x] Contact page rebuilt as a situation router — 6 options, 2 link
+      to existing dedicated forms (Service/Repair, Part Box), 4 map to
+      3 real form panels (Buying, Custom PC, shared General/Other).
+      Supersedes D31's dropdown. See DECISIONS.md D33.
 
 ## Recommended
 

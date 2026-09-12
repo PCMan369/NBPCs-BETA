@@ -65,7 +65,14 @@ const pages = [
       const rows = doc.querySelectorAll('.contact-info .cb-list .cb-row');
       assert(rows.length === 4, `contact.html has 4 cb-row info items (found ${rows.length})`);
       assert(!doc.querySelector('.contact-info-card'), 'old .contact-info-card markup is gone');
-      assert(doc.querySelector('#contact-form'), 'contact form still renders');
+      assert(!doc.querySelector('#contact-form'), 'old single #contact-form is gone');
+      const options = doc.querySelectorAll('#situation-picker .service-hub-card');
+      assert(options.length === 6, `situation picker has 6 options (found ${options.length})`);
+      const panels = doc.querySelectorAll('.situation-form-panel');
+      assert(panels.length === 3, `contact.html has 3 situation form panels (found ${panels.length})`);
+      assert(doc.querySelector('#situation-buying form[action]'), 'buying panel form renders with an action');
+      assert(doc.querySelector('#situation-custom form[action]'), 'custom-PC panel form renders with an action');
+      assert(doc.querySelector('#situation-general form[action]'), 'general/other panel form renders with an action');
     },
   },
   {

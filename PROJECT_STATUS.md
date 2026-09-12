@@ -528,6 +528,21 @@ owner's go-ahead.
 
 This completes the V1 finishing pass — all three parts done.
 
+## Contact page rebuilt as a situation router (post-V1-finishing-pass)
+
+The owner wanted the contact page to stop being one generic form and
+instead act as a router: pick what you need help with, see only the
+relevant fields. Implemented as 6 options — 2 are plain links to
+already-good existing forms (Service/Repair → services.html, Part Box
+→ part-boxes.html) rather than duplicating them; the other 4 map to 3
+real form panels (Buying, Custom PC, and one shared General
+Question/Other-Not-Sure panel, since those two need identical
+information). This fully supersedes D31's "What's This About?"
+dropdown, which labeled intent without acting on it. See DECISIONS.md
+D33 for the complete field-by-field breakdown, the reasoning behind
+which situations got their own panel vs. a link out, and the
+no-JS-fallback verification.
+
 ## Not started yet
 
 - Phase 6 remainder: general visual/micro-interaction polish (image

@@ -540,3 +540,25 @@ backfill. Since Phase 7:
   a duplicated sentence inside it. No visual/CSS changes — content
   and structure only. This completes the V1 finishing pass (Parts
   1–3, D30–D32).
+- Contact page rebuilt as a situation router (D33), superseding D31's
+  "What's This About?" dropdown entirely. 6 options as cards (reusing
+  `.service-hub-card` verbatim — zero new CSS): Service/Repair and
+  Part Box link straight to their existing dedicated forms
+  (services.html, part-boxes.html) instead of duplicating them;
+  Buying a Gaming PC, Custom PC, and a shared General Question/
+  Other-Not-Sure panel became 3 real, independent `<form>`s, each
+  with only its relevant fields and its own FormSubmit subject line.
+  Buying panel carries the owner's exact requested explanation text
+  (checks current availability, may suggest a custom build instead,
+  no availability promises). The shared General/Other panel gets its
+  heading, intro line, and two hidden fields relabeled by JS
+  depending on which button was clicked, so the inbox still shows
+  the distinction from one form. Build-detail inquiry form on
+  individual listings untouched. `smoke-test.js` updated (old
+  `#contact-form` assertion no longer applies) and passing. Verified
+  the true no-JS fallback works — loaded with scripts disabled and
+  confirmed all 3 forms are genuinely visible/submittable, not just
+  hidden. Found and fixed a dead-padding gap (hiding panels left
+  their wrapping section's own padding behind) during the same pass.
+  Real-Chromium screenshots at desktop/mobile of the picker and every
+  form state.

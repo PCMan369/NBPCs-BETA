@@ -1,8 +1,11 @@
 /*
   ================================================================
-  css/services.css — Services Page
+  css/services.css — Services & Situation-Picker Cards
   ================================================================
-  Loaded only by services.html.
+  Loaded by services.html (all classes below) and by contact.html
+  (.service-hub-card only — the contact page's 6-option situation
+  picker reuses this exact class for visual consistency rather than
+  duplicating near-identical CSS; see DECISIONS.md D33).
   ================================================================
 */
 
