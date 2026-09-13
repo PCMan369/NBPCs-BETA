@@ -156,8 +156,7 @@ const builds = [
     condition: "Used - Fair",
     testingNotes: "",
     listedDate: "2026-08-01",
-    notes: "This is not a gaming PC and does not have dedicated graphics, therefore it may not perform very well in most PC games.",
-    "There is a visual bend on the front left corner that does not affect functionality or performance."
+    notes: "This is not a gaming PC and does not have dedicated graphics, therefore it may not perform very well in most PC games. There is a visual bend on the front left corner that does not affect functionality or performance."
   },
 
   {
