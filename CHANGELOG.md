@@ -578,3 +578,102 @@ backfill. Since Phase 7:
   EliteBook cleanly without one), the disclaimer now actually
   displays, and builds with no notes/condition/testingNotes still
   correctly show no card at all.
+- Scroll progress bar replaced with a page-load progress bar (D35).
+  `#scroll-progress` → `#load-progress` throughout. Fills on arrival
+  at any page (click, typed URL, back/forward — same fill/fade/reset
+  either way), and starts filling immediately on click of a link
+  actually navigating to another page on this site, so the wait
+  between pages feels bridged rather than dead air — the standard
+  illusion every top-loading-bar site uses, since nothing can
+  literally persist through a real cross-document navigation. Click
+  detection excludes target="_blank", modified clicks, download
+  links, mailto:/tel: links, same-page anchors, and external links.
+  Same exact visual as before (3px, accent gradient, fixed top) — no
+  new CSS design. Back-to-top's own scroll-linked visibility
+  untouched. Verified with real-Chromium timing checks (jsdom has no
+  real paint loop and gave misleading results during development) and
+  individual clicks confirming every exclusion case.
+- First real part box inventory added (D36): 3 CPU boxes (Ryzen 5
+  5500 x3, Ryzen 5 3600 x2, Ryzen 7 5700X3D x1) and 2 PSU boxes (MSI
+  MAG A550BN x4, MAG A650BE x1), with real condition notes and
+  category-based pricing ($5 CPU / $3 PSU) given directly by the
+  owner. No photos yet by choice — confirmed the existing placeholder-
+  icon fallback handles this cleanly. End-to-end order flow
+  re-verified with the real data (quantity selection, summary, total,
+  hidden form fields all cross-checked). One likely typo in a PSU
+  model name ("MG A650BE" → "MAG A650BE") corrected and flagged for
+  owner confirmation. This was the last of the three items from the
+  owner's post-V1 "all that's left" list (D34/D35/D36).
+- Evaluated the "Impeccable" design-critique tool (D37) — owner asked
+  about it directly. It's an AI-coding-agent skill built for Claude
+  Code's hook system (doesn't apply to this environment) plus a
+  separate standalone detector CLI that does — ran the real CLI
+  against the actual built site rather than just reading about it (95
+  in-scope findings after excluding archived design-prototypes/ and
+  pages-src/ source-template duplicates). Verified findings before
+  acting: one "broken-image" flag was a false positive (lightbox
+  template intentionally starts empty, populated by JS before ever
+  shown — confirmed by reading the code). Found and fixed 5 leftover
+  hardcoded old-blue box-shadow values in style.css — harmless in
+  practice (theme.css already overrides all 5 to the correct amber,
+  confirmed via real-Chromium getComputedStyle checks before and
+  after) but misleading to read; corrected to match what actually
+  renders. Bumped one text-size inconsistency (part-boxes.html's "not
+  a payment" disclaimer, 0.72rem → 0.8rem to match the equivalent
+  notice on every other form). Spot-checked and confirmed the same
+  hardcoded-blue pattern exists in 21 more non-shadow declarations
+  sitewide, equally harmless — flagged as an optional future cleanup,
+  not fixed mechanically in this pass. Several other real findings
+  (a homepage hero pattern, the sitewide card shadow style, em-dash
+  density in existing copy) deliberately left as the owner's call
+  rather than acted on unilaterally, since they're design/content
+  judgment calls, not bugs.
+- Fixed all remaining hardcoded-blue instances (D38) — owner asked
+  directly after D37's evaluation. Turned out to be 30 total, not 21:
+  D37 had only checked style.css; this pass checked every CSS file
+  and found 6 more in build-detail.css (5) and part-boxes.css (1).
+  Fixed each individually by exact line number (many lines were
+  byte-identical to each other, making find-and-replace risky —
+  verified each line's existing content matched expectations before
+  changing it, all 30 matched cleanly), matching whatever amber value
+  theme.css already forces that selector to, including the cases
+  where theme.css had deliberately retuned the opacity during the
+  original redesign rather than just swapping the color. Found 2
+  genuinely unused CSS rules along the way (.highlight-box,
+  .step-list-num — confirmed via full-project grep, referenced by
+  no current page or script) and fixed their color too rather than
+  leaving stray blue in dead code, flagging them as deletion
+  candidates for later rather than removing them unprompted.
+  Verified: rebuild + full smoke test pass; comprehensive grep
+  confirms zero rgba(59,130,246,...)/#3b82f6 literals remain anywhere
+  except tokens.css's own base --accent (intentionally blue-by-
+  default for theme.css to override); real-Chromium getComputedStyle
+  checks across a representative sample of every fixed selector —
+  static, :hover, .featured, .open states — all confirm the exact
+  amber values expected, zero visual change from before.
+- Resolved the remaining Impeccable "owner's call" items (D39), and
+  marked aug26-01 (Ryzen 5 5500/RX 5700 XT) sold. Removed the
+  homepage's hero eyebrow chip ("Southern Oregon" pill, redundant
+  with the H1 right below it, a named "AI SaaS hero" tell) and fully
+  cleaned up the dead CSS behind it across style.css and theme.css.
+  Found the exact 6 selectors sitewide combining a thin border with a
+  soft box-shadow and removed the shadow from 5 of them
+  (.hero-image-wrap, .card, .build-card, .tier-card, .form-card) —
+  kept it on .nav-dropdown-menu (a floating overlay, shadow does real
+  work there) and kept hover-triggered shadow increases (a motivated
+  interaction response, not a static default). Rewrote every real
+  em-dash in about.html/contact.html/index.html by hand — meta
+  descriptions, titles, alt text, body copy, 5 contact-form dropdown
+  option values, and 2 JS-generated gallery alt strings — preserving
+  exact meaning throughout, varying punctuation naturally instead of
+  swapping every dash for the same character. Re-ran the actual
+  Impeccable CLI afterward rather than assuming: hero-eyebrow-chip and
+  em-dash-overuse both fully resolved; border+shadow finding dropped
+  from 15 to 11, confirmed the remaining 11 (one per page) is the
+  intentionally-kept nav dropdown. Left the tool's still-flagged
+  "dark-glow" finding alone — it's now catching the intentional amber
+  glow on buttons/back-to-top/focus rings, part of the already-
+  approved Forge identity from D22-24, a bigger design call than
+  anything D37 had flagged as open. Verified: rebuild + full smoke
+  test pass; real-Chromium screenshots of all 3 rewritten pages at
+  desktop and mobile, zero overflow, copy reads naturally.

@@ -557,6 +557,87 @@ being a documented schema field. Fixed as part of this pass (now
 renders in `buildDetail.js`'s "Good to Know" card). See DECISIONS.md
 D34 for full detail.
 
+## Scroll bar replaced with a page-load progress bar
+
+The old top scroll-progress bar (filled as you scrolled down a page)
+is now a page-load progress bar instead (fills on arrival, and
+starts filling immediately when you click a link to another page on
+this site). Same visual element, same look — `#scroll-progress` was
+renamed to `#load-progress` throughout since the old name became
+misleading. See DECISIONS.md D35 for the full design (why this needs
+2 separate triggers on a site with no client-side routing, and the
+full list of click-exclusions).
+
+## First real part box inventory added
+
+5 real box types added to `partBoxes.js` (3 CPU boxes — Ryzen 5 5500,
+Ryzen 5 3600, Ryzen 7 5700X3D — and 2 PSU boxes — MSI MAG A550BN,
+MAG A650BE), with real quantities, condition notes, and category-based
+pricing ($5 CPU / $3 PSU) given directly by the owner. No photos yet
+by the owner's own choice — confirmed this renders a clean placeholder
+icon per box already-existing fallback behavior, not a gap or broken
+image. Full order flow re-verified end to end with this real data.
+See DECISIONS.md D36 — including a flagged likely typo in one PSU
+model name worth a quick confirmation.
+
+**This was the last of the three items from the owner's "all that's
+left" list** (build migration → D34, loading bar → D35, part boxes →
+D36). Nothing outstanding from that list remains.
+
+## "Impeccable" design-critique tool evaluated
+
+Owner asked about `github.com/pbakaus/impeccable` for making the site
+look less AI-generated. It's an AI-coding-agent skill (built for
+Claude Code's hook system, doesn't apply here) plus a separate
+standalone detector CLI that does apply anywhere Node runs — ran that
+for real against the built site rather than just reading about it.
+Found and fixed 2 real issues (a false-positive broken-image flag
+that turned out fine on inspection; 5 leftover hardcoded old-blue
+shadow values in `style.css` that were harmless — already overridden
+by `theme.css` — but misleading to read, now corrected to match what
+actually renders) and 1 small text-size inconsistency
+(`part-boxes.html`'s disclaimer bumped to match the sitewide
+fine-print size). See DECISIONS.md D37 for the full breakdown,
+including several real findings deliberately left as the owner's
+call rather than acted on unilaterally — a homepage hero pattern, a
+sitewide card-shadow style, em-dash density in the site's copy, and
+21 more instances of that same harmless-but-misleading hardcoded-blue
+pattern that weren't mechanically cleaned up in that first pass.
+
+## Remaining hardcoded-blue instances cleaned up
+
+Owner asked for the rest of D37's hardcoded-blue findings to be
+fixed. Turned out to be 30 total once every CSS file was actually
+checked (D37 had only looked at `style.css`) — all fixed now, none
+left anywhere in the codebase except `tokens.css`'s own base
+`--accent` value, which is supposed to be blue-by-default for
+`theme.css` to override. Found 2 genuinely unused CSS rules along the
+way (`.highlight-box`, `.step-list-num` — not referenced by any
+current page). See DECISIONS.md D38.
+
+## Remaining Impeccable findings resolved; 5700 XT marked sold
+
+Owner asked for the rest of D37's "owner's call" items to be acted
+on: removed the homepage hero eyebrow chip (redundant with the H1
+right below it, cleaned up all the dead CSS behind it too); found
+the exact 6 selectors sitewide that combine a thin border with a
+soft box-shadow and removed it from 5 of them (kept it on
+`.nav-dropdown-menu`, a floating overlay where the shadow does real
+work, and kept hover-triggered shadow increases, which are a
+motivated interaction response rather than a static default); and
+rewrote every real em-dash in about.html/contact.html/index.html by
+hand, preserving exact meaning. Re-ran the actual Impeccable CLI
+afterward to confirm — hero-eyebrow-chip and em-dash-overuse are both
+fully gone; the border+shadow finding dropped from 15 to 11, and the
+remaining 11 (exactly one per page) is confirmed to be the
+intentionally-kept nav dropdown, not a miss. The `aug26-01` build
+(Ryzen 5 5500/RX 5700 XT) was also marked sold in the same pass. See
+DECISIONS.md D39 for full detail, including why the tool's
+still-flagged "dark-glow" finding (unchanged at 38) was left alone —
+it's now catching the intentional amber glow on buttons/back-to-top/
+focus rings, which is part of the already-approved Forge identity,
+not something D37 ever flagged as open.
+
 ## Not started yet
 
 - Phase 6 remainder: general visual/micro-interaction polish (image
@@ -574,6 +655,13 @@ D34 for full detail.
   doesn't fit a non-gaming laptop anyway. Needs a decision on what,
   if anything, belongs there (a different kind of note entirely,
   general productivity/battery comments, or just leave it empty).
+- 2 unused CSS rules (`.highlight-box`, `.step-list-num`, plus now
+  also the unused `.card`) are candidates for deletion whenever a
+  cleanup pass is wanted — not urgent, nothing references them.
+- Whether the intentional amber glow on buttons/back-to-top/focus
+  rings (flagged by Impeccable's "dark-glow" rule, unchanged in D39)
+  is worth revisiting — this is part of the approved Forge identity,
+  not a bug, but noted here since the tool still flags it.
 
 ## Audit implementation plan (current)
 

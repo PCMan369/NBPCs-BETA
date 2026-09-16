@@ -1756,7 +1756,378 @@ in for the EliteBook, and the notes-rendering fix are Claude's).
 
 ---
 
+### D35 — Scroll progress bar replaced with a page-load progress bar
+
+**Ask:** change the top scroll-progress bar into a loading bar. Plan
+first, get sign-off before implementing (owner picked the full
+click+load pattern over a simpler on-load-only flourish; visual look
+stays identical).
+
+**Why this needed a real design, not just a rename:** this site has
+no client-side routing — every page is a genuine separate HTML file
+with a full browser navigation between them. Nothing can literally
+stay alive and keep animating through that gap; the whole page (and
+this script) tears down before the next one runs. Implemented the
+same illusion every site with a top-loading-bar actually uses,
+without any external library:
+
+1. **On arrival at any page** (however you got there — a click on
+   this site, typed URL, bookmark, back/forward): the bar fills
+   0→100% quickly (~300ms), holds briefly, fades out, and resets —
+   confirmed via real-Chromium timing checks (not jsdom, which has no
+   real paint loop and gave misleading timing here during
+   development).
+2. **On clicking a link that's actually navigating to another page on
+   this site**: the bar starts filling immediately (to 80%, held —
+   there's no way to know when the real navigation will complete, so
+   it doesn't try to finish itself). This is what makes it read as
+   one continuous bar bridging the wait, not just a post-arrival
+   flourish.
+
+Click-detection deliberately excludes anything that isn't actually
+leaving this page to another page on this site: `target="_blank"`,
+modified clicks (cmd/ctrl/shift/alt — all "open in new tab" signals),
+`download` links, `mailto:`/`tel:` links, same-page anchor links (the
+skip-link, FAQ anchors), and external-origin links. Without these,
+the bar would end up stranded half-filled with nothing that will ever
+complete it. All 5 confirmed individually with real-Chromium clicks
+(and one dispatched-event test for the skip-link specifically, since
+it's intentionally invisible until focused and Playwright's normal
+`.click()` won't act on it).
+
+**Reused the exact same element/visual** (renamed `#scroll-progress`
+→ `#load-progress` throughout — HTML partial, CSS, JS — since the old
+name was actively misleading once it stopped tracking scroll at all):
+same 3px height, same accent gradient, same fixed-top position, same
+z-index. No new visual design. Back-to-top's own scroll-linked
+visibility logic (separate feature, was living in the same function)
+is completely untouched.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass. Real-Chromium checks (not jsdom) of the full timing sequence —
+confirmed width/opacity at 100ms/400ms/700ms match the intended
+fill/fade/reset curve — plus all 5 click-exclusion cases individually
+confirmed to correctly leave the bar at 0%, and a genuine internal
+link click confirmed to correctly fill it to 80%. Screenshot of the
+bar mid-animation after a real click.
+
+**Decided by:** owner (asked for the change, picked the full pattern
+over the simpler alternative once presented with both, confirmed the
+visual stays as-is). Implementation is Claude's.
+
+---
+
+### D36 — First real part box inventory added
+
+**Ask:** add real part boxes. Owner explicitly deferred photos to a
+later pass.
+
+**Owner-provided inventory** (5 box types, given informally and
+structured here):
+
+- AMD Ryzen 5 5500 — qty 3, good condition (includes foam inserts)
+- AMD Ryzen 5 3600 — qty 2, good condition (includes foam inserts)
+- AMD Ryzen 7 5700X3D — qty 1, fair condition
+- MSI MAG A550BN — qty 4, good condition (includes foam inserts)
+- MSI MAG A650BE — qty 1, good condition (includes foam inserts).
+  Owner wrote "MSI MG A650BE" — MSI's PSU line is branded "MAG," not
+  "MG," so read as a likely typo and corrected. Flagged for the owner
+  to confirm; noted inline in `partBoxes.js` too.
+
+**Pricing, as given directly:** $5 per CPU box, $3 per PSU box (not a
+flat rate across all boxes) — categorized accordingly (`category:
+"CPU Box"` / `"PSU Box"`) so the right price landed on the right
+entries.
+
+**Photos:** none yet, by the owner's own choice, added later. No
+`media.images` populated — confirmed this renders a clean placeholder
+icon rather than a broken image or empty gap, per the file's existing
+established fallback behavior (unchanged from before this pass).
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass. Direct simulation of the full order flow with the real data —
+all 5 cards render with correct labels/prices/quantities/condition
+text; selected 2× Ryzen 5 5500 + 1× MAG A550BN and confirmed the
+visible summary, the total ($13), and the hidden form fields all
+matched exactly. Real-Chromium screenshots at desktop (1440px) and
+mobile (390px) — zero overflow, all 5 cards render cleanly with
+placeholder icons, correct category badges, correct condition text.
+
+**Decided by:** owner (full inventory, pricing, and photo timing
+given directly). Category inference, id numbering, and condition-text
+phrasing are Claude's.
+
+**This completes all three items from the owner's "all that's left"
+list** (build migration, loading bar, part boxes) — see
+PROJECT_STATUS.md.
+
+---
+
+### D37 — Evaluated the "Impeccable" design-critique tool; fixed 2 real issues it surfaced
+
+**Ask:** look into `github.com/pbakaus/impeccable`, see if it's usable
+here, to help the site look less AI-generated.
+
+**What it actually is:** a design-language/skill system built for AI
+coding agents (Claude Code, Cursor, etc.) — slash-commands like
+`/impeccable audit` that hook into an agent's edit loop, plus a
+separate, standalone deterministic detector (61 rules) that scans
+HTML/CSS for known "AI slop" tells: overused fonts, purple-blue
+gradients, glowing shadows, cards nested in cards, hero eyebrow
+chips, and more. The full skill/hook system is built for an
+interactive agent CLI session (Claude Code) and doesn't apply to this
+environment. The standalone detector (`npx impeccable detect <path>`)
+is a separate, self-contained piece that doesn't need that
+infrastructure — that part genuinely runs anywhere Node does,
+including here, so that's what got tested.
+
+**What I did:** ran it for real against the actual built site (`npx
+impeccable detect .`), not just read about it — 161 raw findings,
+filtered down to 95 once `design-prototypes/` (archived, unused
+early-phase mockups from before "Forge" was chosen) and `pages-src/`
+(source templates with unresolved `{{tokens}}`, duplicate echoes of
+the same issues already in the built files) were excluded. Then
+manually verified a sample of the findings rather than trusting the
+raw output — the tool does per-file static analysis and can't trace
+cross-file CSS cascades, so some findings needed checking before
+acting on them.
+
+**2 real issues found and fixed:**
+
+1. **`js/render/galleryGrid.js`'s "broken-image" flag was a false
+   positive** — the lightbox's `<img>` template intentionally starts
+   with an empty `src`/`alt`, populated by `_renderLightboxItem()`
+   before the lightbox is ever shown. Verified by reading that
+   function directly. No fix needed.
+2. **5 hardcoded old-blue `rgba(59,130,246,...)` box-shadow values
+   still sitting in `style.css`** (`.btn-primary`, `.btn-primary:hover`,
+   `.form-input/select/textarea:focus`, `.back-to-top`,
+   `.back-to-top:hover`) — literal leftovers from before the Forge
+   redesign. **Not a live visual bug**: `theme.css` (loaded later)
+   already overrides every one of these exact selectors to the
+   correct amber value, confirmed both by reading `theme.css`'s own
+   override block and by checking `getComputedStyle` in real
+   Chromium before and after — identical amber output either way. But
+   leaving raw blue values sitting in the base file is misleading for
+   anyone reading it later (looks like it renders blue; never does).
+   Corrected all 5 to the exact amber+opacity values `theme.css`
+   already forces them to, so the base file is now honest about what
+   it actually produces. Pure clarity fix, zero visual change,
+   confirmed via computed-style check.
+3. **`part-boxes.html`'s "not a payment" disclaimer was smaller than
+   the equivalent notice everywhere else** — 0.72rem (11.52px) vs.
+   0.8rem used by `.form-privacy p` for the same kind of fine-print
+   disclaimer on every other form. Bumped to match. Minor, but this
+   is the one sentence on that page clarifying the form isn't a
+   purchase — worth it being as legible as the equivalent text
+   elsewhere.
+
+**Broader pattern found but not touched:** the same hardcoded-blue
+issue exists in 21 more `background-color`/`border`/`gradient`
+declarations throughout `style.css` (the "dark-glow" rule only
+flagged box-shadow specifically, not tints/borders/gradients, which
+is why the tool surfaced 5, not 26). Spot-checked 3 more
+(`.nav-link.active`, `.btn-ghost`, `.page-hero`) and confirmed
+`theme.css` covers those too — consistent with `theme.css`'s own
+documented "swept every instance" history from the original
+redesign. Very likely all 21 are equally harmless-but-misleading.
+Did not mechanically fix all 21 — that's a bigger, more mechanical
+cleanup pass than this exploratory check warranted on its own;
+flagged for the owner as an optional future pass, not urgent since
+nothing renders incorrectly.
+
+**Real findings surfaced but deliberately left as the owner's call
+(design/content judgment, not bugs):**
+
+- **Hero eyebrow chip** — the small "SOUTHERN OREGON" label directly
+  above the homepage's big H1 is a specifically-named, recognizable
+  "AI SaaS hero" pattern. Real and worth knowing, but changing it is
+  a visual-design decision, not a fix.
+- **Card border+shadow combo** — the sitewide `1px solid border` +
+  soft `--shadow-lg` blur combination used on most cards is a
+  recognizable "generated UI" signature by the tool's own
+  description. Pervasive (used on effectively every card component
+  sitewide), so addressing it would be a real visual-redesign-level
+  change, not a small fix — exactly the kind of change the owner has
+  repeatedly asked to be consulted on before touching.
+- **Em-dash density** — 9–16 em-dashes per page on `about.html`,
+  `contact.html`, and `index.html`, flagged as an AI writing-cadence
+  tell (advisory, not a primary finding). Likely the single most
+  impactful item on this whole list for the stated goal, since
+  writing style often reads as "AI" faster than visual choices do —
+  but fixing it means rewriting a meaningful amount of already-
+  written, already-approved copy across multiple pages. Left
+  entirely alone pending the owner's direction.
+- **2 legitimate (non-"AI slop") technical notes, both low-priority:**
+  the load-progress bar (D35) animates `width`, which is technically
+  a layout-triggering property rather than a compositor-only one —
+  real, but negligible impact for a single tiny fixed-position
+  element; and the FAQ/mobile-nav accordions use the common
+  `max-height` transition trick rather than the newer CSS Grid
+  `0fr→1fr` technique — a very standard, widely-used pattern, not
+  really an "AI" tell despite being flagged.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass. Confirmed via real-Chromium `getComputedStyle` checks that
+`.btn-primary`'s rendered box-shadow is identical amber
+(`rgba(242,167,27,...)`) before and after the style.css correction —
+zero visual regression, as expected for a base-value correction that
+was always being overridden anyway.
+
+**Decided by:** owner (asked to evaluate the tool). Which findings
+were worth fixing immediately vs. flagging for a decision is Claude's
+judgment — a case-by-case read of "genuine bug," "already-covered
+dead code," and "real but subjective design/content call," rather
+than uniformly fixing or uniformly ignoring everything the tool
+reported.
+
+---
+
+### D38 — Remaining 30 hardcoded-blue instances cleaned up (all of them, not just style.css)
+
+**Ask:** fix the remaining hardcoded-blue instances flagged in D37's
+evaluation.
+
+**Scope ended up bigger than D37 estimated**: that pass only checked
+`style.css` (21 remaining after the 5 box-shadows already fixed).
+Doing this properly meant re-checking every CSS file — found 6 more
+in `build-detail.css` (5) and `part-boxes.css` (1) that D37 hadn't
+looked at. Fixed all 30 total across all three files.
+
+**Method, to avoid the risk of a bad text-match:** many of these
+lines are byte-identical to each other (e.g. six separate
+`background-color: rgba(59,130,246,0.1);` lines with nothing
+distinguishing one from another out of context), which makes a
+find-and-replace genuinely risky — the wrong occurrence could get
+"fixed" instead of the right one, or the same one twice. Mapped every
+line by exact line number instead, verified each line's *current*
+content matched what was expected before touching it (all 30
+matched, zero surprises), then wrote each one individually so
+opacity could match whatever `theme.css` actually overrides that
+specific selector to — some are a straight color swap at the same
+opacity (e.g. `.tier-card.featured`, `.faq-item.open`), others needed
+the opacity adjusted too since `theme.css` deliberately retuned it
+during the original redesign (e.g. `.nav-link.active` 0.1→0.12,
+`.form-privacy` 0.05→0.06 / 0.14→0.16).
+
+**2 genuinely unused rules found along the way**: `.highlight-box`
+and `.step-list-num` aren't referenced by any current page or render
+script — confirmed via a full-project grep, zero matches. Almost
+certainly leftovers from before some earlier content restructuring
+(`.step-list-num` in particular looks like the old filled-circle
+step-number badge that `.cb-row .cb-num`'s plain-mono-digit style
+replaced). Fixed their color anyway for consistency rather than
+leaving stray blue in unused rules, since deleting dead CSS wasn't
+asked for and removing rules I can't 100% verify are never
+conditionally referenced somewhere felt like a bigger, separate call
+than "fix the hardcoded colors." Flagging both as candidates for
+deletion in a future cleanup, if the owner wants that.
+
+**Verified:** `stitch.py` rebuild clean; `smoke-test.js` all pages
+pass. A comprehensive `grep` across every `.css`/`.html`/`.js` source
+file confirms zero `rgba(59,130,246,...)` or `#3b82f6` literals
+remain anywhere except `tokens.css`'s own base `--accent` definition
+— which is supposed to be blue-by-default and exists specifically
+for `theme.css` to override, not a leftover (see D23). Real-Chromium
+`getComputedStyle` checks across a representative sample covering
+every fixed selector — static states, `:hover`, `.featured`, and
+`.open` — all confirmed rendering the exact amber values expected,
+with zero visual difference from before this fix (as expected, since
+every one of these was already being silently overridden the same
+way).
+
+**Decided by:** owner (asked directly, scope is mechanical/objective
+— match what `theme.css` already forces each selector to, not a
+design judgment call). The 2 unused-rule discoveries and the
+decision to fix-rather-than-delete them are Claude's.
+
+---
+
+### D39 — Remaining Impeccable findings resolved (hero eyebrow, card shadows, em-dash density); 5700 XT marked sold
+
+**Ask:** fix the rest of what D37 flagged as "owner's call" rather
+than acted on unilaterally, and give a fresh zip. Also: mark the
+Ryzen 5 5500/RX 5700 XT (`aug26-01`) as sold.
+
+**Build status:** `aug26-01` changed from `available` to `sold`.
+Confirmed via screenshot it now shows correctly under "Recently
+Sold" with a SOLD badge, no longer under "Available Systems."
+
+**1. Hero eyebrow chip removed.** The "Southern Oregon" pill above
+the homepage H1 was pure redundancy (the H1 immediately below it
+also ends in "Southern Oregon") and a specifically-named "AI SaaS
+hero" pattern. Removed the element from `index.html` and fully
+cleaned up the now-dead CSS behind it in both `style.css` and
+`theme.css` (a grouped selector, a standalone border rule, and a
+font-styling override) rather than leaving orphaned rules — 3 more
+found via the same "hero-eyebrow" grep, none of which would have
+been obvious just from removing the one HTML line.
+
+**2. Sitewide card border+shadow pattern fixed — surgically, not a
+redesign.** Found the exact scope first rather than assuming "every
+card": only 6 selectors sitewide actually combine a 1px border with
+a `--shadow`/`--shadow-lg` box-shadow on the same rule
+(`.nav-dropdown-menu`, `.hero-image-wrap`, `.card`, `.build-card`,
+`.tier-card`, `.form-card`). Removed the box-shadow from 5 of them
+(`.hero-image-wrap`, `.card`, `.build-card`, `.tier-card`,
+`.form-card`) — border alone gives clean definition against the dark
+background, and the soft blur was redundant depth on elements that
+don't need it. Deliberately kept `.nav-dropdown-menu`'s shadow: it's
+a floating overlay menu, not a static content card, and a shadow
+there does real work (separating it from the page behind it), so
+removing it would be a UX regression for a purely stylistic reason,
+not a fix. Also deliberately kept the `:hover` shadow increase on
+`.card`/`.build-card`/`.tier-card` — a shadow that appears
+specifically in response to interaction is a motivated affordance
+("this card just lifted"), not the static always-on default the tool
+is calling out. `.card` itself turned out to be unused (same
+situation as D38's `.highlight-box`/`.step-list-num`) — fixed anyway
+for consistency, not deleted.
+
+**3. Em-dash density reduced across all 3 flagged pages** (about.html,
+contact.html, index.html) — every real, visitor-facing instance
+rewritten by hand, checked in full paragraph context first so nothing
+lost its actual meaning. Punctuation varied deliberately (periods,
+commas, one colon here and there) rather than replacing every dash
+with the same character, which would just trade one monotonous
+pattern for another. Also cleaned up a handful instances outside
+visible body copy while in there: meta descriptions, `<title>` tags,
+image alt text, 5 dropdown option values on the contact form (their
+literal value= text, which is what would show up in the owner's
+inbox), and 2 JS-generated gallery alt-text strings. Left internal
+dev comments alone — never visitor-facing, not what was being asked
+about. The one sentence in the Buying panel that's the owner's own
+approved wording (D33) kept its exact meaning — only the em-dash
+became a comma.
+
+**Verified with the actual tool, not just spot-checks:** re-ran
+`npx impeccable detect` against the rebuilt site. `hero-eyebrow-chip`:
+gone. `em-dash-overuse`: gone. `gpt-thin-border-wide-shadow`: down
+from 15 to 11, and confirmed the remaining 11 (exactly one per page)
+is `.nav-dropdown-menu` — the deliberate exception above, not a miss.
+`dark-glow` is unchanged at 38: this rule flags *any* colored glow
+shadow regardless of color, so it's now catching the intentional
+amber button/back-to-top/focus-ring glows that are part of the
+already-approved Forge identity (D22-24) — a different, much bigger
+design call (removing a signature glow effect from the approved
+redesign) than anything flagged as "owner's call" in D37, so left
+alone rather than assumed. `stitch.py` rebuild clean; `smoke-test.js`
+all pages pass; real-Chromium screenshots of all 3 rewritten pages at
+desktop and mobile — zero overflow, copy reads naturally, no layout
+regressions.
+
+**Decided by:** owner (asked directly to fix what D37 had left open,
+and to mark the build sold). Which specific selectors to touch for
+the shadow fix, the exact rewording for every sentence, and treating
+the button-glow finding as a separate, bigger call rather than
+folding it in are Claude's judgment.
+
+---
+
 ## Still open
 
 - Whether any real testimonials exist to seed that system (owner
   confirmed: not yet — leave disabled).
+- **MSI MAG A650BE model name** — owner wrote "MG A650BE"; corrected
+  to "MAG A650BE" as a likely typo (D36). Worth a quick confirmation
+  next time it comes up.

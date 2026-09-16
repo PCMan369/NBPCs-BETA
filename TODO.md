@@ -84,6 +84,42 @@
       in the EliteBook's (`aug26-02`) now-empty performance-estimate
       section, if anything — see PROJECT_STATUS.md "Known open
       questions."
+- [x] Scroll progress bar replaced with a page-load progress bar
+      (`#scroll-progress` → `#load-progress`) — fills on page arrival,
+      starts filling on click of an internal link. Same visual look.
+      See DECISIONS.md D35.
+- [x] Added first real part box inventory (5 box types, real
+      quantities/pricing/condition, no photos yet by owner's choice).
+      See DECISIONS.md D36.
+- [ ] Confirm "MSI MAG A650BE" — owner wrote "MG A650BE"; corrected
+      as a likely typo (MSI's PSU line is "MAG," not "MG"). Worth a
+      quick check next time it comes up.
+- [x] Evaluated the Impeccable design-critique tool (owner asked).
+      Fixed 2 real issues + 1 text-size inconsistency it surfaced.
+      See DECISIONS.md D37 for the full list of what was fixed vs.
+      flagged as the owner's call.
+- [x] Fixed all remaining hardcoded-blue instances (30 total across
+      style.css/build-detail.css/part-boxes.css, not just the 21 in
+      style.css D37 had found) — zero left anywhere in the codebase
+      now except tokens.css's own base --accent value, which is
+      supposed to default to blue. Found 2 unused CSS rules along the
+      way. See DECISIONS.md D38.
+- [x] Resolved all remaining Impeccable "owner's call" items (D39):
+      removed the hero eyebrow chip + its dead CSS; removed the static
+      border+shadow combo from 5 of the 6 selectors that had it (kept
+      it on the nav dropdown menu and on hover-triggered states,
+      both deliberate); rewrote every em-dash in
+      about.html/contact.html/index.html by hand. Re-ran the actual
+      Impeccable CLI afterward to confirm both findings are fully
+      resolved. See DECISIONS.md D39.
+- [x] Marked aug26-01 (Ryzen 5 5500/RX 5700 XT) as sold.
+- [ ] 3 unused CSS rules now on record (`.highlight-box`,
+      `.step-list-num`, `.card`) — worth a deletion pass whenever one's
+      wanted, not urgent.
+- [ ] Impeccable's "dark-glow" finding is unchanged (38, D39) — it's
+      flagging the intentional amber glow on buttons/back-to-top/focus
+      rings, part of the already-approved Forge identity. Not touched;
+      worth an explicit decision if the owner wants it revisited.
 
 ## Recommended
 
