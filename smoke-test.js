@@ -150,8 +150,14 @@ async function run() {
     // Give any deferred/onload script logic a tick to run.
     await new Promise((r) => setTimeout(r, 300));
 
+    // Excludes known jsdom-sandbox noise: images/stylesheets/fonts that
+    // can't load without real network access, and external (https://)
+    // scripts specifically — e.g. Google Analytics' gtag.js, added
+    // sitewide via the ANALYTICS partial — which this offline test
+    // environment can't reach either. A typo in one of our own local
+    // script paths (no https://) would still be caught.
     const relevantErrors = consoleErrors.filter(
-      (e) => !/Could not load img|Could not load link|Not implemented: window.scrollTo|fetch|Not implemented: HTMLFormElement.prototype.requestSubmit/i.test(e)
+      (e) => !/Could not load img|Could not load link|Could not load script: "https?:\/\/|Not implemented: window.scrollTo|fetch|Not implemented: HTMLFormElement.prototype.requestSubmit/i.test(e)
     );
     if (relevantErrors.length) {
       relevantErrors.forEach((e) => {

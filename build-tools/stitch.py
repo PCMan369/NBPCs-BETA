@@ -53,6 +53,7 @@ ACTIVE_GROUP_RE = re.compile(r"\{\{activegroup:([a-z0-9,-]+)\}\}")
 HEADER_MARKER_RE = re.compile(r"<!--HEADER:([a-z0-9-]+)-->")
 FOOTER_MARKER = "<!--FOOTER-->"
 SEO_MARKER = "<!--SEO-->"
+ANALYTICS_MARKER = "<!--ANALYTICS-->"
 
 TITLE_RE = re.compile(r"<title>(.*?)</title>", re.DOTALL)
 DESCRIPTION_RE = re.compile(r'<meta name="description" content="([^"]*)"')
@@ -184,6 +185,7 @@ def main() -> int:
 
     header_path = PARTIALS_DIR / "header.html"
     footer_path = PARTIALS_DIR / "footer.html"
+    analytics_path = PARTIALS_DIR / "analytics.html"
 
     if not header_path.exists() or not footer_path.exists():
         print(f"ERROR: expected header.html and footer.html in {PARTIALS_DIR}")
@@ -191,6 +193,7 @@ def main() -> int:
 
     header_template = header_path.read_text(encoding="utf-8")
     footer_template = footer_path.read_text(encoding="utf-8")
+    analytics_template = analytics_path.read_text(encoding="utf-8") if analytics_path.exists() else ""
 
     try:
         site_url = get_site_url()
@@ -232,6 +235,16 @@ def main() -> int:
             content = content.replace(SEO_MARKER, seo_html)
         else:
             print(f"NOTE: {src_file.name} has no <!--SEO--> marker — skipping canonical/OG/structured data for this page.")
+
+        analytics_count = content.count(ANALYTICS_MARKER)
+        if analytics_count == 1:
+            content = content.replace(ANALYTICS_MARKER, analytics_template)
+        elif analytics_count > 1:
+            print(f"ERROR: {src_file.name} has {analytics_count} <!--ANALYTICS--> markers — should have exactly 1. Fix the duplicate(s) before this page is trustworthy.")
+            skipped.append((src_file.name, f"{analytics_count} <!--ANALYTICS--> markers found"))
+            continue
+        else:
+            print(f"NOTE: {src_file.name} has no <!--ANALYTICS--> marker — this page will not have Google Analytics on it.")
 
         # General-purpose value tokens, usable anywhere in a page — e.g.
         # baking a real form `action`/`_next` directly into static HTML

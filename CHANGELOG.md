@@ -677,3 +677,44 @@ backfill. Since Phase 7:
   anything D37 had flagged as open. Verified: rebuild + full smoke
   test pass; real-Chromium screenshots of all 3 rewritten pages at
   desktop and mobile, zero overflow, copy reads naturally.
+- Google Analytics added sitewide (D40) — owner provided the gtag.js
+  snippet, exactly once per page. Rather than paste it into all 11
+  pages-src files by hand, added it the same way header/footer/SEO
+  are handled: one new js/partials/analytics.html, one new
+  <!--ANALYTICS--> marker in stitch.py, placed as the first line
+  inside <head> on all 11 pages (Google's own recommended placement).
+  The build now treats 2+ markers on one page as an error (skips that
+  page and logs it) rather than silently duplicating the snippet, and
+  warns if a future page is missing the marker entirely. Verified in
+  the actual built output, not just the build log: the script tag
+  appears exactly once per page across all 11; the tracking ID
+  appearing twice within that one snippet (script src + gtag config
+  call) is correct per Google's own snippet, not a duplicate. Needed
+  a real fix to smoke-test.js afterward: jsdom's offline sandbox
+  can't reach the external script (expected, harmless in a real
+  browser), so the existing known-noise filter was scoped to exclude
+  that specific case (external https:// script loads only) — verified
+  directly that a local script-path typo would still fail the test as
+  it should.
+- Second part box batch added (D41) — 6 more boxes (11 total): an
+  ID-Cooling SE-214 XT-V2 cooler box, 2 separate ASUS TUF Gaming A520
+  motherboard-box listings (owner noted one has a cardboard insert
+  and one doesn't; split into 2 listings rather than combined, the
+  owner's explicit call left to Claude, matching this file's existing
+  one-listing-per-real-difference pattern), an MSI PRO B550M VC WIFI
+  motherboard box, a motherboard box the owner gave with no brand
+  ("B550-PLUS AC-HES" — left blank rather than guessed, flagged),
+  and a Rosewill cooler box. 2 new categories introduced (Motherboard
+  Box, Cooler Box) with pricing given directly. Found and fixed a
+  real bug while adding the blank-brand entry: partBoxCard.js's label
+  builder always prepended "brand + space" unconditionally, which
+  would have rendered a stray leading space for any box with no brand
+  — fixed to only do that when a brand is actually set, confirmed the
+  fix propagates to the card, order summary, and hidden form fields
+  since all three read the same data-label attribute. Verified:
+  rebuild + full smoke test pass; direct DOM check of all 11 boxes'
+  labels; simulated selecting the blank-brand box + the Rosewill
+  cooler and confirmed the summary, $8 total, and hidden fields all
+  matched; real-Chromium screenshots at desktop/mobile of the full
+  11-box grid, zero overflow, both ASUS listings read clearly
+  distinct from each other.

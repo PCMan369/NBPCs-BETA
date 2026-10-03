@@ -14,6 +14,13 @@
 
   Requires (load order): config.js, events.js, builds.js,
   trustSection.js.
+
+  Image/video visibility note (Visual Redesign, sitewide image-opacity
+  fix): the main gallery image/video no longer depends on an
+  onload/onloadeddata handler to become visible — same fix as
+  js/render/buildCard.js. This was the most consequential instance of
+  that bug: the primary product photo for the page. See
+  VISUAL_REDESIGN.md.
   ================================================================
 */
 
@@ -58,8 +65,8 @@ function initBuildDetailPage() {
 
   var isAvailable = build.status === 'available';
   var badge = isAvailable
-    ? '<span class="badge badge-available">Available</span>'
-    : '<span class="badge badge-sold">Sold</span>';
+    ? '<span class="badge badge-available badge-quiet">Available</span>'
+    : '<span class="badge badge-sold badge-quiet">Sold</span>';
 
   // ---- Media list: images + videos combined into one ordered gallery ----
   var media = [];
@@ -79,14 +86,14 @@ function initBuildDetailPage() {
         if (m.type === 'video') {
           return '<video class="gallery-main-img' + (i === 0 ? ' active' : '') + '" ' +
             (m.poster ? 'poster="' + m.poster + '" ' : '') +
-            'controls playsinline preload="none" onloadeddata="this.classList.add(\'loaded\')">' +
+            'controls playsinline preload="none">' +
             '<source src="' + m.src + '">' +
             '</video>';
         }
         return '<img class="gallery-main-img' + (i === 0 ? ' active' : '') + '" src="' + m.src + '" ' +
           'alt="' + build.title + ' \u2014 photo ' + (i + 1) + '" ' +
           'loading="' + (i === 0 ? 'eager' : 'lazy') + '" ' +
-          'onload="this.classList.add(\'loaded\')" onerror="this.style.display=\'none\'">';
+          'onerror="this.style.display=\'none\'">';
       }).join('')
     : '<div class="gallery-main-placeholder"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg></div>';
 
@@ -215,7 +222,7 @@ function initBuildDetailPage() {
   } else {
     formHtml =
       '<div class="sold-notice">' +
-        '<span class="badge badge-sold" style="margin-bottom:0.5rem;">Sold</span>' +
+        '<span class="badge badge-sold badge-quiet" style="margin-bottom:0.5rem;">Sold</span>' +
         '<p>This system has already been sold. Check the listings page for what\'s currently available.</p>' +
         '<a href="builds.html" class="btn btn-secondary" style="margin-top:1rem;">Browse Available Systems &rarr;</a>' +
       '</div>';
@@ -259,8 +266,7 @@ function initBuildDetailPage() {
         '<div class="listing-header"><h1 class="listing-title">' + build.title + '</h1>' + badge + '</div>' +
         '<div class="listing-price-row">' +
           '<div class="listing-price-wrap">' + priceHtml + '</div>' +
-          '<div style="flex:1;"></div>' +
-          '<div style="font-size:0.8rem; color:var(--dim); text-align:right; line-height:1.5;">Local pickup<br>Grants Pass, OR</div>' +
+          '<div class="listing-pickup-note">Local pickup &middot; Grants Pass, OR</div>' +
         '</div>' +
         specsHtml + conditionHtml + perfHtml + formHtml +
       '</div>' +

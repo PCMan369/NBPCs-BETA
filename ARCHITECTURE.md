@@ -39,7 +39,7 @@ before you push, not in the browser. The output is still plain static HTML.
 │   │   ├── events.js       — sales/promo system
 │   │   └── testimonials.js — testimonials
 │   ├── render/            — logic that turns data into HTML (Phase 2+)
-│   └── partials/          — shared header.html/footer.html used by stitch.py
+│   └── partials/          — shared header/footer/analytics used by stitch.py
 ├── build-tools/
 │   └── stitch.py          — assembles partials into final HTML
 ├── images/
@@ -91,9 +91,12 @@ Alternatives considered:
   minutes if you ever need to change it.
 
 You'll run `python3 build-tools/stitch.py` before committing, the same way
-you'd run a linter — it reads `js/partials/header.html` and
-`js/partials/footer.html` and injects them into each page template. Full
-usage docs will land in the Phase 2 write-up once the partials exist.
+you'd run a linter — it injects `js/partials/header.html`,
+`js/partials/footer.html`, and `js/partials/analytics.html` into each page
+template via marker comments (`<!--HEADER:id-->`, `<!--FOOTER-->`,
+`<!--ANALYTICS-->`), plus a separate `<!--SEO-->` marker it builds
+canonical/OG/structured-data tags for directly. See DECISIONS.md for the
+history of each addition.
 
 ## Feature toggle philosophy
 

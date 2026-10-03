@@ -3,6 +3,11 @@
 > **This is the primary handoff document.** If you're a new Claude conversation
 > picking this up, read this file first, then ARCHITECTURE.md and DECISIONS.md.
 > Do not trust conversation history — trust these files and the actual code.
+>
+> **A visual redesign is actively in progress**, separate from the rebuild
+> history below — see VISUAL_REDESIGN.md for that process and its
+> decision-by-decision log before assuming anything about current colors,
+> typography, or component styling from this file or DECISIONS.md alone.
 
 ---
 
@@ -638,6 +643,71 @@ it's now catching the intentional amber glow on buttons/back-to-top/
 focus rings, which is part of the already-approved Forge identity,
 not something D37 ever flagged as open.
 
+## Google Analytics added sitewide
+
+Owner provided a gtag.js snippet to add to every page, exactly once
+each. Added the same way header/footer/SEO are handled: one new
+`js/partials/analytics.html`, one new `<!--ANALYTICS-->` marker in
+`stitch.py`, dropped as the first line inside `<head>` on all 11
+`pages-src/*.html` files (Google's own recommended placement). The
+build now errors out on any page with more than one marker rather
+than silently duplicating the snippet, and warns if a future new page
+is missing it. `smoke-test.js` needed a small real fix afterward,
+not a workaround — jsdom's offline sandbox can't reach the external
+script, which is expected, so the existing known-noise filter was
+scoped to exclude that specific case without weakening its ability to
+catch a real local script-path bug. See DECISIONS.md D40.
+
+## Second part box batch added
+
+6 more part boxes added (11 total now): an ID-Cooling air cooler
+box, 2 separate ASUS TUF Gaming A520 motherboard-box listings (owner
+noted one has a cardboard insert and one doesn't, split into 2
+listings rather than combined — owner's explicit call left to
+Claude), an MSI motherboard box, a motherboard box with an
+unconfirmed brand (left blank rather than guessed, flagged for the
+owner), and a Rosewill cooler box. 2 new categories introduced
+(Motherboard Box, Cooler Box) with pricing given directly by the
+owner. Found and fixed a real bug while adding the blank-brand entry:
+the card label builder always prepended "brand + space," which would
+have shown a stray leading space for any box with no brand set — now
+only does that when a brand is actually present. See DECISIONS.md
+D41.
+
+## Gallery carryover for the 2 D34-migrated builds
+
+`gallery.js` had never been updated when D34 added the RX 5700 XT
+(sold) and EliteBook (available) builds directly to `builds.js` — its
+Completed Builds section was missing the 5700 XT's photos, and
+Current Builds was empty. Owner asked for both to be carried over:
+5 RX 5700 XT photos added to Completed Builds, 6 EliteBook photos
+added to Current Builds (its first entries). Resolves the
+long-standing "carry over sold builds or start fresh" question.
+Found and fixed along the way: those same 11 photos were still full
+phone-camera files from the D34 migration, never run through D13's
+optimization — done now (6.72MB → 3.35MB, no GPS data found this
+time). Also checked the owner's belief that the homepage hero photo
+was already in place — it isn't; `images/hero-build.jpg` doesn't
+exist in the project, so the placeholder is showing for every
+visitor, not just AI crawlers. Owner separately confirmed the "MSI
+MAG A650BE" PSU box model name is correct. See DECISIONS.md D42.
+
+## Unused CSS cleanup pass
+
+Owner asked for the on-record cleanup pass (3 unused rules:
+`.highlight-box`, `.card`, `.step-list-num`). Confirmed each against
+every HTML file (built and `pages-src/`) and every render script
+before touching anything. Found along the way: `.step-list-num`'s
+3 sibling rules — `.step-list`, `.step-list-item`, and
+`.step-list-text strong`/`p` — were also completely dead, never
+separately flagged. All removed. `.two-col`/`.two-col.center` (same
+section as the step-list rules) confirmed still in real use, kept.
+Numbered section-comment placeholders left in place for the removed
+sections, matching the existing convention from the Batch 2 redesign
+(D24) rather than renumbering every section after. Verified with a
+brace-balance check and a full smoke-test re-run — all pages still
+pass clean. See DECISIONS.md D43.
+
 ## Not started yet
 
 - Phase 6 remainder: general visual/micro-interaction polish (image
@@ -655,9 +725,6 @@ not something D37 ever flagged as open.
   doesn't fit a non-gaming laptop anyway. Needs a decision on what,
   if anything, belongs there (a different kind of note entirely,
   general productivity/battery comments, or just leave it empty).
-- 2 unused CSS rules (`.highlight-box`, `.step-list-num`, plus now
-  also the unused `.card`) are candidates for deletion whenever a
-  cleanup pass is wanted — not urgent, nothing references them.
 - Whether the intentional amber glow on buttons/back-to-top/focus
   rings (flagged by Impeccable's "dark-glow" rule, unchanged in D39)
   is worth revisiting — this is part of the approved Forge identity,
@@ -788,8 +855,8 @@ deferred to whenever the owner gets to it.
 - `js/data/*.js` — all content/config, no HTML editing needed for routine
   updates once Phase 2+ is done.
 - `css/tokens.css` — single source of truth for color/spacing/radius values.
-- `js/partials/*.html` + `build-tools/stitch.py` — shared header/footer.
-  Run `python3 build-tools/stitch.py` after editing either one, or after
-  adding a new file to `pages-src/`.
+- `js/partials/*.html` + `build-tools/stitch.py` — shared header/footer/
+  analytics. Run `python3 build-tools/stitch.py` after editing any of
+  them, or after adding a new file to `pages-src/`.
 - `ARCHITECTURE.md` — full technical rationale.
 - `DECISIONS.md` — business/architecture decision log.
