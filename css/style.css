@@ -673,14 +673,20 @@ strong {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: border-color var(--ease), box-shadow var(--ease), transform var(--ease);
+  transition: border-color var(--ease), transform var(--ease);
   display: flex;
   flex-direction: column;
 }
 
 .build-card:hover {
+  /* Visual redesign: box-shadow removed (Impeccable flagged the
+     combination of this card's existing hairline border with a wide,
+     diffuse hover shadow as gpt-thin-border-wide-shadow — a
+     "recurring generated-UI signature"). Border-color shift + lift
+     alone carries the hover cue now, matching the flat/no-shadow
+     language the rest of the site already uses at rest. See
+     VISUAL_REDESIGN.md. */
   border-color: var(--border-l);
-  box-shadow: var(--shadow-lg);
   transform: translateY(-3px);
 }
 
@@ -991,6 +997,19 @@ strong {
   filter: brightness(1.12);
   box-shadow: var(--shadow-lg);
   transform: translateY(-1px);
+  /* Found via Impeccable's low-contrast finding (2.0:1, needs 4.5:1):
+     this rule never redeclared color, so on an <a> element the global
+     a:hover { color: var(--accent-text) } (one type selector + one
+     pseudo-class) silently outranked .btn-primary's plain-class
+     `color: white` the instant it was hovered — accent-text text on
+     the still-solid accent-h background, exactly Impeccable's number.
+     Confirmed live with a real hover (not just read from the CSS):
+     computed color was rgb(174,121,142) on rgb(139,63,94) before this
+     fix. Same root cause already diagnosed and worked around for
+     .nav-cta (see its comment above) but never applied here. Explicit
+     redeclaration at equal (0,2,0) specificity beats a:hover's (0,1,1)
+     cleanly, so no !important needed here the way .nav-cta needed it. */
+  color: white;
 }
 
 .btn-secondary {
@@ -1038,14 +1057,15 @@ strong {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 2rem;
-  transition: border-color var(--ease), box-shadow var(--ease), transform var(--ease);
+  transition: border-color var(--ease), transform var(--ease);
   display: flex;
   flex-direction: column;
 }
 
 .tier-card:hover {
+  /* box-shadow removed — see .build-card:hover's comment above for
+     why (Impeccable gpt-thin-border-wide-shadow). */
   border-color: rgba(174,121,142,0.4);
-  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
 }
 
@@ -1146,14 +1166,15 @@ strong {
   aspect-ratio: 1 / 1;
   background-color: var(--card);
   border: 1px solid var(--border);
-  transition: border-color var(--ease), transform var(--ease), box-shadow var(--ease);
+  transition: border-color var(--ease), transform var(--ease);
   cursor: pointer;
 }
 
 .gallery-item:hover {
+  /* box-shadow removed — see .build-card:hover's comment above for
+     why (Impeccable gpt-thin-border-wide-shadow). */
   border-color: var(--accent-text);
   transform: scale(1.015);
-  box-shadow: var(--shadow-lg);
 }
 
 .gallery-item img {

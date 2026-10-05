@@ -789,36 +789,107 @@ re-scan of the real built site with Impeccable — `side-tab` went from
 9 instances to 0, no new findings introduced. Screenshots of all three
 real components (not just the test mockups) confirmed clean.
 
-Three more findings are real and worth a conscious decision, not yet
-acted on:
-- **`--accent-h` equals `--accent` exactly** (`#8b3f5e` both),
-  found while chasing a `low-contrast` finding (accent-text-on-accent
-  text, 2.0:1, needs 4.5:1 — couldn't pin the exact element from a
-  static scan, a live browser scan would likely find it directly but
-  headless Chrome won't launch as root in this sandbox). `tokens.css`'s
-  own comments describe `--accent-h` as meant to be a **distinct**
-  hover-state shade from `--accent`; under the old blue palette it was
-  (`#2563eb` vs `#1d4ed8`-ish). Under Cask they were set equal during
-  decision 14's sitewide swap, which quietly defeats a few "fixed for
-  contrast" comments elsewhere in `theme.css` that assumed `--accent-h`
-  would be meaningfully different — though as it happens, Cask's base
-  already clears white-text contrast comfortably (7.07:1) regardless,
-  so those specific "fixes" just turned out to be moot rather than
-  actively broken. The 2.0:1 failure is a different, real instance
-  somewhere that does rely on `--accent-h`/`--accent` being distinct.
-- **`gpt-thin-border-wide-shadow` (advisory, slop)** — a 1px hairline
-  border paired with a wide/diffuse shadow (`var(--shadow-lg)`, 25px
-  blur) on hover, present on every card type sitewide (`.gallery-item`,
-  `.build-card`, `.tier-card`). Named by Impeccable as a "recurring
-  generated-UI signature." This is decision 9's own hover language
-  (flat shadow + lift), so revisiting it would mean reopening an
-  already-approved sitewide decision, not just one component.
-- **`layout-transition`** (quality, not slop) — `transition: width`
-  (page-load progress bar) and `transition: max-height` (mobile nav
-  submenu, FAQ accordion) can cause layout thrash; a `transform`-based
-  or `grid-template-rows` technique is cheaper. Real, but a performance
-  nitpick unrelated to the AI-look question — flagged, not touched,
-  since the current FAQ/nav animations are tested and working.
+### `low-contrast` — RESOLVED
+Pinned down with a live browser instead of a static scan: wrote a
+Playwright script that actually hovers every element on the 5 affected
+pages (Impeccable's own browser can't launch as root in this sandbox)
+and compares computed styles against the flagged color pair. Several
+elements matched a raw RGB check (`.nav-link.active`, `.faq-icon`,
+`.btn-ghost`) but turned out to be false positives once alpha was
+accounted for — all three use a low-opacity accent tint (8-14%), which
+composites to something nowhere near the solid failing color against
+the dark page background underneath.
+
+The real one: **`.btn-primary:hover` never redeclared `color`**, so on
+an `<a>` element (every primary CTA sitewide — hero buttons, cta-box
+buttons, "View Build," etc. are all anchors, not `<button>`s) the
+global `a:hover { color: var(--accent-text) }` rule — one type selector
++ one pseudo-class — silently outranked `.btn-primary`'s plain-class
+`color: white` the instant it was hovered. Confirmed live before
+touching anything: computed color really did flip from `rgb(255,255,255)`
+to `rgb(174,121,142)` on the still-solid `rgb(139,63,94)` background on
+real mouse hover — Impeccable's exact numbers. `.btn-secondary`/
+`.btn-ghost` were never affected, just by luck: both happen to
+redeclare `color` in their own `:hover` rule for unrelated styling
+reasons, which incidentally outranks `a:hover` too. The identical root
+cause was already diagnosed for `.nav-cta` (see its comment in
+`css/style.css`) but never applied to `.btn-primary` itself.
+
+**Fixed:** added an explicit `color: white;` to the existing
+`.btn-primary:hover` rule in `css/style.css`. Normal specificity
+((0,2,0) vs `a:hover`'s (0,1,1)) wins cleanly, no `!important` needed.
+Verified with a real hover before and after (white confirmed stable
+now) and a full site re-scan: `low-contrast` went from 10 instances to
+0.
+
+**The `--accent-h` = `--accent` collapse turned out to be a red
+herring, not the cause** — `tokens.css`'s own comments describe
+`--accent-h` as meant to be a **distinct** hover-state shade from
+`--accent` (it was, under the old blue palette); they were set equal
+during decision 14's Cask swap, which is still a real, slightly sloppy
+loose end, but Cask's base already clears white-text contrast
+comfortably (7.07:1) regardless, so nothing was actually broken by it.
+Left as-is — correct by accident rather than by design, but correct.
+
+### `gpt-thin-border-wide-shadow` — PARTIALLY ADDRESSED, not confirmed resolved
+A 1px hairline border paired with a wide/diffuse shadow
+(`var(--shadow-lg)`, 25px blur) on hover — Impeccable's own description
+calls this "a recurring generated-UI signature." Confirmed by code
+audit (not just the detector) that exactly three components had both a
+resting hairline border and this exact hover shadow: `.build-card`,
+`.tier-card`, `.gallery-item`. Other `--shadow-lg` uses
+(`.btn-primary`, `.back-to-top`, the gallery lightbox) don't have a
+matching border, so they don't fit the pattern; `.nav-dropdown-menu`
+does have both, but it's a static always-shown popover shadow, not a
+hover effect, and a floating menu panel conventionally earns an
+elevation shadow in a way a grid-card hover-glow doesn't — left that
+one alone deliberately, not yet discussed with the owner.
+
+Tried to verify alternatives against the real detector the same way
+side-tab was verified, and it didn't work this time: isolated mockups
+of the exact current (known-flagged) recipe came back clean even with
+a realistic 3-card grid and real images, suggesting this rule
+(its name literally contains "gpt") may be judged more holistically
+against a full real page than as an isolated, deterministic CSS-pattern
+match the way `side-tab` was. Implemented anyway on reasoning alone:
+removed `box-shadow: var(--shadow-lg)` from all three hover rules,
+kept the border-color shift and lift/scale, cleaned up each one's now-
+unnecessary `box-shadow` transition component. `css/style.css`.
+Verified safe with `smoke-test.js` (all checks pass).
+
+**Re-scanning the real built site afterward still shows 9 instances,
+unchanged from before the fix**, all the identical snippet text
+("1px border + 25px shadow blur") across all 9 pages — consistent
+with this now being entirely the `.nav-dropdown-menu` popover (present
+on every page via the shared header partial), but **not confirmed**
+with a live-browser pinpoint check the way the low-contrast bug was.
+Don't take this as "resolved" — the card-hover shadows are gone and
+verified safe, but whether that was the only thing the detector was
+actually flagging is unconfirmed. Next session: either confirm the
+dropdown is the remaining source and decide whether to touch it too,
+or investigate further if it turns out to be something else.
+
+### `layout-transition` — NOT STARTED
+`transition: width` (page-load progress bar) and `transition:
+max-height` (mobile nav submenu, FAQ accordion) can cause layout
+thrash; investigated but didn't implement anything. Findings so far,
+picked back up from here:
+- Mobile nav submenu (`css/style.css`, `.mobile-nav-submenu`, ~line
+  487): converting to the `grid-template-rows: 0fr → 1fr` technique
+  would need a markup change first — `js/partials/header.html`'s
+  `#forsale-mobile-menu` has three `<a>` tags as direct children, and
+  that technique needs them wrapped in a single inner div for the row
+  to clip correctly.
+- FAQ accordion (`css/style.css`, `.faq-answer`, ~line 1291): same
+  technique, but no markup change needed — `js/render/faqList.js`
+  already wraps the answer content in `.faq-answer-inner`, so the grid
+  trick can apply directly to the existing structure. Current approach
+  uses a hardcoded `max-height: 600px` guess, which also risks clipping
+  any future answer longer than that.
+- Page-load progress bar (`css/style.css`, ~line 1765,
+  `transition: width`): not yet looked at.
+No code touched for any of these three — current behavior is exactly
+as it was before this session.
 
 ## Outstanding, not scoped to one page
 

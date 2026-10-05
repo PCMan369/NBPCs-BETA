@@ -162,7 +162,7 @@ const builds = [
   {
     id: "aug26-02",
     title: "HP EliteBook 840 G10",
-    status: "available",
+    status: "sold",
     price: "$400",
     eventId: null,
     eventPrice: null,
