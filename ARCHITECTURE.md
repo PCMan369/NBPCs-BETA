@@ -1,3 +1,5 @@
+> **Note (2026-10-05, B-001):** DECISIONS.md, PROJECT_STATUS.md, TODO.md and CHANGELOG.md now live in docs-archive/ (frozen). Current state: START_HERE.md and LOG.md. The theming/"Forge" sections below predate the visual redesign: the live palette is "Cask", see VISUAL_REDESIGN.md.
+
 # ARCHITECTURE.md — North Bridge PCs Website Rebuild
 
 ## Stack
@@ -15,7 +17,7 @@ before you push, not in the browser. The output is still plain static HTML.
 
 ```
 /
-├── index.html, builds.html, build.html, services.html,
+├── index.html, builds.html, build.html,
 │   custom-build.html, gallery.html, faq.html, contact.html, 404.html
 ├── css/
 │   ├── tokens.css      — design tokens (colors, spacing, radii, shadows)
@@ -23,10 +25,11 @@ before you push, not in the browser. The output is still plain static HTML.
 │   ├── style.css        — component styles (Phase 2+)
 │   ├── gallery.css      — gallery grid + lightbox (gallery.html, build.html)
 │   ├── build-detail.css — build.html-specific styling
-│   ├── services.css     — services.html-specific styling
+│   ├── situation-picker.css — situation-picker rows on contact.html
 │   ├── part-boxes.css   — part-boxes.html-specific styling
 │   └── theme.css        — the "Forge" visual redesign (dark/amber), loaded
-│                          sitewide as the last stylesheet on all 11 pages.
+│                          sitewide as the last stylesheet on all 10 pages
+│                          (11 before services.html was removed).
 │                          Was `homepage-forge.css` and homepage-only through
 │                          Redesign Batch 1; renamed and unscoped from
 │                          `body.theme-forge` in Batch 2 (see D23/D24) once
@@ -35,7 +38,6 @@ before you push, not in the browser. The output is still plain static HTML.
 │   ├── data/             — YOUR CONTENT LIVES HERE. Edit these, not HTML.
 │   │   ├── config.js      — feature toggles + site identity + contact routing
 │   │   ├── builds.js       — PC inventory
-│   │   ├── services.js     — service list
 │   │   ├── events.js       — sales/promo system
 │   │   └── testimonials.js — testimonials
 │   ├── render/            — logic that turns data into HTML (Phase 2+)
@@ -171,7 +173,7 @@ other page while only one page was redesigned.
 **Batch 2** (the other 9 customer-facing pages, all in one pass):
 `homepage-forge.css` → `css/theme.css`, unscoped from
 `body.theme-forge` to plain global rules — that class no longer
-exists anywhere, and all 11 pages (10 then, 404.html since) load
+exists anywhere, and all 10 pages (10 at the time, plus 404.html since, minus the removed services.html) load
 `theme.css` as their last stylesheet. `js/render/trustSection.js`
 (previously the old icon-card trust section + numbered-circle
 testing steps, still used by `build.html` after Batch 1) was

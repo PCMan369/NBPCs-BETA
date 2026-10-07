@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/services.css">
+  <link rel="stylesheet" href="css/situation-picker.css">
   <link rel="stylesheet" href="css/theme.css">
 </head>
 <body>
@@ -66,7 +66,6 @@
         </div>
       </div>
 
-      <a href="services.html" class="nav-link ">Services</a>
       <a href="about.html"    class="nav-link ">About</a>
       <a href="gallery.html"  class="nav-link ">Gallery</a>
       <a href="faq.html"      class="nav-link ">FAQ</a>
@@ -95,7 +94,6 @@
       <a href="part-boxes.html"   class="nav-sublink ">Part Boxes</a>
     </div>
 
-    <a href="services.html" class="nav-link ">Services</a>
     <a href="about.html"    class="nav-link ">About</a>
     <a href="gallery.html"  class="nav-link ">Gallery</a>
     <a href="faq.html"      class="nav-link ">FAQ</a>
@@ -145,33 +143,27 @@
             <h2 style="margin-bottom:0.4rem; font-size:1.4rem;">What Do You Need Help With?</h2>
             <p style="margin-bottom:1.5rem; font-size:0.93rem; color:var(--muted);">Pick whichever fits best. You'll only see the fields that actually apply.</p>
 
-            <div class="grid-2" id="situation-picker">
+            <div class="situation-picker" id="situation-picker">
 
-              <div class="service-hub-card">
+              <div class="situation-option">
                 <h3>Buying a Gaming PC</h3>
                 <p>Looking for a ready-to-go system? Tell me what you need and I'll check it against what's currently available.</p>
                 <button type="button" class="btn btn-secondary situation-select-btn" data-target="situation-buying">Get Started &rarr;</button>
               </div>
 
-              <div class="service-hub-card">
+              <div class="situation-option">
                 <h3>Custom PC</h3>
                 <p>Want something built around your exact budget and the games you play? Start here.</p>
                 <button type="button" class="btn btn-secondary situation-select-btn" data-target="situation-custom">Get Started &rarr;</button>
               </div>
 
-              <div class="service-hub-card">
-                <h3>PC Service / Repair</h3>
-                <p>Repairs, upgrades, cleaning, or support for a system you already own.</p>
-                <a href="services.html" class="btn btn-secondary">Go to Service Request &rarr;</a>
-              </div>
-
-              <div class="service-hub-card">
+              <div class="situation-option">
                 <h3>Part Box</h3>
                 <p>Empty component boxes left over from builds, good for shipping, storage, or reselling parts.</p>
                 <a href="part-boxes.html" class="btn btn-secondary">Browse Part Boxes &rarr;</a>
               </div>
 
-              <div class="service-hub-card">
+              <div class="situation-option">
                 <h3>General Question</h3>
                 <p>Anything else about North Bridge PCs. Ask away.</p>
                 <button type="button" class="btn btn-secondary situation-select-btn"
@@ -182,7 +174,7 @@
                   data-situation-subject="General question &mdash; North Bridge PCs">Get Started &rarr;</button>
               </div>
 
-              <div class="service-hub-card">
+              <div class="situation-option">
                 <h3>Other / Not Sure</h3>
                 <p>Not sure which of these fits? This works too, just tell me what's going on.</p>
                 <button type="button" class="btn btn-secondary situation-select-btn"
@@ -270,7 +262,7 @@
             </div>
 
             <div style="margin-top:1.5rem;">
-              <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center;">Send Message &rarr;</button>
+              <button type="submit" class="btn btn-primary btn-lg">Send Message &rarr;</button>
             </div>
           </form>
         </div>
@@ -352,7 +344,7 @@
             </div>
 
             <div style="margin-top:1.5rem;">
-              <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center;">Send Message &rarr;</button>
+              <button type="submit" class="btn btn-primary btn-lg">Send Message &rarr;</button>
             </div>
           </form>
         </div>
@@ -389,7 +381,7 @@
             </div>
 
             <div style="margin-top:1.5rem;">
-              <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center;">Send Message &rarr;</button>
+              <button type="submit" class="btn btn-primary btn-lg">Send Message &rarr;</button>
             </div>
           </form>
         </div>
@@ -418,7 +410,6 @@
         <a href="builds.html">Gaming PCs</a>
         <a href="custom-build.html">Custom Builds</a>
         <a href="part-boxes.html">Part Boxes</a>
-        <a href="services.html">Services</a>
         <a href="about.html">About</a>
         <a href="gallery.html">Gallery</a>
         <a href="faq.html">FAQ</a>

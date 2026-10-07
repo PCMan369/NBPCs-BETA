@@ -1,3 +1,5 @@
+> **ARCHIVED 2026-10-05 (B-001). Frozen history, do not update.** Current state and rules: see START_HERE.md. Read this file with grep, not in full.
+
 # TODO.md — North Bridge PCs Website Rebuild
 
 **Visual redesign in progress:** the site's visual system (color,

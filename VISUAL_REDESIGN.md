@@ -28,6 +28,9 @@ implemented — check each entry's own status.
   project files, verified with smoke-test.js and a real screenshot)
   before moving to the next one — this file is a record of what's
   actually been done, not a proposal backlog.
+- Options may be shown as screenshots or, if that works better, as
+  published artifacts (owner said so, 2026-10-06). Either way they must
+  be rendered from the real page CSS with real content and fonts.
 
 ## Reference directions explored — NOT fixed themes
 
@@ -68,13 +71,20 @@ page should be redesigned wholesale to match one of them.
 
 ## Scope notes
 
-- **services.html will be removed by the owner.** Do not redesign it —
-  skip it entirely in this process.
+- **services.html was removed (LOG.md B-003).** Nothing to redesign there.
+  The contact page's situation picker has 5 options (ruled rows since
+  A-009; see "Contact page" below).
 - **build-detail page is complete** (all 15 decisions made) and **home
   page is complete** (all 9 decisions made) — see below for both.
-  **Current component: the custom-build page** (`custom-build.html`) —
-  section-header rollout done, 4 open items pending (see below).
-  Still unwalked: about.html, gallery.html, faq.html, contact.html,
+  **custom-build page is complete** (see below) apart from deferred
+  items (tier-card rule alignment at tablet widths; the final CTA box's
+  kicker label waits for the copy pass) and the two sitewide scan
+  findings (`gpt-thin-border-wide-shadow`, `layout-transition`).
+  **Current component: the contact page** (`contact.html`) — the
+  situation picker and the form panel width/placement are done (see
+  below); still to walk there: the shared form fields (`.form-input`,
+  `.form-label`, `.form-select`, focus ring) and the thank-you state.
+  Still unwalked: about.html, gallery.html, faq.html,
   and part-boxes.html (though several of their shared components were
   already touched indirectly via the home page's decisions 4-8
   reviews).
@@ -890,6 +900,284 @@ picked back up from here:
   `transition: width`): not yet looked at.
 No code touched for any of these three — current behavior is exactly
 as it was before this session.
+
+### Tier-card feature lists — APPROVED (Option B), IMPLEMENTED
+`.tier-features` (the 6-row lists in the three "What Different Budgets
+Get You" cards) had a real bug plus an open look question.
+
+**Bug found:** the list had `list-style: none` but kept the browser's
+default `padding-left: 40px`, so it sat 40px right of the badge, price,
+description and button edge (measured at 1440px: badge x=187, list text
+x=227).
+
+Three renders from the real page CSS (real fonts, real copy), all
+flush-left:
+- **A — aligned ✓ list.** Indent fix only. Keeps the pricing-table
+  checklist look. Cards stay 545px tall.
+- **B — ruled rows, no marks.** Hairline between rows, body font.
+  Cards grow to 626px (+81px).
+- **C — spec-sheet.** Space Mono + accent bullet + hairlines (the
+  `.perf-item` recipe). Cards 594px. Not chosen: mono
+  suits short data values, not these phrases; 4 rows wrapped in the
+  first card vs. 0 in B.
+
+**Approved: B.** Reasoning: matches the ruled-row language already used
+by `.cb-list` (directly above on this page) and the Evidence section;
+drops the ✓, which implies "included in this tier" where there are no ✗
+rows and the cards share items; accent now comes only from the kicker
+and the featured button. Cost: +81px per card, 18 hairlines inside
+bordered cards (same `--border` token as the card edge).
+
+**Implemented (css/style.css only, no markup change):**
+- `.tier-features`: `padding: 0`, `border-top` hairline, `flex: 1`;
+  `li`: `padding: 0.6rem 0`, `border-bottom` hairline, last one none;
+  `li::before` check mark rule removed; the old `gap` and `li` flex
+  layout removed.
+- `flex: 1` moved from `.tier-desc` to `.tier-features`, so the list
+  starts right after the description and slack falls below it, above the
+  button.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow at desktop/tablet/mobile (9 pages x 3 viewports);
+measured on the real page: list text x equals badge x in all three cards
+at 1440/1024/768/390; top rules align across cards at 1440 (all 2012px)
+and 1024 (all 2024px); 0 script errors at all four widths.
+
+**Known limitation (tablet, not fixed here):** cross-card alignment of
+the top rules depends on how many lines each description wraps to.
+Measured at 900/840/700 they align; at 768 (two-column) the first-row
+cards differ by 24px because one description wraps to 4 lines and the
+other to 3. The original bottom-anchored layout wasn't aligned at every
+width either (19px off at 900). A robust fix would be CSS subgrid on the
+card rows, which is a larger layout change; left for the tablet/mobile
+pass.
+
+**Noticed, not yet raised as a decision:** the featured tier card's
+button sits 2px lower than its siblings (existing; primary button has no
+border). Not touched. (The process-section left column, also noted here
+at the time, was decided in the next subsection.)
+
+### Process section left column — APPROVED (Option A), IMPLEMENTED
+"How a Custom Build Works" uses `.two-col.center`: the left column
+(heading, promise paragraph, button) was vertically centered against the
+tall 6-step list. Measured at 1440px: left column 378px vs. list 842px,
+so "The Process" label sat 239px below the first rule, with empty space
+above and below the text block. The home page's Custom Builds section
+uses the same shared `.two-col.center` rule (it centers its shorter
+table column; home decision 5 kept that), so any change had to be scoped
+to this section.
+
+Options shown as a published artifact (first use of artifacts for
+options, owner-approved 2026-10-06), built from the real markup and CSS:
+- **A — top-align.** Label level with the first rule (5px). CSS/markup
+  change only, section height unchanged (1034px). Empty space moves under
+  the button.
+- **B — header top, button bottom.** Button level with the last step's
+  text. Leaves a large hole in the middle of the left column.
+- **C — header row over a 2x3 step grid.** Most balanced composition,
+  section 842px (192px shorter). Needs a markup restructure and loses the
+  single tall sequence.
+
+**Approved: A.** Reasoning: smallest change that fixes the actual flaw
+(a floating text block), keeps the six steps as one continuous column,
+and top-aligned two-column layouts already exist on the home page (FAQ
+preview). Cost: about 400px of quiet empty space beside the lower steps.
+C was the runner-up (close call).
+
+**Implemented:** `pages-src/custom-build.html` only: that one element is
+now `<div class="two-col">` instead of `<div class="two-col center">`
+(plain `.two-col` already has `align-items: start`), with a short HTML
+comment saying why. No CSS change; `.two-col.center` stays for the home
+page. Root `custom-build.html` regenerated with stitch.py.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow; on the real page the label sits 5px below the first
+rule and the left column's top equals the list's top at 1440, 1180,
+1024 and 901px; at 768 and 390 the section collapses to one column as
+before; 0 script errors at all six widths; home page's `.two-col.center`
+still computes `align-items: center`.
+
+### "Not Sure" section layout — APPROVED (Option A), IMPLEMENTED
+"Not Sure What Hardware You Need?" was a single 760px block centered on
+the page (inline `max-width:760px; margin:0 auto`), left-aligned text
+inside it. Measured at 1440px with real fonts: its text started at
+x=340 while the process section and the nav start at x=154; lead 520px
+wide vs. body 760px (body 75 characters per line); section 630px tall.
+With real fonts the section read cleanly, so this was a small fix, not a
+redesign. (An earlier fallback-font render had made the body look longer
+than it is.)
+
+Options shown as a published artifact, from the real markup and CSS,
+copy unchanged:
+- **A — two columns on the page grid.** Heading + lead left, the two
+  paragraphs and buttons right, same pattern as the process section.
+  Left edge x=154; body column 534px, 57 characters per line; section
+  469px (-161px).
+- **B — single column, left edge on the grid.** Same 760px column moved
+  to x=154; right side stays empty; 75 characters per line stays.
+  Smallest change (one inline style).
+- **C — centered.** Matches the tier section above and the CTA box below.
+  Would make three centered sections in a row, centered body text, and a
+  two-button cluster directly above the CTA box's two buttons. Ruled out.
+
+**Approved: A.** Reasoning: fixes the grid alignment and the line length
+together, and reuses a pattern already on this page and in the home page's
+FAQ preview. Cost: about 100px of empty space under the left column.
+"Keep as is" and B were the defensible minimal alternatives.
+
+**Implemented:**
+- `pages-src/custom-build.html`: the block is now `.two-col` with the
+  header (plus `style="margin-bottom:0;"`, because it is the only child of
+  its column) in the left div and the two paragraphs + button row in the
+  right div. Copy unchanged. Inline styles kept, as elsewhere on this page.
+- `css/style.css`: new opt-in utility `.text-balance { text-wrap: balance; }`
+  with a comment; applied only to this h2. Without it the heading broke as
+  "...Hardware You / Need?". Not applied to any other heading.
+- The right column's first paragraph got `margin-top: 0`. In the options
+  the first line sat about 18px below the label; I described that as
+  top-aligned boxes, but the real cause was the paragraph's default
+  1em top margin, which no longer collapses once the paragraph is inside
+  a grid item (it used to collapse into the header's 2rem margin). With it
+  zeroed the first line sits level with the label (box tops within the
+  label's 5px inline-block offset) and the collapsed spacing stays close to
+  before (36px vs. 32px between the accent line and the body at 768/390).
+  This differs slightly from the mockup the owner approved; flagged in
+  A-008.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow; real page at 1440/1180/1024/901/768/390: 0 script
+errors, no horizontal overflow; two columns down to 901px, one column at
+768 and 390 as before; section height 469px at 1440 (was 630),
+643px at 768 (was 639), 816px at 390 (was 812); heading is two balanced
+lines on desktop.
+
+## Contact page (`contact.html`)
+
+### Situation picker — APPROVED (Option B), IMPLEMENTED, class renamed
+The "What Do You Need Help With?" picker was five equal cards in a
+two-column grid (`.grid-2` of `.service-hub-card`). Measured at 1440px
+with real fonts:
+- The fifth card ("Other / Not Sure") sat alone on the last row.
+- Spacing bug: the card's `h3` and `p` kept their default margins
+  (17.6px and 14.7px), which stack on top of the card's 12px flex gap
+  because margins don't collapse in a flex container. Result: 44px
+  between a title and its description, and the title sat 43px below the
+  card's top edge versus 24px at the sides. Same kind of bug as the
+  tier-list indent.
+- Picker height 832px (1439px stacked at 390px).
+
+Options shown as a published artifact, real markup/CSS/copy; all three
+included the same margin fix:
+- **A — cards, last spans the row.** Odd last card becomes a wide card
+  with its button on the right (self-adjusting `:last-child:nth-child(odd)`
+  rule). Picker 560px (1115px at 390px).
+- **B — ruled rows.** No boxes: five hairline rows, title + description
+  left, equal-width button right. Picker 542px (875px at 390px).
+- **C — three cards + two rows.** Buying, Custom and General Question
+  stay cards; Part Box and Other / Not Sure become quieter rows. Picker
+  477px. Reorders the choices and demotes Part Box (owner's call).
+
+**Approved: B.** Reasoning: the choices are navigation, not products;
+rows match the ruled language already used beside it (the info column,
+`.cb-list`) and in the process list and tier lists; by far the shortest
+on a phone. Cost: rows signal "clickable" less than boxes, so the
+buttons carry that alone. A was the safe alternative.
+
+**Rename (owner approved):** `.service-hub-card` is now
+`.situation-option` (not `.situation-card`, as suggested earlier,
+because they are rows now), and `css/services.css` is now
+`css/situation-picker.css`. The picker container no longer uses
+`.grid-2`; it is `.situation-picker`.
+
+**Implemented:**
+- `css/situation-picker.css` (new; replaces the deleted
+  `css/services.css`): `.situation-picker` top hairline;
+  `.situation-option` is a 2-column grid (text | button), hairline
+  `border-bottom`, last row open, `h3`/`p` margins zeroed, `p` has
+  `text-wrap: pretty` (stops "here." sitting alone in the Custom PC
+  row); the button has `min-width: 12.5rem` so "Get Started" and
+  "Browse Part Boxes" share one width; at 640px and below each row
+  stacks with the button underneath, left-aligned at natural width.
+- `pages-src/contact.html`: stylesheet link, picker container class and
+  the five option classes. Copy unchanged.
+- `smoke-test.js`: selector updated to `.situation-option`, plus an
+  assertion that no `.service-hub-card` markup remains.
+- `ARCHITECTURE.md` file listing and a historical comment in
+  `css/style.css` updated to the new names. `LOG.md` and `docs-archive/`
+  keep the old names (append-only / frozen).
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow; all local links/assets in the 10 built pages
+resolve; real page at 1440/1024/901/768/641/640/390: 0 script errors, no
+horizontal overflow; at 1440 the picker is 542px with rows 119/119/119/93/92px,
+a 4px title-to-text gap, and all five buttons 200px wide on one right
+edge; clicking each of the four form buttons reveals the expected panel
+(buying, custom, general, general) and the Part Box button still links
+to `part-boxes.html`.
+
+**Left for later:** at 640px and below the two button widths differ
+(148px and 196px) because they size to their text; left-aligned, so
+left as is, revisit in the mobile pass if wanted.
+
+### Form panel width and placement — APPROVED (Option A), IMPLEMENTED
+The three form panels (Buying, Custom PC, General/Other) open below the
+picker in `#situation-forms-section`. Measured at 1440px with real fonts:
+- The panel spans the full 1132px container (x=154), while the picker
+  above sits in a 792px column at x=494.
+- The buying panel's intro paragraph ran about 142 characters per line
+  and the submit button was 1058px wide (inline `width:100%`).
+- Privacy note: `.form-privacy p` kept default 12.8px top/bottom margins
+  inside the box padding, so a one-line note was an 81px box. Same bug
+  class as the picker cards and tier lists.
+
+Options shown as a published artifact (real markup/CSS/copy; the picker
+plus the opened panel; Buying and General panels shown), all three with
+the same intro cap and privacy fix:
+- **A — full width, internals fixed.** Panel stays full width, button at
+  natural width (187px), inputs 519px.
+- **B — in the picker's column.** Panel at x=494, 792px, inputs 349px;
+  left 340px stays empty.
+- **C — 760px on the page grid.** Panel at x=154, inputs 333px; about
+  670px stays empty on the right.
+
+**Approved: A.** Reasoning: the panel keeps spanning the container like
+the CTA box and other sections, so it adds no new empty side (the last
+few decisions removed exactly that kind of void), and its real problems
+were internal. Cost: wide two-column inputs. B was the alternative for
+picker-to-form continuity.
+
+**Implemented:**
+- `pages-src/contact.html`: the three submit buttons lost their inline
+  `width:100%; justify-content:center;`. Copy unchanged.
+- `css/style.css` (next to the `.form-privacy` rules, with a comment):
+  `.situation-form-panel > p { max-width: 52ch; }` (468px; the site's
+  lead measure); `.situation-form-panel .form-privacy p { margin: 0; }`
+  (box 56px at 1440, was 81px); and, at 640px and below, the submit
+  button is `width:100%; justify-content:center` again so phones keep the
+  full-width button they had before (without it the button would have
+  been 187px, left-aligned, in a 292px column at 390px).
+
+**Scoped on purpose, flagged for the owner:** the same `.form-privacy`
+markup is rendered by `js/render/buildDetail.js` and
+`js/render/notifyBox.js`, and gets the same default margins. Measured on
+`builds.html` (the notify box): the privacy box is 102px tall with
+12.8px/12.8px paragraph margins. Those pages were signed off earlier, so
+nothing was changed there. Moving the fix to the root rule
+(`.form-privacy p { margin: 0 }`) would correct all three; the owner
+decides.
+
+**Noticed, not touched:** with JavaScript off, the three panels stack
+with no gap between them (no spacing rule on `.situation-form-panel`).
+The options page added a 2rem gap only to show two panels together.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow; all local links/assets in the 10 built pages
+resolve; clicking each of the three form buttons shows exactly its panel;
+real page at 1440/1024/768/390 (and 641/640 for the button): 0 script
+errors, no horizontal overflow; panel 1132px wide at 1440, intro 468px
+wide, button 187px (641px and up) or full width (640px and below),
+privacy box 56px at 1440/1024 (77px at 768 and 98px at 390 because the
+note wraps).
 
 ## Outstanding, not scoped to one page
 

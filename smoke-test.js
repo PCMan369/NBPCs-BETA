@@ -7,10 +7,14 @@
 // expected structure post-redesign.
 //
 // Honest scope note: this is DOM/structural verification only, not visual
-// regression testing. Playwright's browser binary could not be downloaded
-// in this sandbox (its CDN isn't in the network allowlist here — confirmed
-// by testing `npx playwright install chromium`, which fails cleanly on the
-// download step). No screenshots were taken this session; see CHANGELOG.md.
+// regression testing. For real-browser checks use visual-check.py: the
+// Claude sandbox image ships Chromium at /opt/pw-browsers, so Playwright
+// needs no download and both its Python and Node bindings launch it.
+//
+// Setup: jsdom is not committed to the repo. Run `npm install jsdom --no-save`
+// before this script. That needs the npm registry, which depends on the
+// sandbox's network settings: reachable in some chats, blocked in others.
+// If it can't be installed, report "not run (reason)", never a pass.
 
 const { JSDOM } = require('jsdom');
 const path = require('path');
@@ -66,19 +70,14 @@ const pages = [
       assert(rows.length === 4, `contact.html has 4 cb-row info items (found ${rows.length})`);
       assert(!doc.querySelector('.contact-info-card'), 'old .contact-info-card markup is gone');
       assert(!doc.querySelector('#contact-form'), 'old single #contact-form is gone');
-      const options = doc.querySelectorAll('#situation-picker .service-hub-card');
-      assert(options.length === 6, `situation picker has 6 options (found ${options.length})`);
+      const options = doc.querySelectorAll('#situation-picker .situation-option');
+      assert(options.length === 5, `situation picker has 5 options (found ${options.length})`);
+      assert(!doc.querySelector('.service-hub-card'), 'old .service-hub-card markup is gone');
       const panels = doc.querySelectorAll('.situation-form-panel');
       assert(panels.length === 3, `contact.html has 3 situation form panels (found ${panels.length})`);
       assert(doc.querySelector('#situation-buying form[action]'), 'buying panel form renders with an action');
       assert(doc.querySelector('#situation-custom form[action]'), 'custom-PC panel form renders with an action');
       assert(doc.querySelector('#situation-general form[action]'), 'general/other panel form renders with an action');
-    },
-  },
-  {
-    file: 'services.html',
-    check: (doc) => {
-      assert(doc.querySelector('#service-hub-cards, .service-hub-card, main'), 'services page renders');
     },
   },
   {

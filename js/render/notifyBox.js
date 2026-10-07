@@ -9,7 +9,7 @@
 
   Reliability: this is a real <form action="..."> that posts straight
   to FormSubmit — the same zero-JS-dependent pattern already used by
-  contact.html, services.html, and the build-detail inquiry form. It
+  contact.html and the build-detail inquiry form. It
   works even if JavaScript never runs. The only thing JS adds is
   swapping in a nicer "you're on the list" message after the redirect
   back (same progressive-enhancement pattern as contact.html).

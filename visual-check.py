@@ -6,19 +6,13 @@ horizontal overflow. Kept in the repo for reuse by future sessions —
 see DECISIONS.md D24 for why this exists and the environment quirk
 that makes it work.
 
-Environment note (Claude sandbox): `npx playwright install chromium`
-(the Node/npm route) fails cleanly here — its browser-binary download
-isn't reachable. The Python route works instead, because both the
-`playwright` package and the Chromium binary are pre-baked into this
-sandbox image at a non-default path:
-
-    pip install playwright --break-system-packages   # "already satisfied"
-    python3 -m playwright install chromium            # succeeds silently
-
-(`PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers` is already set in the
-environment — that's where the binary actually lives.) If a future
-session finds the Node route failing, try this one before concluding
-no browser is available at all.
+Environment note (Claude sandbox): Chromium is pre-installed at
+/opt/pw-browsers (`PLAYWRIGHT_BROWSERS_PATH` is already set), so no browser
+download is needed. Both the Python and Node Playwright bindings launch it
+(checked in LOG.md B-005). An earlier note here said the Node route fails; what
+failed was `npx playwright install chromium`'s download step, which is not
+needed. If `playwright` is missing, `pip install playwright --break-system-packages`
+and `python3 -m playwright install chromium` (finds the pre-installed browser).
 
 Usage:
     python3 visual-check.py
@@ -38,7 +32,6 @@ pages = [
     ("index.html", "home"),
     ("builds.html", "builds"),
     ("build.html?id=may26-01", "build-detail"),
-    ("services.html", "services"),
     ("about.html", "about"),
     ("contact.html", "contact"),
     ("custom-build.html", "custom-build"),

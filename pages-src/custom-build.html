@@ -30,7 +30,9 @@
   <!-- How it works — 6-step process -->
   <section class="section">
     <div class="container">
-      <div class="two-col center">
+      <!-- Plain .two-col (not .center): the left column top-aligns with the first
+           step rule. See VISUAL_REDESIGN.md, "Process section left column". -->
+      <div class="two-col">
 
         <div>
           <div class="section-header align-left">
@@ -149,21 +151,29 @@
   <!-- Not sure what you need -->
   <section class="section">
     <div class="container">
-      <div style="max-width:760px; margin:0 auto;">
-        <div class="section-header align-left">
-          <span class="section-label">No Tech Knowledge Required</span>
-          <h2>Not Sure What Hardware You Need?</h2>
-          <p>That's fine — most people aren't. You don't need to know what GPU you want or what CPU tier makes sense. That's the part I figure out.</p>
-          <div class="accent-line"></div>
+      <!-- Two columns on the page grid, same pattern as the process section above.
+           See VISUAL_REDESIGN.md, "Not Sure section layout". -->
+      <div class="two-col">
+
+        <div>
+          <div class="section-header align-left" style="margin-bottom:0;">
+            <span class="section-label">No Tech Knowledge Required</span>
+            <h2 class="text-balance">Not Sure What Hardware You Need?</h2>
+            <p>That's fine — most people aren't. You don't need to know what GPU you want or what CPU tier makes sense. That's the part I figure out.</p>
+            <div class="accent-line"></div>
+          </div>
         </div>
 
-        <p style="font-size:1.05rem; margin-bottom:1.25rem;">What actually helps: knowing your budget, knowing what games you play, and knowing whether there's anything specific you care about — like being able to add a monitor later, or wanting the system to be quiet, or wanting Linux.</p>
-        <p style="font-size:1.05rem; margin-bottom:2rem;">If you don't know the answers to any of those either, just say so. We can work backwards from "I want to play X and I have around $Y to spend" and I'll figure out a reasonable parts list from there.</p>
+        <div>
+          <p style="font-size:1.05rem; margin-top:0; margin-bottom:1.25rem;">What actually helps: knowing your budget, knowing what games you play, and knowing whether there's anything specific you care about — like being able to add a monitor later, or wanting the system to be quiet, or wanting Linux.</p>
+          <p style="font-size:1.05rem; margin-bottom:2rem;">If you don't know the answers to any of those either, just say so. We can work backwards from "I want to play X and I have around $Y to spend" and I'll figure out a reasonable parts list from there.</p>
 
-        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-          <a href="contact.html" class="btn btn-primary btn-lg">Reach Out &rarr;</a>
-          <a href="faq.html"     class="btn btn-secondary btn-lg">Read the FAQ</a>
+          <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+            <a href="contact.html" class="btn btn-primary btn-lg">Reach Out &rarr;</a>
+            <a href="faq.html"     class="btn btn-secondary btn-lg">Read the FAQ</a>
+          </div>
         </div>
+
       </div>
     </div>
   </section>

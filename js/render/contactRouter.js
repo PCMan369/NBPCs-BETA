@@ -2,11 +2,10 @@
   ================================================================
   js/render/contactRouter.js — Contact Page Situation Router
   ================================================================
-  contact.html presents 6 "what do you need help with" options.
-  Two of them (PC Service/Repair, Part Box) are plain links to their
-  own existing dedicated pages/forms (services.html, part-boxes.html)
-  — there's nothing to route for those, they're just normal <a>
-  navigation and need no JS at all.
+  contact.html presents 5 "what do you need help with" options.
+  One of them (Part Box) is a plain link to its own existing dedicated
+  page/form (part-boxes.html) — there's nothing to route for that, it's
+  just normal <a> navigation and needs no JS at all.
 
   The other four map to 3 real <form> panels on this page: Buying a
   Gaming PC, Custom PC, and one shared panel for General Question /
@@ -34,7 +33,7 @@ function initContactRouter() {
   // works without this via its own _next redirect; this just swaps
   // in a nicer confirmation when JS is available). Same dynamic-
   // injection-into-a-role=status-region pattern used everywhere else
-  // on the site (notifyBox.js, services.html, build-detail form),
+  // on the site (notifyBox.js, build-detail form),
   // rather than a plain display toggle, since that's the pattern
   // already confirmed to announce correctly to screen readers.
   if (window.location.search.indexOf('sent=true') !== -1) {

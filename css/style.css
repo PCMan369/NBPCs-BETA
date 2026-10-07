@@ -141,6 +141,15 @@ strong {
   margin: 0.85rem 0 0;
 }
 
+/* Balanced line breaks for a heading that wraps in a half-width column.
+   Added for custom-build's "Not Sure What Hardware You Need?" (Visual
+   Redesign, custom-build "Not Sure section layout"): without it the
+   heading broke as "...Hardware You / Need?" with a one-word second
+   line. Opt-in per heading; not applied to other headings. */
+.text-balance {
+  text-wrap: balance;
+}
+
 .section-label {
   display: inline-block;
   font-size: 0.72rem;
@@ -633,7 +642,8 @@ strong {
    9. (Removed — cleanup pass)
    Was .card, a generic feature-card style. Every actual usage
    sitewide had already moved to a page-specific compound class
-   (service-hub-card, tier-card, form-card, etc.) that doesn't
+   (situation-option [then service-hub-card], tier-card, form-card,
+   etc.) that doesn't
    extend .card, so it had no remaining references. See
    DECISIONS.md D43.
    ============================================================ */
@@ -1111,32 +1121,47 @@ strong {
   color: var(--muted);
   margin-bottom: 1.25rem;
   line-height: 1.65;
-  flex: 1;
+  /* flex: 1 moved to .tier-features (see its comment). */
 }
 
+/* Visual redesign, custom-build page decision (tier-card feature
+   lists — Option B, approved): flush-left ruled rows, no check marks.
+   Three fixes in one:
+   1. The list had `list-style: none` but kept the browser's default
+      40px padding-left, so it sat 40px right of the badge/price/
+      description edge. `padding: 0` fixes that.
+   2. The ✓ marks are dropped. They read as "included in this tier",
+      which doesn't fit: there are no ✗ rows and the cards share items
+      (e.g. "Linux available on request"). Hairline rows carry the
+      structure instead — same device as .cb-list/.cb-row above it on
+      this page and the Evidence section on the home page, and the same
+      var(--border) as the card edge.
+   3. flex: 1 moved here from .tier-desc. With ruled rows, any
+      difference in wrapped lines between cards shifted each list's top
+      rule to a different height (measured: 2033/2014/2012px). Now the
+      list starts right after the description and any slack falls below
+      it, above the button, so the three top rules line up (all 2012px
+      at 1440px) and the buttons stay bottom-aligned. */
 .tier-features {
   list-style: none;
+  padding: 0;
   margin-bottom: 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  flex: 1;
+  border-top: 1px solid var(--border);
 }
 
 .tier-features li {
   font-size: 0.88rem;
   color: var(--muted);
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
   line-height: 1.5;
 }
 
-.tier-features li::before {
-  content: '✓';
-  color: var(--accent-text);
-  font-weight: 700;
-  flex-shrink: 0;
-  font-size: 0.85rem;
+.tier-features li:last-child {
+  border-bottom: none;
 }
 
 
@@ -1451,6 +1476,36 @@ strong {
 .form-privacy strong {
   color: var(--muted);
   font-size: 0.78rem;
+}
+
+/* Contact page form panels (Visual Redesign, contact "Form panel width
+   and placement", Option A). The panel stays full container width; three
+   internal fixes:
+   1. The panel's intro paragraph is capped at 52ch (the site's lead
+      measure). Uncapped it ran ~142 characters per line.
+   2. The submit buttons lost their inline `width:100%` (markup change in
+      pages-src/contact.html): a 1058px-wide button on a full-width panel.
+   3. The privacy note's paragraph kept its default 12.8px top/bottom
+      margins inside the box padding, so a one-line note was an 81px box
+      (now 56px). Scoped to these panels on purpose: the same
+      `.form-privacy` markup is used by the build-detail form and the
+      notify box, which were signed off earlier and are left as they are. */
+.situation-form-panel > p {
+  max-width: 52ch;
+}
+
+.situation-form-panel .form-privacy p {
+  margin: 0;
+}
+
+/* The buttons were full width at every size before (inline style). At
+   640px and below that is the right call on a phone, so it is kept
+   there; only wider layouts get the natural-width button. */
+@media (max-width: 640px) {
+  .situation-form-panel button[type="submit"] {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* Honeypot — hidden from humans, catches bots */

@@ -10,7 +10,7 @@
 
   Reliability: the actual submission is a real <form action="..."> POST
   (baked in at build time by stitch.py from config.js, same pattern as
-  contact.html/services.html/the build-detail inquiry form), not a
+  contact.html/the build-detail inquiry form), not a
   fetch()/AJAX call — it doesn't depend on that specific request
   succeeding at submit time the way the old fetch()-based version did.
   updateSummary() below keeps two hidden fields (items_requested,
