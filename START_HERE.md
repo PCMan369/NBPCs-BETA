@@ -1,7 +1,7 @@
 # START_HERE.md — North Bridge PCs website
 
 Read this first, then the last few entries of LOG.md. Read other docs only
-when the doc map (bottom) says to. Last updated: A-010 (2026-10-07).
+when the doc map (bottom) says to. Last updated: A-021 (2026-10-09).
 
 ## What this is
 Static HTML/CSS/vanilla-JS site on GitHub Pages. Real sources are in
@@ -61,14 +61,14 @@ sync also deletes local-only files that are not in the ZIP (for example
 `design-prototypes/` if it still exists), so exclude or relocate those.
 Commit with the entry ID in the message.
 
-## Current state (as of A-010)
+## Current state (as of A-021)
 - V1 build is complete (history through D43 in docs-archive/DECISIONS.md).
 - **Visual redesign in progress.** Live record: VISUAL_REDESIGN.md. Accent is
   "Cask" `#8b3f5e` sitewide. Build-detail and home pages are done;
   custom-build is done apart from deferred items (section headers, open
   items, tier-card feature lists, process-section column, "Not Sure"
-  section); contact is in progress (situation picker and form panel layout
-  done; shared form fields and thank-you state still to walk); about, gallery,
+  section); contact is done apart from hero copy (situation picker, form panel
+  layout, shared form fields and success states); about, gallery,
   faq, part-boxes are not yet walked.
 - **Services are gone (B-003).** The owner no longer offers services, so the
   Services page and everything tied to it were removed: services.html, its
@@ -116,17 +116,64 @@ Commit with the entry ID in the message.
 - A-010 (Lane A): contact form panels (`pages-src/contact.html`, `css/style.css`). The
   panels stay full container width; the intro paragraph is capped at 52ch, the submit
   buttons are natural width above 640px (full width at 640px and below, as before), and
-  the privacy note's stray paragraph margins are removed (81px box -> 56px), scoped to
-  `.situation-form-panel`. Owner chose Option A. The same privacy-box bug still exists
-  in the notify box on builds.html (measured 102px) and the build-detail form; left
-  alone, owner decision (see VISUAL_REDESIGN.md).
+  the privacy note's stray paragraph margins are removed (81px box -> 56px). Owner chose
+  Option A.
+- A-011 (Lane A): `css/style.css` only. The privacy-note margin fix now lives on the root
+  `.form-privacy p` rule (owner approved), so it also applies to the notify box on
+  builds.html and the build-detail inquiry form (both boxes 102px -> 77px at 1440px).
+  The scoped contact rule from A-010 was removed.
+- A-012 (Lane A): shared form fields (`css/style.css`, `css/theme.css`; applies to the contact
+  panels, build-detail form, notify box and part-boxes order form). Resting border is now the
+  new `--border-field` token (#6a665e, 3.13:1 against the card, was 1.29:1); focus is one solid
+  2px accent edge instead of border + glow (the glow override in theme.css was removed); select
+  arrow recolored from the old #64748b to `--dim`. Owner chose Option A. `.qty-input` on
+  part-boxes was not touched.
+- B-014 (Lane B): `ARCHITECTURE.md` only (docs). Theming text (directory-layout entries for tokens.css/theme.css,
+  "Theming", and the redesign section, now "Visual redesign history") rewritten to match the code as of A-013.
+  No site files changed.
+- B-015 (Lane B): docs and CSS comments only. ARCHITECTURE.md directory layout, docs references and
+  build-script paragraph brought up to date (page list, pages-src/, data files, docs-archive, gallery.css
+  scope); the two `/areas/website-visual-redesign.md` citations in `css/theme.css` comments now say
+  `VISUAL_REDESIGN.md`. No rules or visuals changed.
+- B-016 (Lane B): comments only. The dead `/areas/website-visual-redesign.md` citation is gone from
+  `css/style.css` and `css/build-detail.css` (now `VISUAL_REDESIGN.md`); `css/gallery.css` header now says it
+  is loaded by gallery.html and index.html; `js/data/config.js` comment now describes how the FormSubmit
+  address is wired (stitch.py fills `{{CONTACT_EMAIL}}`, so re-run it after changing the email).
+- B-017 (Lane B): part-box photos. All 11 boxes in `js/data/partBoxes.js` now have one photo
+  (`images/box-01.jpg` ... `box-11.jpg`, named by box id; converted from the owner's HEIC originals, resized
+  to 1350x1800, EXIF/location stripped, 230-400 KB each). Data and images only; no layout change. Photos are
+  portrait, the card frame is landscape 4:3 with `object-fit: cover`, so each is center-cropped (Lane A item in Next up, B-018).
+- B-018 (Lane B): part boxes. box-03 model corrected to "Ryzen 7 5800X3D" (owner: the photo label is right).
+  B550M split into two listings (owner): box-09 = with inserts (`images/box-09.jpg`, qty 1) and new box-12 =
+  no inserts (`images/box-12.jpg`, qty 1); the two photos are swapped accordingly. Owner confirmed the "_W" in
+  the photo file names means "with inserts". Owner decision recorded for Lane A: part-box photos stay portrait,
+  uncropped (see Next up).
+- B-019 (Lane B): box-06 (ID-Cooling SE-214) condition corrected to "Good condition — includes inserts." (owner
+  confirmed; it had said "No inserts"). box-12's wording approved by owner. `js/data/partBoxes.js` only.
+- B-020 (Lane B): new `COPY_REVIEW.md` (read-only audit; no copy changed): Part 1 lists text that is wrong or may
+  mislead (e.g. the part-boxes meta description names GPU and case boxes that aren't listed; intro text written for stock
+  sits above the empty states; the FAQ says every system can game but one sold system was a laptop), Part 2 lists
+  prominent text that is not doing its job. Input for the copy pass; the owner does the rewriting.
+- A-013 (Lane A): success states (`css/style.css`, `js/render/contactRouter.js`, `notifyBox.js`,
+  `buildDetail.js`). The contact "Message Sent", the builds.html notify confirmation and the
+  build-detail confirmation are now one shared `.success-state` card (check in a 56px outlined
+  circle in `--accent-text`, h2 heading); owner chose Option B. `.notify-success` is kept on
+  purpose: `js/render/partBoxOrder.js` (part-boxes order confirmation) still uses it; migrate it
+  when part-boxes is walked.
+- A-021 (Lane A): part-boxes portrait photo cards (`css/part-boxes.css` only) and the `--success` pin
+  (`css/theme.css`). The cards are now horizontal, two per row: a 144px-wide 3:4 photo column
+  (`object-fit: contain`, never cropped) on the left, details on the right, price + quantity pinned to the
+  card bottom (this also fixes pickers that did not line up across a row); two columns only when the grid is at
+  least 780px wide (viewports of about 840-900px and 1168px+), otherwise one column (including phones). The 12-box grid is about 1,340px tall at 1440px (was 1,620px). Owner chose Option B. Owner queue
+  item 5 is resolved: the owner confirmed there is no light mode and a light/dark emulation of all 9 pages
+  agrees; the only leak was `--success`, now pinned to #22c55e in theme.css. The dead light block in
+  `css/tokens.css` was left in place.
 
 ## Next up
-**Lane A:** finish contact (the shared form fields `.form-input`/`.form-label`/
-`.form-select`/focus ring, left open since build-detail, and the thank-you state),
-then walk about, gallery, faq, part-boxes. Owner decision pending: extend the
-privacy-note margin fix to the root `.form-privacy p` rule (changes the build-detail
-form and notify box, which were signed off). (custom-build is done
+**Lane A:** finish part-boxes (the portrait photo cards are done, A-021; still to walk: the `.qty-input` /
+`.qty-btn` picker, the sticky order summary panel, and the `.notify-success` order confirmation in
+`js/render/partBoxOrder.js`, to be migrated to `.success-state`), then walk about, gallery, faq (owner's
+choice of order). contact is done apart from hero copy, which waits for the copy pass. (custom-build is done
 apart from two deferred items: tier-card rule alignment at tablet widths goes in
 the tablet pass, and the final CTA box's kicker label waits for the copy pass.)
 Open design findings (see VISUAL_REDESIGN.md): confirm whether the 9 remaining
@@ -135,13 +182,17 @@ Open design findings (see VISUAL_REDESIGN.md): confirm whether the 9 remaining
 submenu needs a wrapper div first; the page-load progress bar is not yet examined); `--accent-h` still equals
 `--accent` (harmless, noted).
 **Lane B:** (1) Phase 8 maintenance/deployment guide (never written); (2) domain-swap
-checklist (`SITE.url`, Search Console); (3) refresh stale ARCHITECTURE.md theming text.
+checklist (`SITE.url`, Search Console). (The ARCHITECTURE.md theming refresh was done in B-014.)
 
 ## Owner queue (waiting on you)
 1. Hero image is still missing (you provide).
 2. Real domain, plus phone/Facebook values when ready.
 3. Testimonials stay off until real ones exist. The EliteBook performance-section
    question may now be moot since it is sold.
+4. Facts needed before the copy pass (see COPY_REVIEW.md, Part 1 B and C): payment methods; returns / "sold as-is";
+   whether parts are new or used; where pickup happens for Medford/Ashland buyers; whether the budget-tier prices
+   match current parts prices; privacy-line wording; whether every process claim on the home page is true for every
+   system.
 
 ## Do not touch
 - Site copy wording: the owner will rewrite copy sitewide after the redesign
@@ -151,6 +202,7 @@ checklist (`SITE.url`, Search Console); (3) refresh stale ARCHITECTURE.md themin
 ## Doc map
 - **LOG.md**: completed chunks, newest last.
 - **VISUAL_REDESIGN.md**: live design decisions and reasoning (Lane A).
+- **COPY_REVIEW.md**: audit of site text (what is wrong or misleading, what is not doing its job) for the copy pass (B-020).
 - **ARCHITECTURE.md**: stack and structure. Its theming text predates the redesign.
 - **docs-archive/**: frozen as of B-001. DECISIONS.md (D1-D43, large), PROJECT_STATUS.md,
   TODO.md, CHANGELOG.md. Code comments cite "DECISIONS.md D##"; those are in

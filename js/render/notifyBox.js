@@ -91,9 +91,9 @@ function wireNotifyBox() {
     var box = document.getElementById('notify-box');
     if (box) {
       box.outerHTML =
-        '<div class="notify-success">' +
-          '<span class="success-icon" style="color:var(--accent);">&#10003;</span>' +
-          '<h2>You\'re on the list</h2>' +
+        '<div class="success-state">' +
+          '<span class="success-mark" aria-hidden="true">&#10003;</span>' +
+          '<h2 class="success-title">You\'re on the list</h2>' +
           '<p>I\'ll reach out when something comes in that might be a good fit. ' +
           'In the meantime, feel free to <a href="contact.html">send a message</a> ' +
           'if you have questions.</p>' +

@@ -39,12 +39,14 @@ function initContactRouter() {
   if (window.location.search.indexOf('sent=true') !== -1) {
     flow.style.display = 'none';
     liveRegion.innerHTML =
-      '<div style="text-align:center; padding:3rem 1rem;">' +
-        '<div style="font-size:3rem; margin-bottom:1.25rem; color:var(--accent);">&#10003;</div>' +
-        '<h3 style="margin-bottom:0.75rem; font-size:1.3rem;">Message Sent</h3>' +
-        '<p style="font-size:1rem; max-width:420px; margin:0 auto 2rem;">Thanks for reaching out. I\'ll get back to you by email within a day or two.</p>' +
-        '<a href="index.html" class="btn btn-secondary">Back to Home</a>' +
-      '</div>';
+      '<section class="section"><div class="container">' +
+        '<div class="success-state">' +
+          '<span class="success-mark" aria-hidden="true">&#10003;</span>' +
+          '<h2 class="success-title">Message Sent</h2>' +
+          '<p>Thanks for reaching out. I\'ll get back to you by email within a day or two.</p>' +
+          '<a href="index.html" class="btn btn-secondary">Back to Home</a>' +
+        '</div>' +
+      '</div></section>';
     return;
   }
 

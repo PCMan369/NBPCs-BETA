@@ -80,14 +80,14 @@ page should be redesigned wholesale to match one of them.
   items (tier-card rule alignment at tablet widths; the final CTA box's
   kicker label waits for the copy pass) and the two sitewide scan
   findings (`gpt-thin-border-wide-shadow`, `layout-transition`).
-  **Current component: the contact page** (`contact.html`) — the
-  situation picker and the form panel width/placement are done (see
-  below); still to walk there: the shared form fields (`.form-input`,
-  `.form-label`, `.form-select`, focus ring) and the thank-you state.
-  Still unwalked: about.html, gallery.html, faq.html,
-  and part-boxes.html (though several of their shared components were
-  already touched indirectly via the home page's decisions 4-8
-  reviews).
+  **contact page is complete** (see below): situation picker, form
+  panel width/placement, shared form fields and the success states are
+  done; only the hero copy waits for the copy pass. **part-boxes.html is in
+  progress** (the portrait photo cards are done, see below; still to walk
+  there: the quantity picker, the order summary panel and the order
+  confirmation). Still unwalked: about.html, gallery.html and faq.html
+  (though several of their shared components were already touched
+  indirectly via the home page's decisions 4-8 reviews).
 - **Build system, found while starting the hero decision — read this
   before editing any page's HTML content:** this site has a source/
   output split. `pages-src/<page>.html` is the real source (with
@@ -1151,20 +1151,18 @@ picker-to-form continuity.
   `width:100%; justify-content:center;`. Copy unchanged.
 - `css/style.css` (next to the `.form-privacy` rules, with a comment):
   `.situation-form-panel > p { max-width: 52ch; }` (468px; the site's
-  lead measure); `.situation-form-panel .form-privacy p { margin: 0; }`
-  (box 56px at 1440, was 81px); and, at 640px and below, the submit
+  lead measure); the privacy note's margin reset
+  (box 56px at 1440, was 81px; first scoped to the panels, moved to the
+  root `.form-privacy p` rule in A-011, see below); and, at 640px and
+  below, the submit
   button is `width:100%; justify-content:center` again so phones keep the
   full-width button they had before (without it the button would have
   been 187px, left-aligned, in a 292px column at 390px).
 
-**Scoped on purpose, flagged for the owner:** the same `.form-privacy`
-markup is rendered by `js/render/buildDetail.js` and
-`js/render/notifyBox.js`, and gets the same default margins. Measured on
-`builds.html` (the notify box): the privacy box is 102px tall with
-12.8px/12.8px paragraph margins. Those pages were signed off earlier, so
-nothing was changed there. Moving the fix to the root rule
-(`.form-privacy p { margin: 0 }`) would correct all three; the owner
-decides.
+**Scoped on purpose at the time, then extended (A-011):** the same
+`.form-privacy` markup is rendered by `js/render/buildDetail.js` and
+`js/render/notifyBox.js` with the same default margins. The owner then
+approved applying the fix at the root; see the next subsection.
 
 **Noticed, not touched:** with JavaScript off, the three panels stack
 with no gap between them (no spacing rule on `.situation-form-panel`).
@@ -1179,9 +1177,269 @@ wide, button 187px (641px and up) or full width (640px and below),
 privacy box 56px at 1440/1024 (77px at 768 and 98px at 390 because the
 note wraps).
 
+### Privacy-note margin fix extended to the root rule — APPROVED, IMPLEMENTED
+The owner approved moving the contact panels' privacy-note fix to the
+shared rule, so every place the note renders gets it: the contact form
+panels, the notify box on `builds.html` (`js/render/notifyBox.js`) and
+the build-detail inquiry form (`js/render/buildDetail.js`). This
+touches two pages signed off earlier (builds, build-detail); the change
+is only the paragraph's default 12.8px top/bottom margins, which stacked
+inside the box padding.
+
+**Implemented (css/style.css only):** `margin: 0` added to
+`.form-privacy p` (with a comment); the scoped
+`.situation-form-panel .form-privacy p` rule from A-010 removed as
+redundant; the contact block's comment points to the root rule. No
+markup or JS change.
+
+**Measured before -> after (1440px / 390px):**
+- Notify box on `builds.html`: 102px -> 77px / 123px -> 98px.
+- Build-detail form: 102px -> 77px / 123px -> 98px (measured in scratch
+  copies with `aug26-02` set to available, since every real listing is
+  sold and the form only renders for an available one; the real data is
+  unchanged).
+- Contact panels: 56px / 98px, unchanged from A-010.
+Each box is 25.6px shorter (two 12.8px margins); no layout shift beyond
+that.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow; the measurements above ran with 0 script errors and
+no horizontal overflow on builds, the detail page and contact at both
+widths.
+
+### Form fields — resting boundary and focus — APPROVED (Option A), IMPLEMENTED
+The shared field styles (`.form-input`, `.form-select`, `.form-textarea`)
+had been left open since the build-detail page. They are used by the
+contact panels, the build-detail inquiry form, the notify box on
+`builds.html` and the part-boxes order form, so this decision applies to
+all four. Measured/computed from the site's real token colors (WCAG
+relative luminance):
+- Resting border (`--border` #2c2c30) vs. the card: 1.29:1; the fill
+  (`--bg`) vs. the card: 1.09:1. WCAG 1.4.11 asks 3:1 to identify a form
+  control, so a strict audit would likely flag these (the owner has cared
+  about AA elsewhere; this is not a compliance audit).
+- Focus was an accent border plus a 3px 15%-opacity glow. Contrast was
+  fine (accent border 5.05:1 against the card, 3.92:1 against the resting
+  border) but inconsistent with the sitewide 2px offset outline.
+- The select arrow was hardcoded `#64748b`, the old blue-gray from the
+  previous theme.
+- The old glow was a thin border plus a wide soft shadow, the pattern the
+  `gpt-thin-border-wide-shadow` finding describes; whether it was among
+  the 9 remaining hits is unknown (the detector was not run here).
+
+Options shown as a published artifact (real Custom PC panel plus a strip
+of three fields forced into their focused look):
+- **A — visible border, solid focus edge.** Resting border `#6a665e`
+  (3.13:1 against the card), dark inset fill kept; focus is one solid 2px
+  accent edge (border + outline, no offset), no glow. An offset ring was
+  tried first and read as a busy double ring on a field.
+- **B — underline fields.** A 3.13:1 line under each field, 2px accent
+  line on focus; the textarea keeps a full box. Matches the ruled
+  language but the boxed textarea sits oddly among the lines.
+- **C — keep the quiet look.** Resting border unchanged (1.29:1); only
+  focus and the arrow change.
+
+**Approved: A.** Reasoning: fixes the contrast and the focus
+inconsistency with the smallest visual change; bordered boxes still read
+clearly as fields. B was the stylistic alternative, C the
+quiet-on-purpose choice.
+
+**Implemented:**
+- `css/theme.css`: new token `--border-field: #6a665e` (with a comment);
+  the `:focus` `box-shadow` glow override REMOVED (it loads after
+  style.css and would otherwise have kept the glow), with a comment in
+  its place.
+- `css/style.css`: the three field classes use `border: 1px solid
+  var(--border-field)`; the `:focus` rule is now `border-color:
+  var(--accent-text); box-shadow: none; outline: 1px solid
+  var(--accent-text); outline-offset: 0` (a solid 2px edge); select
+  arrow fill `%238f8a7d` (`--dim`). Both with comments.
+- No markup or JS change; generated HTML unchanged.
+
+**Not touched:** `.qty-input` and the `.qty-btn` picker on part-boxes
+(own styling in `css/part-boxes.css`; part-boxes is not walked yet).
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow. Real browser, before -> after: resting border
+rgb(44,44,48) -> rgb(106,102,94) (1.29:1 -> 3.13:1 against the card);
+after the focus transition finishes (400ms wait), every input, select and
+textarea on contact, the notify box and the build-detail form (scratch
+copy with `aug26-02` set to available) shows border rgb(174,121,142),
+`outline: solid 1px` at offset 0, `box-shadow: none`; select arrow fill
+#64748b -> #8f8a7d; field heights unchanged (45px); 0 script errors. The
+part-boxes order form (revealed by adding one box) shows the same focused
+style. Not measured: the 390px widths for the field change specifically
+(visual-check found no overflow at mobile).
+
+### Success states — APPROVED (Option B), IMPLEMENTED
+Four places confirm a sent form; three were shown to the owner and are
+now one shared component, with a fourth found during implementation:
+contact.html (`?sent=true`, JS in `contactRouter.js`), the notify box on
+`builds.html` (`?notified=true`, `notifyBox.js`), the build-detail
+inquiry form (`?sent=true`, `buildDetail.js`), and the part-boxes order
+confirmation (`?ordered=true`, `partBoxOrder.js`, see below).
+
+**Found (before):** three different treatments. Contact and build-detail
+used an inline-styled `h3` straight under the page's `h1` (a skipped
+heading level) with a 3rem/2.5rem checkmark in `--accent` (2.53:1
+against the card; the redesign introduced `--accent-text` for exactly
+this); the notify box was a card with a hardcoded old-palette green
+border (`rgba(34,197,94,0.25)`) and the same `--accent` mark.
+
+Options shown as a published artifact (the real CSS and the exact
+strings from the scripts, in all three contexts; copy unchanged):
+- **A — centered, unboxed.** Reads as floating text; notify loses its card.
+- **B — centered badge in a card.** Check in a 56px outlined circle, the
+  message in a neutral card; inside the build-detail card it drops its
+  own box. Echoes the CTA box used on five pages.
+- **C — left-aligned on the page grid.** Small outlined check beside the
+  heading, no box. Shrinks the notify confirmation from a 358px card to
+  about 210px of leftover-looking text.
+
+**Approved: B.** Reasoning: the clearest "it worked" moment, with
+closure, and consistent with the CTA box pattern. Cost: one more boxed
+element (contact's confirmation had no box).
+
+**Implemented:**
+- `css/style.css`: new `.success-state`, `.success-mark`, `.success-title`
+  (with a comment), placed after the `.notify-success` block. Card:
+  `--card` fill, 1px `--border`, `--radius-lg`, 3rem/2rem padding; mark:
+  56px circle, 1px `--accent-text` border, check in `--accent-text`
+  (5.05:1 against the card); title `h2`, 1.4rem; paragraph capped at 52ch;
+  button 1.75rem below the text; `.listing-form-card .success-state` drops
+  its box (no card in a card); `grid-column: 1 / -1` so it spans the grid
+  the notify box sits in.
+- `js/render/contactRouter.js`: the thank-you block is the shared markup,
+  wrapped in `<section class="section"><div class="container">` because
+  `#contact-live-region` sits directly in `<main>`, outside any
+  container (a bare card would have stretched edge to edge).
+- `js/render/notifyBox.js` and `js/render/buildDetail.js`: shared markup.
+  The mark has `aria-hidden="true"`; the text carries the meaning.
+  Copy, links, buttons and the live-region mechanism are unchanged.
+
+**Caught during verification (not visible in the options):** on
+`builds.html` the notify box's parent is a grid, so without
+`grid-column: 1 / -1` the new card was only 361px wide (one of three
+columns); the old `.notify-success` had that rule for this reason. The
+options page placed the component in a plain container and could not show
+it.
+
+**Not touched, flagged for the owner:** `js/render/partBoxOrder.js`
+(the part-boxes order confirmation, inside the sticky `.order-summary`
+panel) still uses `.notify-success` with its old green border and an
+`h3`, so that CSS block stays on purpose. part-boxes has not been walked
+yet; migrate it to `.success-state` then (it is a card inside a panel, so
+it would need the same "drop its own box" rule as the build-detail form).
+Verified unchanged: its card still computes the same border, padding and
+height (284px) before and after.
+
+**Also noticed, copy only:** the hero on `contact.html?sent=true` still
+says "Choose what fits below..." above the confirmation. Left for the
+copy pass.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow; `node --check` on the three JS files; each state
+rendered for real by its URL parameter at 1440/768/390 with 0 script
+errors and no horizontal overflow; at 1440 the contact card is 1132px
+wide (x=154..1286), the builds card 1132px (720px at 768), the
+build-detail state sits inside its form card with no box of its own;
+heading structure on contact is now h1 then h2; all three live in their
+`role=status` regions. The build-detail state was checked in a scratch
+copy with `aug26-02` set to available (every real listing is sold); real
+data unchanged.
+
+## Part-boxes page (`part-boxes.html`)
+
+### Portrait photo cards — APPROVED (Option B), IMPLEMENTED
+The owner's requirement (via Lane B, B-017): the part-box photos
+(1350x1800, portrait 3:4) stay portrait and are never cropped; the card
+design was left to Lane A. Measured at 1440px with real fonts and the
+real photos:
+- The card's `.box-image` was a 4:3 frame (249x186px at three columns)
+  with `object-fit: cover`, which shows only about 56% of each photo's
+  area. The TUF motherboard boxes and the 5800X3D box lost the most.
+- Pre-existing, separate from the photos: the price + quantity rows did
+  not line up across a row of cards (the middle card's picker sat 23px
+  higher), because the footer followed the text instead of the card's
+  bottom.
+- Uncropped 3:4 photos need frames about 332px tall at the old card width,
+  so the question was how to arrange the card.
+
+Options shown as a published artifact (the real card markup/CSS/copy, the
+real photos downscaled to 600px, beside the real "Your Request" panel so
+the grid has its real 792px width; six of the twelve boxes). The 12-box
+grid heights below are computed from the measured card heights:
+- **A — portrait frame in the same 3-column cards.** 249px photos; cards
+  538px tall; 12-box grid about 2,210px (was 1,620px).
+- **B — horizontal cards, two per row.** Photo left, details right; cards
+  about 206px tall; 12-box grid about 1,340px.
+- **C — keep the 4:3 frame, show the whole photo inside it** (one-line
+  change). Photo only 140px wide on a dark field; grid about 1,630px.
+- Tried and dropped: four compact portrait columns (footer wraps, so the
+  quantity pickers do not align across a row).
+
+**Approved: B.** Reasoning: the only option that shows whole photos while
+making the page shorter; at about 150px you can still read "TUF GAMING"
+and see whether foam inserts are included. Cost: smaller photos than A. A
+click-to-enlarge lightbox (gallery already has one) is a possible later
+addition; not done.
+
+**Implemented (css/part-boxes.css only; no markup or JS change):**
+- `.box-grid`: `repeat(auto-fill, minmax(380px, 1fr))` (two columns in the
+  792px grid beside the order summary; one column below that), with a
+  comment deriving the minimum.
+- `.box-card`: `display: grid; grid-template-columns: 144px 1fr`.
+- `.box-image`: `aspect-ratio: 3 / 4; align-self: start`; `.box-image img`:
+  `object-fit: contain` (a non-3:4 photo letterboxes instead of cropping).
+- `.box-body`: flex column; `.box-category`: `align-self: flex-start`;
+  `.box-footer`: `margin-top: auto` (pins price + quantity to the bottom,
+  which also fixes the misaligned pickers).
+- Responsive: at 480px and below one column with a 110px photo column; at
+  380px and below a 96px photo column.
+- The photo column is 144px, not the 150px shown in the options: the
+  price + quantity row needs 198px (measured), so at the 386px card width
+  150px left only about 4px of slack and a two-digit stock count would have
+  wrapped the row; 144px gives about 10px.
+
+**Caught during verification:** the first implementation used a 372px grid
+minimum, which was wrong (the row needs a card of about 382px). At 820px
+viewport the cards were 376px wide and the footer wrapped. Now 380px, and
+that width drops to one column instead.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow. Real page at 1440/1180/1000/900/840/820/768/641/480/390/
+360/320px: 0 script errors, no horizontal overflow, every photo shown whole
+(object-fit contain in a frame that matches its ratio), pickers aligned in
+every row; the 12-box grid is 1,338px at 1440 (was 1,620px); two columns at
+1440, 1180, 900 and 840, one column at 1000 and 820 and below. At 360px and
+320px the price + quantity row wraps to two lines (price above the picker)
+because there is no room for one line beside a photo; it stays tidy.
+Quantity buttons add boxes, the "Your Request" summary updates and the order
+form appears.
+
+### Light mode — none; `--success` pinned
+The owner checked the live site in a light-mode browser and believes there
+is no light mode. Confirmed by emulating `prefers-color-scheme` light and
+dark on all 9 pages: identical body background and text color. The only
+token that differed was `--success` (#22c55e dark, #16a34a light):
+`tokens.css` has a light-mode block, `theme.css` overrides every other
+token but never `--success`. It colors `.badge-available`, `.price-event`
+and `.event-badge`, which only render for an available listing (none are
+available right now), so the leak was not visible today.
+**Fixed (A-021):** `--success: #22c55e` pinned in `css/theme.css` with a
+comment; verified on a scratch copy with one listing available:
+`.badge-available` computes `rgb(34, 197, 94)` under both color schemes.
+Not done: the now-dead light block in `css/tokens.css` could be removed;
+left alone as a cleanup choice for the owner.
+
 ## Outstanding, not scoped to one page
 
 (none — see "Sitewide image-opacity fix, extended" below.)
+
+- **Part-box photo framing (owner request, recorded by Lane B in B-018; not designed or implemented).** The
+  11 part-box photos are portrait (1350x1800) but `.box-image` (`css/part-boxes.css`) is a 4:3 landscape frame
+  with `object-fit: cover`, so each is center-cropped. Owner: the photos should stay portrait and not be
+  cropped. How the card frame changes to do that is a design decision for Lane A.
 
 ## Sitewide image-opacity fix, extended
 

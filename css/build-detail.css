@@ -48,7 +48,7 @@
    column (specs/performance/form) gets more width than the photo, and
    a thin rule divides them instead of a bare gap — "spec sheet next to
    the object" rather than two equal boxes. Photo stays sticky, same as
-   before. See /areas/website-visual-redesign.md. */
+   before. See VISUAL_REDESIGN.md. */
 .listing-layout {
   display: grid;
   grid-template-columns: 0.8fr 1fr;
@@ -69,7 +69,7 @@
   /* Visual redesign, decision 2 (build-detail photo treatment — Option
      B, approved): real product photos are shot portrait (3:4), so a
      forced 1:1 crop was cutting real content off every listing. See
-     /areas/website-visual-redesign.md. */
+     VISUAL_REDESIGN.md. */
   aspect-ratio: 3 / 4;
   background: var(--placeholder-solid);
   border-radius: var(--radius-lg);
@@ -229,7 +229,7 @@
    read as equal weight to the specs/performance cards below it —
    it's the one number that actually drives the buying decision.
    Pickup location drops to a small caption underneath instead of
-   sitting beside it. See /areas/website-visual-redesign.md. */
+   sitting beside it. See VISUAL_REDESIGN.md. */
 .listing-price-row {
   display: flex;
   flex-direction: column;
@@ -241,7 +241,7 @@
    used sitewide for technical content (budget tables, evidence
    rows) — labels and the title stay in the body/heading fonts. Space
    Mono only ships 400/700, so 900 steps down to 700, the heaviest
-   available. See /areas/website-visual-redesign.md. */
+   available. See VISUAL_REDESIGN.md. */
 .listing-price {
   font-family: var(--font-mono);
   font-size: 3rem;

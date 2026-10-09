@@ -370,3 +370,326 @@ Next/open: owner decision pending - the notify box on builds.html (privacy box m
   would change those signed-off pages. Rest of the contact page not walked yet: shared form
   fields (.form-input, .form-label, .form-select, focus ring) and the thank-you state. With JS
   off the three panels stack with no gap (noticed, not touched).
+
+A-011 | complete | 2026-10-07
+Task: Apply the privacy-note margin fix at the root `.form-privacy p` rule (owner approved; it was the pending decision from A-010).
+Files (diff against the A-010 ZIP returned earlier in this chat):
+- M LOG.md
+- M START_HERE.md
+- M VISUAL_REDESIGN.md
+- M css/style.css
+Changed:
+- css/style.css: `margin: 0` added to `.form-privacy p` (with a comment). The scoped
+  `.situation-form-panel .form-privacy p` rule added in A-010 was removed as redundant, and
+  the contact block's comment now points at the root rule. No markup, JS or generated-HTML
+  change (stitch.py output is identical to A-010).
+- This also changes two pages signed off earlier: the notify box on builds.html
+  (js/render/notifyBox.js) and the build-detail inquiry form (js/render/buildDetail.js).
+- VISUAL_REDESIGN.md: new "Privacy-note margin fix extended to the root rule" subsection; the
+  A-010 text that said the fix was scoped and pending was updated. START_HERE.md: Current state
+  and Next up updated (pending decision removed).
+Decision: Owner approved applying the fix at the root, so all three places get it.
+Verified: stitch.py exit 0, generated files unchanged. smoke-test.js (jsdom installed here):
+  ALL CHECKS PASSED. visual-check.py on a scratch copy: no horizontal overflow on any page at
+  desktop/tablet/mobile. Playwright before -> after, 1440px / 390px: notify box on builds.html
+  102px -> 77px / 123px -> 98px; build-detail form 102px -> 77px / 123px -> 98px (measured in
+  scratch copies with aug26-02 set to available, because the form only renders for an available
+  listing and every real listing is sold; real data unchanged); contact panels 56px / 98px,
+  unchanged. 0 script errors and no horizontal overflow on builds, the detail page and contact
+  at both widths. Screenshots of the notify box and the detail form looked right. Screenshots and
+  scratch copies are not in the ZIP.
+Next/open: rest of the contact page (shared form fields .form-input, .form-label, .form-select,
+  focus ring; thank-you state) not walked yet; with JS off the three contact panels stack with
+  no gap (noticed, not touched); custom-build deferred items and the sitewide scan findings
+  unchanged.
+
+A-012 | complete | 2026-10-07
+Task: Shared form fields - resting boundary, focus state, select arrow (Lane A visual decision; owner approved Option A).
+Files (diff against the A-011 ZIP returned earlier in this chat):
+- M LOG.md
+- M START_HERE.md
+- M VISUAL_REDESIGN.md
+- M css/style.css
+- M css/theme.css
+Changed:
+- css/theme.css: new token `--border-field: #6a665e` (with a comment); the `:focus` box-shadow glow
+  override for .form-input/.form-select/.form-textarea was REMOVED (theme.css loads after style.css and
+  would have kept the glow), with a comment in its place.
+- css/style.css: the three field classes use `border: 1px solid var(--border-field)`; the `:focus` rule
+  is `border-color: var(--accent-text); box-shadow: none; outline: 1px solid var(--accent-text);
+  outline-offset: 0` (one solid 2px accent edge, no glow); select arrow fill `%238f8a7d` (--dim)
+  instead of the old blue-gray `%2364748b`. Comments added.
+- No markup or JS change; stitch.py output is identical to A-011. The change applies to every page that
+  renders these fields: contact panels, build-detail inquiry form, notify box on builds.html and the
+  part-boxes order form.
+- VISUAL_REDESIGN.md: new "Form fields" subsection; Scope notes updated. START_HERE.md: Current state
+  and Next up updated.
+Decision: Owner chose Option A (visible border, solid focus edge) over B (underline fields) and C (keep the
+  quiet look, unify focus). Options were shown as a published artifact. Deviation to flag: the offset
+  ring I first showed for focus read as a busy double ring, so A uses a solid 2px edge (border plus
+  outline, no offset) instead.
+Verified: stitch.py exit 0, generated files unchanged. smoke-test.js (jsdom installed here): ALL CHECKS
+  PASSED. visual-check.py on a scratch copy: no horizontal overflow on any page at desktop/tablet/mobile.
+  Real browser before -> after: resting border rgb(44,44,48) -> rgb(106,102,94), contrast against the card
+  1.29:1 -> 3.13:1 (computed from the token colors); after the focus transition (400ms), every input, select
+  and textarea on contact, the notify box and the build-detail form (measured in a scratch copy with
+  aug26-02 set to available, real data unchanged) has border rgb(174,121,142), outline solid 1px at offset
+  0, box-shadow none; select arrow #64748b -> #8f8a7d; field heights unchanged (45px); 0 script errors. The
+  part-boxes order form (revealed by adding a box) shows the same focused style. Screenshots and options
+  page were made on scratch copies and are not in the ZIP. Not run: submitting a form. Not measured: the
+  field change at 390px specifically.
+Next/open: contact's thank-you state is not walked yet; `.qty-input`/`.qty-btn` on part-boxes untouched
+  (part-boxes not walked); whether the old focus glow was one of the 9 remaining
+  `gpt-thin-border-wide-shadow` hits is unknown (detector not run); custom-build deferred items and the
+  other sitewide scan findings unchanged.
+
+A-013 | complete | 2026-10-08
+Task: Success states - one shared confirmation component for contact, the builds.html notify box and the build-detail form (Lane A visual decision; owner approved Option B).
+Files (diff against the A-012 ZIP returned earlier in this chat):
+- M LOG.md
+- M START_HERE.md
+- M VISUAL_REDESIGN.md
+- M css/style.css
+- M js/render/buildDetail.js
+- M js/render/contactRouter.js
+- M js/render/notifyBox.js
+Changed:
+- css/style.css: new `.success-state` / `.success-mark` / `.success-title` (centered neutral card, check
+  in a 56px circle outlined in --accent-text, h2 title, paragraph capped at 52ch, button below;
+  `.listing-form-card .success-state` drops its own box; `grid-column: 1 / -1` so it spans the grid the
+  notify box sits in). Added after the existing `.notify-success` block, which is kept on purpose (see
+  Next/open).
+- js/render/contactRouter.js, notifyBox.js, buildDetail.js: the inline-styled / `.notify-success`
+  confirmation blocks are replaced by the shared markup (mark has aria-hidden="true"; heading is an h2,
+  was an h3 under the h1 on contact and build-detail). On contact it is wrapped in
+  `<section class="section"><div class="container">` because #contact-live-region sits directly in <main>.
+  Copy, links, buttons, the ?sent=true / ?notified=true triggers and the live regions are unchanged.
+- VISUAL_REDESIGN.md: new "Success states" subsection; Scope notes updated (contact complete apart from
+  hero copy). START_HERE.md: Current state and Next up updated.
+Decision: Owner chose Option B (centered badge in a card) over A (centered, unboxed) and C (left-aligned on
+  the grid). Options were shown as a published artifact in three contexts. Deviations to flag: (1) the
+  artifact could not show that the notify box sits in a grid; the first implementation rendered a 361px
+  card on builds.html, fixed with `grid-column: 1 / -1`; (2) a fourth instance exists that the artifact did
+  not show, js/render/partBoxOrder.js (part-boxes order confirmation, inside the sticky .order-summary
+  panel), and it was left untouched because part-boxes is not walked yet.
+Verified: stitch.py exit 0, generated HTML unchanged. node --check passes on the three JS files.
+  smoke-test.js (jsdom installed here): ALL CHECKS PASSED. visual-check.py on a scratch copy: no horizontal
+  overflow on any page at desktop/tablet/mobile. Each state rendered for real by its URL parameter
+  (contact.html?sent=true, builds.html?notified=true, build.html?id=aug26-02&sent=true) at 1440/768/390: 0
+  script errors, no horizontal overflow; at 1440 contact card 1132px wide, builds card 1132px (720px at
+  768), build-detail state inside its form card with no box of its own; check mark 5.05:1 against the card
+  (old --accent mark 2.53:1); contact heading structure h1 then h2. The build-detail state was checked in a
+  scratch copy with aug26-02 set to available because every real listing is sold; real data unchanged.
+  part-boxes.html?ordered=true confirmation computes identically before and after (green border, 48px 32px
+  padding, 284px tall). Screenshots and the options page were made on scratch copies and are not in the ZIP.
+  Not run: actually submitting a form (it would POST to the form service), so the real redirect back with the
+  parameter was simulated by loading the URL directly.
+Next/open: migrate the part-boxes order confirmation (partBoxOrder.js, still `.notify-success` with the old
+  green border and an h3) to `.success-state` when part-boxes is walked; the hero on contact.html?sent=true
+  still says "Choose what fits below..." (copy, waits for the copy pass); custom-build deferred items and the
+  sitewide scan findings unchanged. Next page to walk: about, gallery, faq or part-boxes (owner picks).
+
+B-014 | complete | 2026-10-08
+Task: Refresh the stale theming text in ARCHITECTURE.md (Lane B checklist item; docs only, no site code touched).
+Files (diff against the A-013 ZIP):
+- M ARCHITECTURE.md
+- M LOG.md
+- M START_HERE.md
+Changed:
+- ARCHITECTURE.md: header note extended; directory-layout entries for css/tokens.css and css/theme.css rewritten
+  (theme.css is the live "Cask" theme, dark-only, loaded last on all 10 pages in pages-src/); "Theming" section
+  rewritten (tokens.css holds the old blue defaults + light block, theme.css redefines them; current token
+  roles: --accent, --accent-text, --border-field, fonts; rules of thumb); old "Visual redesign ("Forge")"
+  section replaced by "Visual redesign history" (Forge = superseded, history in docs-archive; current process
+  in VISUAL_REDESIGN.md). Each statement was checked against css/tokens.css, css/theme.css, the <link> order in
+  every pages-src/*.html, and VISUAL_REDESIGN.md decisions 9, 13, 14 and A-012.
+- START_HERE.md: Last updated / Current state header, B-014 line, Next up -> Lane B item removed, owner queue item 4.
+Found, not fixed:
+- theme.css does not redefine --success, so tokens.css's light-mode value (#16a34a) would apply for visitors
+  whose system is set to light. Visible effect: unknown (not rendered or measured). Visual question, left for Lane A.
+- Other stale parts of ARCHITECTURE.md (outside "theming", left alone and put in the owner queue): page list in
+  the directory layout omits about.html and part-boxes.html; js/data list omits faq.js, gallery.js,
+  partBoxes.js; docs line still lists files now in docs-archive/; "8 HTML files" in the rationale.
+- Comment in css/theme.css (decision 14 note) cites "/areas/website-visual-redesign.md", which is not a file in
+  this project. Not changed (code comment, not part of this chunk).
+Verified: stitch.py exit 0, generated files unchanged (diff of uploaded vs. working project shows only the docs
+  above). Not run: smoke-test.js and visual-check.py (no site code or CSS changed; no network here for jsdom).
+Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist. Lane A: walk about,
+  gallery, faq or part-boxes (owner picks).
+
+B-015 | complete | 2026-10-08
+Task: (1) fix the dead file-path citation in css/theme.css comments; (2) bring the non-theming stale parts of ARCHITECTURE.md up to date (owner request, following the B-014 findings).
+Files (diff against the B-014 ZIP):
+- M ARCHITECTURE.md
+- M LOG.md
+- M START_HERE.md
+- M css/theme.css
+Changed:
+- css/theme.css: comments only, 2 places (decision-14 notes): `/areas/website-visual-redesign.md` -> `VISUAL_REDESIGN.md`.
+  No CSS rules touched. The same dead citation also appears in css/style.css (2) and css/build-detail.css (4); not
+  changed (owner asked for theme.css only), listed in the owner queue.
+- ARCHITECTURE.md: directory layout now lists all 10 generated root pages plus pages-src/ (and says root HTML is
+  generated), adds js/data faq.js, gallery.js, partBoxes.js, the current docs files and docs-archive/, favicon.ico,
+  smoke-test.js, visual-check.py; gallery.css described as the lightbox only, loaded by gallery.html and index.html
+  (checked against the <link> tags; it was listed as gallery.html + build.html); doc references to DECISIONS.md and
+  PROJECT_STATUS.md now point into docs-archive/; stitch.py paragraph notes it also writes sitemap.xml/robots.txt
+  (404.html excluded), checked against build-tools/stitch.py. Header note updated. Also checked and found accurate, left
+  as is: marker names, the PC data-model field names, the media {images, videos} shape, the events fields, the blog
+  toggle in config.js, FormSubmit use.
+Corrects: B-014. B-014 listed "8 HTML files" in ARCHITECTURE.md's rationale as stale. It is not: that sentence
+  describes the OLD site before the rebuild, so it was left unchanged.
+Found, not fixed (owner queue item 4): comment in css/gallery.css says "Loaded only by gallery.html" (index.html also
+  loads it); comment in js/data/config.js mentions js/render/contactForm.js, which does not exist (contactRouter.js).
+Verified: stitch.py exit 0, generated files unchanged (diff shows only the files above). Not run: smoke-test.js and
+  visual-check.py (no executable code or CSS rules changed; no network here for jsdom).
+Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist. Lane A: walk about, gallery,
+  faq or part-boxes (owner picks).
+
+B-016 | complete | 2026-10-08
+Task: Fix the three leftovers from B-015 (owner approved 1-3): dead path citations, gallery.css header comment, config.js comment.
+Files (diff against the B-015 ZIP):
+- M LOG.md
+- M START_HERE.md
+- M css/build-detail.css
+- M css/gallery.css
+- M css/style.css
+- M js/data/config.js
+Changed (comments only, no rules or code):
+- css/style.css (2) and css/build-detail.css (4): `/areas/website-visual-redesign.md` -> `VISUAL_REDESIGN.md`. No
+  occurrences remain in css/ or js/.
+- css/gallery.css: header now says it is loaded by gallery.html and index.html (confirmed by the <link> tags).
+- js/data/config.js: the comment pointing at the nonexistent js/render/contactForm.js now says what actually happens:
+  stitch.py fills {{CONTACT_EMAIL}} into pages-src/contact.html and part-boxes.html (so re-run it after changing the
+  email), and js/render/buildDetail.js and notifyBox.js read CONTACT.email at runtime. Checked by grep.
+Verified: stitch.py exit 0, generated files unchanged; node --check passes on js/data/config.js. Not run:
+  smoke-test.js, visual-check.py (comments only; no network for jsdom).
+Next/open: owner has part-box pictures to add (not started). Lane B remaining: Phase 8 maintenance/deployment guide;
+  domain-swap checklist.
+
+B-017 | complete | 2026-10-08
+Task: Add the owner's part-box photos (11 boxes, one photo each, uploaded as HEIC in Archive.zip).
+Files (diff against the B-016 ZIP):
+- A images/box-01.jpg ... images/box-11.jpg (11 files)
+- M js/data/partBoxes.js
+- M LOG.md
+- M START_HERE.md
+Changed:
+- images/: HEIC converted to JPEG with ImageMagick (auto-oriented, EXIF/GPS stripped, longest side max 1800 -> 1350x1800,
+  quality 82), 230-400 KB each. Named by box id.
+- js/data/partBoxes.js: each of box-01..box-11 gets `media.images: ["images/box-NN.jpg"]`. Nothing else in the file changed.
+Mapping used (from file names, checked by looking at each photo): R_5_5500->box-01, R_5_3600->box-02, R_7_5800X3D->box-03,
+  MAG_A550BN->box-04, MAG_A650BE->box-05, SE-214-XT-V2->box-06, A520M-PLUS_W (open box, insert visible)->box-07,
+  A520M-PLUS (closed, taped)->box-08, B550M-VC-WIFI->box-09, B550-PLUS-AC-HES->box-10, RW_TOWER_SCREEN->box-11.
+Flags (owner queue item 4-5): box-03 data says 5700X3D, photo label says 5800X3D (not changed); box-07/08 assignment is
+  my reading; box-09 had a second photo (B550M-VC-WIFI_W) that was not added; portrait photos are center-cropped by the
+  landscape card frame (visual, Lane A).
+Verified: stitch.py exit 0, generated HTML unchanged; node --check passes on partBoxes.js. Real Chromium on a scratch copy
+  of part-boxes.html at 1440 and 390 wide: 11 cards, all 11 images loaded (naturalWidth 1350), 0 script errors, no
+  horizontal overflow; screenshots viewed (not in the ZIP). Not run: smoke-test.js (npm install jsdom still fails in this
+  sandbox: network unreachable), visual-check.py. Not tested: ordering/submitting the part-boxes order form.
+Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist.
+
+B-018 | complete | 2026-10-08
+Task: Part-box follow-ups from the owner's answers to B-017: fix box-03 model, split the B550M listing into with/without inserts, record the no-crop requirement for Lane A.
+Files (diff against the B-017 ZIP):
+- A images/box-12.jpg
+- M images/box-09.jpg
+- M js/data/partBoxes.js
+- M START_HERE.md
+- M VISUAL_REDESIGN.md
+- M LOG.md
+Changed:
+- js/data/partBoxes.js: box-03 model "Ryzen 7 5700X3D" -> "Ryzen 7 5800X3D" (owner: photo label is right; no other
+  mention of either model in the site data or pages). box-09 (MSI PRO B550M VC WIFI, includes inserts) quantity 2 -> 1.
+  New box-12 (same board, "Good condition. No inserts.", qty 1, $5, same category), placed right after box-09 so the two
+  display together. IDs are never reused, so the new box is box-12.
+- images/: box-09.jpg is now the B550M_W (with inserts) photo, re-converted from the HEIC with the same settings as
+  B-017; box-12.jpg is the plain (no inserts) photo that was box-09.jpg in B-017.
+- START_HERE.md: Current state, Next up (new first Lane A item: part-box photos shown portrait, uncropped), owner queue.
+- VISUAL_REDESIGN.md: one entry under "Outstanding" recording the owner request (not designed or implemented).
+Owner decisions: "_W" in the photo file names means "with inserts" (consistent with the B-017 mapping of box-07/08 and
+  box-01/02/04/05); photos stay portrait and uncropped (Lane A designs it).
+Flags (owner queue item 4): box-06's photo was a "_W" (with inserts) file but its data says "No inserts" (not changed);
+  box-12's condition wording is mine, following the other boxes' pattern.
+Verified: stitch.py exit 0, generated HTML unchanged; node --check passes on partBoxes.js. Real Chromium on a scratch copy
+  of part-boxes.html at 1440 and 390 wide: 12 cards, all 12 images loaded (1350 px), the two B550M cards adjacent,
+  0 script errors, no horizontal overflow. Not run: smoke-test.js (jsdom still cannot be installed here: network
+  unreachable), visual-check.py, submitting the order form.
+Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist.
+
+B-019 | complete | 2026-10-08
+Task: Fix box-06's insert status (owner: "with inserts is right").
+Files (diff against the B-018 ZIP):
+- M js/data/partBoxes.js
+- M START_HERE.md
+- M LOG.md
+Changed:
+- js/data/partBoxes.js: box-06 condition "Good condition. No inserts." -> "Good condition — includes inserts." (same wording
+  pattern as box-09). Nothing else touched. Owner approved box-12's wording ("Good condition. No inserts.") as is.
+- START_HERE.md: Current state, owner queue (the two part-box questions are resolved and removed).
+Scan for other small items (read-only, nothing changed): no TODO/FIXME/lorem in site files except the known
+  "TODO: replace with a dedicated business email" comment in js/data/config.js; no leftover services/repair mentions apart from
+  one disclaimer sentence in js/data/faq.js (copy, for the copy pass) and a history note in css/situation-picker.css; every file
+  in images/ is referenced; no empty alt attributes in pages-src. Remaining Lane B items are the two never-written docs.
+Verified: stitch.py exit 0, generated HTML unchanged; node --check passes on partBoxes.js. Not run: smoke-test.js (jsdom cannot
+  be installed in this sandbox: network unreachable), visual-check.py, any browser render (a one-line text change).
+Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist. Owner wants to start the copy rewording.
+
+B-020 | complete | 2026-10-08
+Task: Plan ahead for the copy rewrite (owner request): evaluate which site text is incorrect or may mislead, then which text has an important role (by style and placement) and is not doing it well. No copy changed.
+Files (diff against the B-019 ZIP):
+- A COPY_REVIEW.md
+- M START_HERE.md
+- M LOG.md
+Method: read the copy in every pages-src/*.html (incl. titles and meta descriptions), js/partials, js/data/{faq,builds,partBoxes,config,events,gallery}.js
+  and the user-visible strings in js/render/*.js; rendered builds.html, gallery.html and index.html in real Chromium on a scratch copy to see the
+  actual empty states (all builds are sold). Claims were checked against the data files where possible; the rest are marked unknown.
+Result: COPY_REVIEW.md. Part 1: 7 checked errors/contradictions (A), 7 wording that may mislead (B), 4 gaps (C). Part 2: 13 prominent
+  texts with a note on idea vs wording. Ends with a suggested order for the copy pass. Owner questions added to START_HERE.md owner queue item 4.
+Verified: no site file changed, so stitch.py and the generated HTML are untouched (not re-run: nothing to rebuild). Not run: smoke-test.js (jsdom
+  cannot be installed here), visual-check.py. Statements about how search engines see build.html titles, and about FormSubmit/analytics
+  behavior, are from reading the code and not tested.
+Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist. Owner: answer the item-4 facts when ready.
+
+A-021 | complete | 2026-10-09
+Task: Part-boxes portrait photo cards (owner-requested; Lane A visual decision; owner approved Option B) and the --success light-mode pin (owner queue item 5).
+Files (diff against the uploaded nbpcs_after-B-020.zip):
+- M LOG.md
+- M START_HERE.md
+- M VISUAL_REDESIGN.md
+- M css/part-boxes.css
+- M css/theme.css
+Changed:
+- css/part-boxes.css: cards are horizontal, two per row: `.box-grid` is `repeat(auto-fill, minmax(380px, 1fr))`,
+  `.box-card` a grid with a 144px photo column, `.box-image` is `aspect-ratio: 3 / 4` with
+  `.box-image img { object-fit: contain }` (photos never cropped), `.box-body` a flex column,
+  `.box-category` `align-self: flex-start`, `.box-footer` `margin-top: auto` (pins price + quantity to the card
+  bottom, which also fixes pickers that did not line up across a row). At 480px and below: one column, 110px
+  photo column; at 380px and below: 96px photo column. No markup or JS change; generated HTML unchanged.
+- css/theme.css: `--success: #22c55e` pinned with a comment. tokens.css gives --success a different value inside
+  a light-mode media query and theme.css never overrode it.
+- VISUAL_REDESIGN.md: new "Part-boxes page" section (portrait photo cards; light mode and --success); Scope notes
+  updated. START_HERE.md: Current state, Next up (Lane A) and Owner queue (item 5 removed) updated.
+Decision: Owner chose Option B (horizontal cards) over A (portrait frame in 3-column cards) and C (keep the 4:3
+  frame, whole photo inside it). Options were shown as a published artifact. Owner also reported that the live
+  site has no light mode. Deviations to flag: (1) the photo column is 144px, not the 150px shown in the options,
+  because the price + quantity row needs 198px and 150px left only ~4px of slack at the 386px card width;
+  (2) the first implementation used a 372px grid minimum, which was wrong; fixed to 380px after the width sweep
+  showed a wrapped footer at 820px.
+Verified: Reconciled Lane B's B-014..B-020 against a real diff of the B-020 ZIP vs my A-013 ZIP: the changed
+  files match the logged files exactly, and the CSS/config changes are comment-only (code identical after
+  stripping comments). stitch.py exit 0, generated HTML unchanged. smoke-test.js (jsdom installed here): ALL
+  CHECKS PASSED. visual-check.py on a scratch copy: no horizontal overflow on any page at desktop/tablet/mobile.
+  Real page at 1440/1180/1000/900/840/820/768/641/480/390/360/320px: 0 script errors, no horizontal overflow,
+  every photo shown whole, quantity pickers aligned in every row; 12-box grid 1,338px at 1440 (was 1,620px);
+  at 360px and 320px the price + quantity row wraps to two lines (price above picker). Quantity buttons add
+  boxes, the "Your Request" summary updates and the order form appears. Light mode: light/dark emulation on all
+  9 pages gives identical body background and text; only --success differed; after the pin
+  `.badge-available` computes rgb(34, 197, 94) under both schemes (checked on a scratch copy with aug26-02
+  available, since no real listing is available). Screenshots, the options page and scratch copies are not in
+  the ZIP.
+Next/open: part-boxes still has the `.qty-input` / `.qty-btn` picker, the sticky order summary panel and the
+  `.notify-success` order confirmation in js/render/partBoxOrder.js (migrate to `.success-state`) to walk; about,
+  gallery and faq are unwalked; the now-dead light-mode block in css/tokens.css was left alone (owner choice);
+  a click-to-enlarge lightbox for the part-box photos is a possible later addition, not done; contact hero copy,
+  custom-build deferred items and the sitewide scan findings unchanged.

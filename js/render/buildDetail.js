@@ -327,10 +327,10 @@ function initBuildDetailPage() {
     var form = contentEl.querySelector('.listing-form-card form');
     if (form) {
       form.innerHTML =
-        '<div style="text-align:center; padding:2rem 1rem;">' +
-          '<div style="font-size:2.5rem; margin-bottom:1rem; color:var(--accent);">&#10003;</div>' +
-          '<h3 style="margin-bottom:0.5rem; font-size:1.1rem;">Message Sent</h3>' +
-          '<p style="font-size:0.9rem; margin-bottom:1.5rem;">Thanks for reaching out. I\'ll get back to you by email within a day or two.</p>' +
+        '<div class="success-state">' +
+          '<span class="success-mark" aria-hidden="true">&#10003;</span>' +
+          '<h2 class="success-title">Message Sent</h2>' +
+          '<p>Thanks for reaching out. I\'ll get back to you by email within a day or two.</p>' +
           '<a href="builds.html" class="btn btn-secondary btn-sm">Browse More Systems</a>' +
         '</div>';
     }
