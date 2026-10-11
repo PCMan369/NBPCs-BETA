@@ -82,12 +82,16 @@ page should be redesigned wholesale to match one of them.
   findings (`gpt-thin-border-wide-shadow`, `layout-transition`).
   **contact page is complete** (see below): situation picker, form
   panel width/placement, shared form fields and the success states are
-  done; only the hero copy waits for the copy pass. **part-boxes.html is in
-  progress** (the portrait photo cards are done, see below; still to walk
-  there: the quantity picker, the order summary panel and the order
-  confirmation). Still unwalked: about.html, gallery.html and faq.html
-  (though several of their shared components were already touched
-  indirectly via the home page's decisions 4-8 reviews).
+  done; only the hero copy waits for the copy pass. **part-boxes.html is
+  complete** (portrait photo cards, quantity picker and order confirmation
+  done, see below; the order summary panel was already ruled rows with the
+  approved field styles and needed nothing; copy items are in
+  COPY_REVIEW.md). **about.html is complete** (the story section is
+  done, see below). **gallery.html is in progress** (the photo tile shape and
+  the sub-heading alignment are done, see below; still to decide there: the
+  empty "Current Builds" section). Still unwalked: faq.html (though several
+  of its shared components were already touched indirectly via the home
+  page's decisions 4-8 reviews).
 - **Build system, found while starting the hero decision — read this
   before editing any page's HTML content:** this site has a source/
   output split. `pages-src/<page>.html` is the real source (with
@@ -636,6 +640,11 @@ flat-shadow language and decision 15's hover precedent, confirmed with
 real hover-state screenshots. No video items in the current homepage
 subset to check the video-icon overlay against, but it uses the same
 tokens as everything else here. Nothing to implement.
+
+*(Update, A-027: the tile SHAPE of this shared grid changed in the gallery
+decision, from 1:1 squares to 3:4, so the homepage preview's tiles changed
+too; the hover/visual treatment judged here is untouched. See "Gallery
+page" below.)*
 
 ## Home page — decision 7
 
@@ -1324,14 +1333,13 @@ columns); the old `.notify-success` had that rule for this reason. The
 options page placed the component in a plain container and could not show
 it.
 
-**Not touched, flagged for the owner:** `js/render/partBoxOrder.js`
+**Not touched at the time, flagged for the owner:** `js/render/partBoxOrder.js`
 (the part-boxes order confirmation, inside the sticky `.order-summary`
-panel) still uses `.notify-success` with its old green border and an
-`h3`, so that CSS block stays on purpose. part-boxes has not been walked
-yet; migrate it to `.success-state` then (it is a card inside a panel, so
-it would need the same "drop its own box" rule as the build-detail form).
-Verified unchanged: its card still computes the same border, padding and
-height (284px) before and after.
+panel) still used `.notify-success` with its old green border and an
+`h3`, so that CSS block stayed on purpose. **Resolved in A-023** (see
+"Quantity picker and order confirmation" under the Part-boxes page): the
+confirmation now uses `.success-state` and the old `.notify-success` CSS
+is deleted.
 
 **Also noticed, copy only:** the hero on `contact.html?sent=true` still
 says "Choose what fits below..." above the confirmation. Left for the
@@ -1431,6 +1439,226 @@ comment; verified on a scratch copy with one listing available:
 `.badge-available` computes `rgb(34, 197, 94)` under both color schemes.
 Not done: the now-dead light block in `css/tokens.css` could be removed;
 left alone as a cleanup choice for the owner.
+
+**Follow-up (A-022, owner decision): no light mode at all; light and dark
+are identical.** The owner asked for the old, unused light-mode values to
+go. Removed: the whole `@media (prefers-color-scheme: light)` block in
+`css/tokens.css` (every token in it except `--success` was already
+overridden by `theme.css`, so `--success` was its only visible effect);
+`tokens.css`'s `color-scheme: dark light` is now `dark` (theme.css already
+forced `dark`); and the `--success` pin added in A-021, which is redundant
+now that the cause is gone. Header comments in both files and the
+"Dark only" paragraph of `ARCHITECTURE.md` updated. **Not removed:** the
+`--success` token itself, still defined once in `tokens.css` as `#22c55e`,
+because `.badge-available`, `.price-event` and `.event-badge` use it (they
+show for an available listing); removing it would leave those with no
+colour. **Verified:** all 32 custom properties from `tokens.css` and
+`theme.css` are equal under light and dark emulation on 10 page states
+(9 pages, plus contact with a form panel open, `contact.html?sent=true`
+and part-boxes with a box added); full-page screenshots are
+pixel-identical in light and dark on all of them (the contact panel
+screenshot needs the button transition to settle, 1,500ms; at 250ms even
+dark vs dark differs in that one 200x41px area, so that was timing noise,
+not a scheme difference); `computed color-scheme` is `dark` in both; no
+CSS variable is used without a definition (31 used, 32 defined);
+`.badge-available` computes `rgb(34, 197, 94)` under both schemes on a
+scratch copy with a listing available.
+
+### Quantity picker and order confirmation — APPROVED, IMPLEMENTED
+The owner approved (A-022 follow-up, shown as a before/after artifact, not
+a three-option round, because both items apply decisions already made):
+
+**Quantity picker.** Two findings, measured on the real page at 1440px:
+- The picker's outer border and its two dividers were `--border` (#2c2c30):
+  1.29:1 against the card, and the +/- fill 1.1:1, the same faint boundary
+  fixed on the form fields (A-012).
+- The keyboard focus ring was invisible: `.qty-picker` keeps
+  `overflow: hidden` for its rounded corners, which clipped the sitewide 2px
+  offset outline drawn around a button (tabbing to "Decrease quantity"
+  showed no ring in the render).
+Implemented in `css/part-boxes.css`: outer border and dividers use
+`--border-field` (3.13:1 against the card); `.qty-btn:focus-visible` and
+`.qty-input:focus-visible` get `outline: none; box-shadow: inset 0 0 0 2px
+var(--accent-text)`, an inset edge that cannot be clipped. Hover is unchanged
+(white on `--accent-h`, 7.07:1). With a real Tab: the "-" button and then the
+number input each show `rgb(174, 121, 142) 0 0 0 2px inset`.
+
+**Order confirmation** (`?ordered=true`, inside the sticky `.order-summary`
+panel). It was the last user of `.notify-success`: a card with a hardcoded
+green border (`rgba(34,197,94,0.25)`) inside a card, an `h3` under the `h1`,
+a `--accent` check (2.5:1). Implemented: `js/render/partBoxOrder.js` now
+renders the shared markup (`.success-state`, `.success-mark` with
+`aria-hidden="true"`, `h2.success-title`; copy unchanged: "Request Sent" /
+"I'll follow up by email to arrange pickup and payment."); `css/part-boxes.css`
+adds `.order-summary .success-state { background: none; border: 0;
+padding: 1.25rem 0.25rem }` so it has no box inside the panel;
+`css/style.css` drops the whole `.notify-success` block (4 rules; nothing
+else used it) and its comment now says so.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no horizontal
+overflow; `node --check` on partBoxOrder.js. Real page: picker border and
+dividers `rgb(106, 102, 94)` (3.13:1, was 1.29:1); real keyboard focus
+(Tab) shows the inset edge on both the button and the number input; the +
+buttons add boxes and the "Your Request" summary updates; the picker stays
+inside its card at 390, 360 and 320px; the confirmation via `?ordered=true`
+at 1440/768/390: heading structure h1 then h2, no old class, no own box
+(border 0, transparent) with the panel's own 1px border kept, mark
+`rgb(174, 121, 142)` (5.05:1 against the card), the 12 box cards still render,
+0 script errors, no horizontal overflow; panel is sticky at 1440 and static
+at 768 and 390 as before. Not run: actually submitting the order form (the
+real redirect to `?ordered=true` was simulated by loading the URL).
+
+## About page (`about.html`)
+
+### Story section layout — APPROVED (Option A), IMPLEMENTED
+The about page is a hero, one block of prose and the CTA box; only the
+prose block was designed. Measured at 1440px with real fonts:
+- The prose was one 720px block centered on the page (inline
+  `max-width:720px; margin:0 auto`), so the text started at x=360 while the
+  hero label and nav start at x=154: the same floating indent fixed on
+  custom-build's "Not Sure" section.
+- Three of the six paragraphs ran 95-100 characters per line (70-100 across
+  all six), long for comfortable reading.
+- The opening line ("Hi, I'm Jacob Skrove...") was 1.15rem against a 1.05rem
+  body, barely distinguished.
+
+Options shown as a published artifact (real markup/copy/CSS; copy unchanged
+in every option; B and C set to the same 536px column as A's right column so
+the line lengths are comparable, all 65-76 characters per line):
+- **A — two columns on the page grid.** Opening line as a large statement on
+  the left (1.6rem), pinned while reading; five paragraphs in the right
+  column. Section 1,086px tall.
+- **B — one column, left edge on the grid.** Larger opening line, one 536px
+  column at x=154; more than half the page empty. 1,181px.
+- **C — centered column, shorter lines.** 536px centered column, text at
+  x=452, further in than today. 1,181px.
+- First draft note: my initial option text said A's lines were "about 62
+  characters"; measured they are 65-76, and B/C at 576px were 70-83, so B/C
+  were narrowed before the owner saw them.
+
+**Approved: A.** Reasoning: fixes the indent and the line length together and
+uses both halves of the page; same pattern the owner chose for the process
+and "Not Sure" sections. Cost: a tall empty area under the opening line on
+the left, which the pinned line gives a job while reading; a photo of the
+owner's PCs/build setup (wanted eventually) could later sit under it.
+
+**Implemented (pages-src/about.html and css/style.css; copy unchanged):**
+- `pages-src/about.html`: the inline-styled block is now
+  `.about-grid` > `.about-side` (the existing `.lede` paragraph plus an
+  `.accent-line`) and `.about-body` (the five paragraphs, no inline styles),
+  with an HTML comment pointing here. The rendered prose text is identical
+  to the B-025 page (compared after whitespace normalization), and the hero
+  and CTA sections are byte-identical after rendering.
+- `css/style.css` (after `.two-col.center`, with a comment): `.about-grid` is
+  two equal columns with a 4rem gap; `.about-side` is `position: sticky; top:
+  6rem`; `.about-side .lede` is 1.6rem/1.4 with no margin; `.about-side
+  .accent-line` is left-aligned (the base one is centered); `.about-body p` is
+  1.05rem/1.9 with 1.5rem between paragraphs. At 900px and below one column,
+  nothing pinned, and `.about-body` is capped at 34rem so a single column does
+  not return to 97-110 characters per line.
+
+**Caught during verification:** the first implementation let the collapsed
+(single-column) paragraphs run the full width: 97-110 characters per line at
+900px. Capped at 34rem: now 66-77 at 900px and 768px.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no
+horizontal overflow. Real page at 1440/1180/1024/901/900/768/390px: 0 script
+errors, no horizontal overflow; two columns at 901px and up with the opening
+line at x=154 (1440px), 66-77 characters per line at 1440px (54-66 at 1024px,
+54-58 at 901px); one column at 900px and below (66-77 characters per line at
+900px and 768px, 41-48 at 390px); heading structure h1 then h2 (the CTA's).
+Pinning checked against the real sticky header (bottom at y=77) at viewport
+heights 900 and 700: after scrolling the opening line settles at 96px from
+the top (19px clear of the header) and stays inside the grid.
+
+## Gallery page (`gallery.html`)
+
+### Photo tile shape — APPROVED (Option B), IMPLEMENTED
+Measured at 1440px with real fonts and the real photos:
+- The gallery grid (and the homepage preview; same `.gallery-grid` /
+  `.gallery-item` component and `renderGalleryGrid()`) is a 4-column layout
+  (`theme.css`) where the first tile spans 2x2, but every tile was a 1:1
+  square with `object-fit: cover`. Of the 22 gallery photos, 16 are 3:4
+  portrait (1350x1800), 1 is 0.82 and 5 are 4:3 landscape, so most lost a
+  quarter of their height (the lightbox always shows the whole photo). The
+  owner's earlier requirement for the part-box photos was "portrait, never
+  cropped".
+- The sub-heading under each section title started at x=430 while the title
+  started at x=154 (276px off): the page used an inline `text-align:left;
+  margin-bottom:2rem` instead of `.section-header.align-left`.
+- Not part of this decision, flagged: the homepage preview shows 3 photos
+  (`media.slice(0, 3)` in `index.html`), but the bento is built for 5, so the
+  featured tile sits on the left and the other two side by side at the top
+  right, leaving the whole bottom-right quadrant empty (it already did with
+  squares, and decision 6 said "no change"). An idea for a later decision:
+  show 5 photos so the block fills.
+
+Options shown as a published artifact (the real tiles, header and CSS, the
+real photos downscaled to 600px, gallery page grid plus homepage preview):
+- **A — keep the square tiles.** Only the sub-heading fix.
+- **B — 3:4 tiles, same layout.** The featured tile (2x2) is then also about
+  3:4; 4:3 photos sit whole inside a portrait tile with bars above and below.
+  Gallery grid (all 22) 1,996px -> 2,619px; homepage preview 556px -> 741px.
+- **C — masonry at natural proportions.** Nothing cropped, no bars, and the
+  3-photo preview looked clean, but the photos have no declared dimensions so
+  lazy loading can reshuffle the columns, the featured tile is lost, and it
+  reads down the columns.
+- First-draft problems found while building the options (not seen by the
+  owner): B's featured tile first rendered 741px against 734px of rows
+  (a 3.5px edge mismatch) and then collapsed to 377px in the 3-photo preview;
+  fixed by keeping every tile 3:4 and using `align-self: stretch`.
+
+**Approved: B.** Reasoning: keeps the established featured-tile look, shows the
+portrait photos whole, fixed layout with no shifting, CSS-only. Cost: a taller
+grid, bars on the 4:3 photos, and the homepage preview's empty quadrant stays.
+
+**Implemented (css/style.css and pages-src/gallery.html; no JS change):**
+- `.gallery-item`: `aspect-ratio: 3 / 4; align-self: stretch` (was `1 / 1`);
+  `.gallery-item img`: `object-fit: contain` (was `cover`); a comment explains
+  why `stretch` is needed: the featured tile's 3:4 height is about 741px against
+  two 357px rows + the 20px gap, so without stretch the tiles beside it end 3.5px
+  short.
+- `pages-src/gallery.html`: both section headers use `class="section-header
+  align-left"` instead of the inline style.
+
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no horizontal
+overflow. Real gallery page at 1440/1180/1024/768/700/699/480/421/420/390px: 0
+script errors, no horizontal overflow; four columns at 700px and up with the
+featured tile and the tiles beside it ending on exactly the same line at every
+one of those widths (1440px: featured 556x741, others 270x361, grid 2,628px for
+7 rows); 2 columns at 421-699px and 1 column at 420px and below (existing
+breakpoints, unchanged); every image `object-fit: contain`; sub-heading x equals
+title x on both sections. Lightbox: click opens it on photo 1/22, ArrowRight
+moves to the next, Escape closes, Enter on a focused tile opens it. The empty
+"Current Builds" state is unchanged ("Photos coming soon."). Homepage preview at
+1440px: featured 556x741, others 268x357, grid 741px, quadrant still empty.
+
+**Noticed for the mobile pass (not changed):** at 420px and below the grid is
+one column, so on a 390px phone the 22 tiles are 342x456 each and the grid is
+10,452px tall (about 8,000px with squares); 2 columns on small phones would
+be an option, and the 3-photo homepage preview is 1,400px tall there.
+(At 421-699px the preview's 3 tiles also sit in a 2-column grid, so one tile
+is alone on the second row; that was already the case with squares.)
+
+### Homepage preview: 5 photos on desktop — APPROVED, IMPLEMENTED
+Raised in the tile-shape round (the 3-photo preview left the whole bottom-right
+quadrant of the 4x2 bento empty) and approved by the owner: "yes, on desktop".
+Implemented: `pages-src/index.html` loads `media.slice(0, 5)` (was 3, with a
+comment); `css/theme.css` hides preview tiles 4 and 5 below 700px
+(`#gallery-preview .gallery-item:nth-child(n+4) { display: none }`), because
+below 700px there is no bento and five tall tiles would be a very long strip
+on a phone, so phones keep 3. The gallery page grid is unaffected. The stale
+"homepage just shows the first 3 combined" line in the `js/data/gallery.js`
+instructions was corrected (the homepage does not read that file at all; it
+reads `js/data/builds.js`). The other `slice(0, 3)` in `index.html`, for the
+available-builds card strip, is unrelated and unchanged.
+**Verified:** `smoke-test.js` ALL CHECKS PASSED; `visual-check.py` no overflow.
+Real homepage at 1440/1180/1024/768/700/699/480/421/420/390px: 0 script errors,
+no horizontal overflow; from 700px up all 5 tiles show and all 8 cells of the
+4x2 block are covered (at 1440px: featured 556x741, four 270x361 tiles, grid
+741px, the same height as before); below 700px 3 tiles show (5 stay in the
+DOM). The lightbox opened from the preview reads "1 / 5" and still lists all
+5 photos, including the two hidden tiles on a phone.
 
 ## Outstanding, not scoped to one page
 

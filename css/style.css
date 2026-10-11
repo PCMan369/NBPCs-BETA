@@ -673,6 +673,64 @@ strong {
   align-items: center;
 }
 
+/* ---- About page: story section ----------------------------------------
+   Visual Redesign, about "Story section layout", Option A (A-026). It was
+   one 720px block centered on the page (text starting at x=360 while the
+   hero started at x=154), three paragraphs at 95-100 characters per line,
+   and an opening line barely larger than the body. Now two columns on the
+   page grid: the opening line is a large statement on the left and stays
+   pinned while you read (top: 6rem clears the sticky site header), the
+   paragraphs sit in the right column at 65-76 characters per line. Below
+   900px it is one column and nothing is pinned. Copy is unchanged. */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.about-side {
+  position: sticky;
+  top: 6rem;
+}
+
+.about-side .lede {
+  font-size: 1.6rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.about-side .accent-line {
+  margin: 1.1rem 0 0; /* left-aligned; the base .accent-line is centered */
+}
+
+.about-body p {
+  margin: 0 0 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.about-body p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-side {
+    position: static;
+  }
+
+  /* one column: keep the paragraphs at the desktop line length instead of
+     letting them run the full width (97-110 characters per line at 900px) */
+  .about-body {
+    max-width: 34rem;
+  }
+}
+
 
 /* ============================================================
    12. Build Cards
@@ -1184,11 +1242,23 @@ strong {
   gap: 1.25rem;
 }
 
+/* Visual Redesign, gallery "Photo tile shape", Option B (A-027). Tiles were
+   1:1 squares with object-fit: cover, but 16 of the 22 gallery photos are
+   3:4 portrait (1350x1800) and 5 are 4:3 landscape, so most lost a quarter
+   of their height (the lightbox shows the whole photo). Tiles are now 3:4
+   and the image is contained, so portrait photos show whole; 4:3 photos sit
+   whole inside the tile with bars above and below (the card colour).
+   align-self: stretch makes a tile fill its grid row exactly: the featured
+   first tile (theme.css, spans 2x2 columns/rows) has a 3:4 height of about
+   741px against two rows of 357px + a 20px gap, and without stretch the
+   tiles beside it would end 3.5px short of its edge. This grid is shared
+   with the homepage preview. */
 .gallery-item {
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
+  align-self: stretch;
   background-color: var(--card);
   border: 1px solid var(--border);
   transition: border-color var(--ease), transform var(--ease);
@@ -1205,7 +1275,7 @@ strong {
 .gallery-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* never crop; see the comment on .gallery-item */
   transition: transform 0.4s ease;
 }
 
@@ -1860,31 +1930,6 @@ strong {
   gap: 1rem;
 }
 
-.notify-success {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 3rem 2rem;
-  background: var(--card);
-  border: 1px solid rgba(34,197,94,0.25);
-  border-radius: var(--radius-lg);
-}
-
-.notify-success .success-icon {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.notify-success h2 {
-  margin-bottom: 0.5rem;
-}
-
-.notify-success p {
-  font-size: 0.92rem;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
 /* ---- Shared success / confirmation state ----------------------------
    Visual Redesign, contact "Success states", Option B (A-013). One
    component for the three confirmations the owner approved: contact.html
@@ -1894,13 +1939,11 @@ strong {
    a real h2 (contact and build-detail used an h3 straight under the h1).
    Inside .listing-form-card it drops its own box so there is no card in
    a card. Replaces the inline-styled blocks in contactRouter.js,
-   notifyBox.js and buildDetail.js.
-
-   NOTE: .notify-success above is NOT used by those three any more, but is
-   deliberately kept because js/render/partBoxOrder.js (the part-boxes
-   order confirmation, inside the sticky .order-summary panel) still uses
-   it. part-boxes has not been walked yet; migrate that confirmation to
-   .success-state when it is. */
+   notifyBox.js and buildDetail.js, and (A-023) the old .notify-success
+   class (a card with a hardcoded green border) that the part-boxes order
+   confirmation in js/render/partBoxOrder.js still used; that class is
+   gone. Inside the part-boxes .order-summary panel it also drops its box:
+   see css/part-boxes.css. */
 .success-state {
   grid-column: 1 / -1; /* the notify box sits in a grid on builds.html; harmless elsewhere */
   text-align: center;

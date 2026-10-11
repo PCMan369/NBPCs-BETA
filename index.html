@@ -455,7 +455,11 @@
 
       var media = collectMedia(available);
       if (!media.length) media = collectMedia(sold);
-      media = media.slice(0, 3);
+      // 5 photos fill the desktop bento exactly (the featured 2x2 tile plus 4
+      // around it); with only 3 the bottom-right quadrant stayed empty. Phones
+      // show 3: css/theme.css hides tiles 4 and 5 below 700px (owner: "5 photos,
+      // on desktop"). The lightbox still lists all 5.
+      media = media.slice(0, 5);
 
       if (!media.length) {
         container.innerHTML = '<p class="text-muted text-center" style="grid-column:1/-1;">Photos coming soon.</p>';

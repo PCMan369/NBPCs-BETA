@@ -1,7 +1,7 @@
 # START_HERE.md — North Bridge PCs website
 
 Read this first, then the last few entries of LOG.md. Read other docs only
-when the doc map (bottom) says to. Last updated: A-021 (2026-10-09).
+when the doc map (bottom) says to. Last updated: A-028 (2026-10-11).
 
 ## What this is
 Static HTML/CSS/vanilla-JS site on GitHub Pages. Real sources are in
@@ -61,15 +61,17 @@ sync also deletes local-only files that are not in the ZIP (for example
 `design-prototypes/` if it still exists), so exclude or relocate those.
 Commit with the entry ID in the message.
 
-## Current state (as of A-021)
+## Current state (as of A-028)
 - V1 build is complete (history through D43 in docs-archive/DECISIONS.md).
 - **Visual redesign in progress.** Live record: VISUAL_REDESIGN.md. Accent is
   "Cask" `#8b3f5e` sitewide. Build-detail and home pages are done;
   custom-build is done apart from deferred items (section headers, open
   items, tier-card feature lists, process-section column, "Not Sure"
   section); contact is done apart from hero copy (situation picker, form panel
-  layout, shared form fields and success states); about, gallery,
-  faq, part-boxes are not yet walked.
+  layout, shared form fields and success states); part-boxes is done apart
+  from copy items (portrait photo cards, quantity picker, order confirmation);
+  about is done (story section); gallery is in progress (photo tile shape done; the empty
+  "Current Builds" section is still to decide); faq is not yet walked.
 - **Services are gone (B-003).** The owner no longer offers services, so the
   Services page and everything tied to it were removed: services.html, its
   data/renderer/most of its CSS, the nav and footer links, the contact page's
@@ -150,6 +152,10 @@ Commit with the entry ID in the message.
   uncropped (see Next up).
 - B-019 (Lane B): box-06 (ID-Cooling SE-214) condition corrected to "Good condition — includes inserts." (owner
   confirmed; it had said "No inserts"). box-12's wording approved by owner. `js/data/partBoxes.js` only.
+- B-025 (Lane B): new `MAINTENANCE.md` (owner guide: the three rules, everyday tasks with the file for each, preview and check,
+  publish to GitHub Pages, troubleshooting table). Closes the old Phase 8 gap. Docs only; ARCHITECTURE.md's file list updated.
+- B-024 (Lane B): docs only. Owner answers to the B-020 questions recorded in `COPY_REVIEW.md` (new "Owner answers" section)
+  and the owner queue rewritten; no site files changed.
 - B-020 (Lane B): new `COPY_REVIEW.md` (read-only audit; no copy changed): Part 1 lists text that is wrong or may
   mislead (e.g. the part-boxes meta description names GPU and case boxes that aren't listed; intro text written for stock
   sits above the empty states; the FAQ says every system can game but one sold system was a laptop), Part 2 lists
@@ -157,23 +163,51 @@ Commit with the entry ID in the message.
 - A-013 (Lane A): success states (`css/style.css`, `js/render/contactRouter.js`, `notifyBox.js`,
   `buildDetail.js`). The contact "Message Sent", the builds.html notify confirmation and the
   build-detail confirmation are now one shared `.success-state` card (check in a 56px outlined
-  circle in `--accent-text`, h2 heading); owner chose Option B. `.notify-success` is kept on
-  purpose: `js/render/partBoxOrder.js` (part-boxes order confirmation) still uses it; migrate it
-  when part-boxes is walked.
+  circle in `--accent-text`, h2 heading); owner chose Option B. (The part-boxes order confirmation was
+  the last user of the old `.notify-success` class and was migrated in A-023; that class is gone.)
 - A-021 (Lane A): part-boxes portrait photo cards (`css/part-boxes.css` only) and the `--success` pin
   (`css/theme.css`). The cards are now horizontal, two per row: a 144px-wide 3:4 photo column
   (`object-fit: contain`, never cropped) on the left, details on the right, price + quantity pinned to the
   card bottom (this also fixes pickers that did not line up across a row); two columns only when the grid is at
   least 780px wide (viewports of about 840-900px and 1168px+), otherwise one column (including phones). The 12-box grid is about 1,340px tall at 1440px (was 1,620px). Owner chose Option B. Owner queue
   item 5 is resolved: the owner confirmed there is no light mode and a light/dark emulation of all 9 pages
-  agrees; the only leak was `--success`, now pinned to #22c55e in theme.css. The dead light block in
-  `css/tokens.css` was left in place.
+  agrees; the only leak was `--success` (pinned in theme.css in A-021; the pin and the leftover light block
+  were then removed in A-022, see below).
+- A-022 (Lane A): no light mode, light and dark identical (owner decision). Removed the leftover
+  `@media (prefers-color-scheme: light)` block from `css/tokens.css` (theme.css already overrode every token in
+  it except `--success`), changed tokens.css's `color-scheme` from `dark light` to `dark`, removed the A-021
+  `--success` pin from `css/theme.css` (redundant now), and updated the comments and ARCHITECTURE.md's
+  "Dark only" paragraph. The `--success` token itself stays (defined once in tokens.css, #22c55e): the
+  Available badge, event price and event badge use it. Light and dark emulation of 10 page states is
+  pixel-identical.
+- A-023 (Lane A): part-boxes leftovers (`css/part-boxes.css`, `css/style.css`, `js/render/partBoxOrder.js`).
+  The quantity picker uses the approved `--border-field` for its border and dividers and shows a visible
+  inset 2px accent edge on keyboard focus (the old ring was clipped by `overflow: hidden`); the order
+  confirmation (`?ordered=true`) now uses the shared `.success-state` card (no own box inside the order
+  panel) and the old `.notify-success` CSS is deleted. part-boxes is done apart from copy items
+  (COPY_REVIEW.md).
+- A-026 (Lane A): about page story section (`pages-src/about.html`, `css/style.css`). The one 720px centered
+  block is now two columns on the page grid: the opening line ("Hi, I'm Jacob Skrove...") as a large
+  statement on the left, pinned while reading, the five paragraphs in the right column at 65-76 characters
+  per line; one column (paragraphs capped at 34rem) below 900px. Owner chose Option A. Copy unchanged
+  (rendered text identical to B-025; hero and CTA untouched).
+- A-027 (Lane A): gallery photo tile shape (`css/style.css`, `pages-src/gallery.html`). Gallery tiles are now
+  3:4 with `object-fit: contain` (they were 1:1 squares with `cover`, which cropped 16 of the 22 portrait
+  photos by a quarter); the 2x2 featured tile and 4-column layout are kept; 4:3 photos sit whole inside a
+  tile with bars. The same grid feeds the homepage preview, whose tiles are now 3:4 too. The two section
+  sub-headings are aligned with their titles (inline style replaced by `.section-header.align-left`).
+  Owner chose Option B. Open items noticed: the homepage preview showed 3 photos in a layout built for 5 (an
+  empty bottom-right quadrant; resolved in A-028); on phones at 420px and below the grid is one column and
+  very tall (10,452px at 390px).
+- A-028 (Lane A): homepage gallery preview shows 5 photos on desktop (`pages-src/index.html`, `css/theme.css`,
+  `js/data/gallery.js` comment). The 4x2 bento is now full (featured tile + four around it); below 700px
+  tiles 4 and 5 are hidden so phones keep 3. Owner approved ("yes, on desktop"). The lightbox from the preview
+  lists all 5 photos. The stale "homepage just shows the first 3" line in gallery.js's instructions was fixed.
 
 ## Next up
-**Lane A:** finish part-boxes (the portrait photo cards are done, A-021; still to walk: the `.qty-input` /
-`.qty-btn` picker, the sticky order summary panel, and the `.notify-success` order confirmation in
-`js/render/partBoxOrder.js`, to be migrated to `.success-state`), then walk about, gallery, faq (owner's
-choice of order). contact is done apart from hero copy, which waits for the copy pass. (custom-build is done
+**Lane A:** finish gallery (still to decide: the empty "Current Builds" section, a 556px block that only says
+"Photos coming soon."; also the very tall one-column grid on small phones) and walk faq (the only unwalked page left). about is done
+(A-026) and part-boxes is done apart from copy items (COPY_REVIEW.md). contact is done apart from hero copy, which waits for the copy pass. (custom-build is done
 apart from two deferred items: tier-card rule alignment at tablet widths goes in
 the tablet pass, and the final CTA box's kicker label waits for the copy pass.)
 Open design findings (see VISUAL_REDESIGN.md): confirm whether the 9 remaining
@@ -181,18 +215,18 @@ Open design findings (see VISUAL_REDESIGN.md): confirm whether the 9 remaining
 (3 places, nothing implemented: FAQ accordion needs no markup change; the mobile nav
 submenu needs a wrapper div first; the page-load progress bar is not yet examined); `--accent-h` still equals
 `--accent` (harmless, noted).
-**Lane B:** (1) Phase 8 maintenance/deployment guide (never written); (2) domain-swap
-checklist (`SITE.url`, Search Console). (The ARCHITECTURE.md theming refresh was done in B-014.)
+**Lane B:** domain-swap checklist (`SITE.url`, Search Console, GitHub Pages custom domain; the owner cannot afford a domain yet,
+so this can wait). The maintenance guide was written in B-025. (The ARCHITECTURE.md theming refresh was done in B-014.)
 
 ## Owner queue (waiting on you)
-1. Hero image is still missing (you provide).
-2. Real domain, plus phone/Facebook values when ready.
-3. Testimonials stay off until real ones exist. The EliteBook performance-section
-   question may now be moot since it is sold.
-4. Facts needed before the copy pass (see COPY_REVIEW.md, Part 1 B and C): payment methods; returns / "sold as-is";
-   whether parts are new or used; where pickup happens for Medford/Ashland buyers; whether the budget-tier prices
-   match current parts prices; privacy-line wording; whether every process claim on the home page is true for every
-   system.
+Medium term, not blocking (owner, 2026-10-09): a hero image (wants a good photo of several PCs or the building setup);
+a real domain (cannot afford it yet), plus phone/Facebook values when ready; testimonials (stay off until real ones exist).
+
+For the copy pass: the facts questions are answered (recorded in COPY_REVIEW.md, "Owner answers"). Owner rule: reword
+only if misleading. Still to decide: whether to fix the two items that look misleading (pickup is described as at the
+owner's address, but is usually a meet-in-the-middle with paid delivery possible; the site never says parts are used), and
+the wrong/contradictory items in COPY_REVIEW.md Part 1 A. The copy pass itself waits until Lane A has walked
+gallery and faq (about was walked in A-026; gallery is in progress, A-027).
 
 ## Do not touch
 - Site copy wording: the owner will rewrite copy sitewide after the redesign
@@ -202,6 +236,7 @@ checklist (`SITE.url`, Search Console). (The ARCHITECTURE.md theming refresh was
 ## Doc map
 - **LOG.md**: completed chunks, newest last.
 - **VISUAL_REDESIGN.md**: live design decisions and reasoning (Lane A).
+- **MAINTENANCE.md**: owner guide to editing, previewing, publishing and fixing the site (B-025).
 - **COPY_REVIEW.md**: audit of site text (what is wrong or misleading, what is not doing its job) for the copy pass (B-020).
 - **ARCHITECTURE.md**: stack and structure. Its theming text predates the redesign.
 - **docs-archive/**: frozen as of B-001. DECISIONS.md (D1-D43, large), PROJECT_STATUS.md,

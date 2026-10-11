@@ -39,9 +39,9 @@ function initPartBoxOrder() {
   if (window.location.search.indexOf('ordered=true') !== -1) {
     summary.style.display = '';
     summary.innerHTML =
-      '<div class="notify-success">' +
-        '<span class="success-icon" style="color:var(--accent);">&#10003;</span>' +
-        '<h3>Request Sent</h3>' +
+      '<div class="success-state">' +
+        '<span class="success-mark" aria-hidden="true">&#10003;</span>' +
+        '<h2 class="success-title">Request Sent</h2>' +
         '<p>I\'ll follow up by email to arrange pickup and payment.</p>' +
       '</div>';
     return;

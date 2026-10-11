@@ -1,6 +1,6 @@
 # COPY_REVIEW.md — site text audit (planning input for the copy pass)
 
-Written by Lane B in B-020 (2026-10-08), read-only: **no copy was changed.** Based on the A-013/B-019 files and on the pages as
+Written by Lane B in B-020 (2026-10-08), read-only: **no copy was changed.** Owner answers added in B-024 (below). Based on the A-013/B-019 files and on the pages as
 rendered in Chromium with every build marked sold (the site's current state). Findings are about accuracy and role, not about
 rewording. "Role" below means what the text is for, judged from its style and placement; placements may change in the redesign,
 so each item names its place by file so it can be found again. Where something can't be checked from the files it says
@@ -9,6 +9,33 @@ so each item names its place by file so it can be found again. Where something c
 Where the text lives: `pages-src/*.html` (page copy, titles, meta descriptions), `js/data/faq.js`, `js/data/builds.js`
 (summaries, notes), `js/data/partBoxes.js`, `js/partials/header.html` and `footer.html`, and strings inside
 `js/render/*.js` (empty states, form success messages, the "what happens before pickup" section).
+
+## Owner answers (2026-10-09, recorded by Lane B in B-024)
+
+The owner's rule for the copy pass: **reword only if the text is misleading.** Answers to the B-020 questions:
+
+- **Payment:** mostly cash now; other methods possible if wanted. The site's "cash or payment at pickup" is consistent with this.
+- **Returns:** none. The owner will help with troubleshooting if a buyer has problems. The FAQ's support answer already says
+  troubleshooting help, not a warranty; "no returns" is not stated anywhere. Owner decision: not required unless misleading.
+- **New or used:** mostly used; PSU and case almost always new. The site never says used or new (searched all copy).
+- **Pickup:** around Grants Pass, usually meeting in the middle. If a buyer would rather not, the owner may deliver for a fee.
+  The site says "local pickup" and "exact address shared after we've confirmed a sale" (contact.html), which reads as pickup at the
+  owner's location, and delivery is not mentioned. "Serving Grants Pass, Medford, Ashland..." is consistent with meet-in-the-middle.
+- **Budget tiers:** unknown. Prices are realistic, but the sold builds at or barely above $500 had a better GPU than an RX 580,
+  so the tiers probably undersell. Part 1 item 6 stays open.
+- **Privacy line:** owner says it is accurate; the owner only emails about new builds to people who joined the waitlist.
+  Decision: no change. (Items 9 and 13 closed. The FormSubmit / Google Analytics observation in item 9 stands as information only.)
+- **Process claims on the home page:** owner believes every one is accurate. Items 10 and 12 closed. Item 14 (response time) was not answered.
+- **Hero image, real domain, testimonials:** all medium term (no money for a domain yet; wants a good hero photo of several PCs or the
+  building setup). Not blocking the copy pass.
+
+**What this leaves for the copy pass, by the "only if misleading" rule** (my reading; the owner decides):
+1. Pickup wording (see above): a buyer is told "pickup" and "address shared after sale" but the usual arrangement is a meeting point near
+   Grants Pass, with paid delivery possible.
+2. "Used": the site never says the parts are used, and the listings only show older parts. A buyer could assume new.
+3. Still wrong or contradictory regardless of the answers: Part 1 A1 (part-boxes meta description), A2 (stock copy above the empty
+   states), A3/A4 (FAQ "every system" vs. the sold laptop; checklist wording for the laptop).
+4. Optional (not misleading, owner's call): stating "no returns", extra payment methods, custom-build timing, and Part 2 items.
 
 ---
 

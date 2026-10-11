@@ -8,11 +8,11 @@
 
   Loaded LAST (after tokens.css/base.css/style.css/any page-specific
   CSS) so its :root variable values win the cascade — tokens.css's own
-  :root block (including its light-mode @media override) is defined
-  earlier in the document, so this simply overrides it, regardless of
-  the visitor's system color-scheme setting. This is intentional: the
-  approved Forge direction is dark-first, not a light/dark toggle (see
-  DECISIONS.md D23) — now applied everywhere, not just the homepage.
+  :root block is defined earlier in the document, so this simply
+  overrides it. The site is dark-only: the approved Forge direction is
+  dark-first, not a light/dark toggle (see DECISIONS.md D23) — applied
+  everywhere, not just the homepage. There is no light mode at all (the
+  leftover light-mode block in tokens.css was removed in A-022).
 
   Existing components already read their colors from CSS custom
   properties (--accent, --bg, --card, etc.) defined in tokens.css.
@@ -82,13 +82,6 @@
      change — the badge's background/border and everywhere else this
      hue might read are untouched. */
   --danger: #fca5a5;
-  /* --success pinned (A-021). tokens.css gives it a different value inside
-     @media (prefers-color-scheme: light) (#16a34a vs #22c55e) and this file
-     never overrode it, so a visitor whose OS is in light mode got a different
-     green on the Available badge, event price and event badge. The site has
-     no light mode (every other token is overridden here; checked on all 9 pages
-     with light and dark emulation), so pin the dark value. */
-  --success: #22c55e;
   /* .spec-label ("CPU", "GPU", etc. row labels) inherits --dim, which
      is fine at full opacity — but .build-card.is-sold's opacity:0.72
      (unchanged, a separate/intentional "de-emphasize sold cards"
@@ -354,6 +347,13 @@ h1, h2, h3, h4 {
 @media (min-width: 700px) {
   .gallery-grid { grid-template-columns: repeat(4, 1fr); }
   .gallery-grid .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+}
+/* The homepage preview loads 5 photos so the desktop bento fills (featured 2x2 +
+   4 around it). Below 700px there is no bento (2 columns, then 1), and 5 tall
+   tiles would be a very long strip on a phone, so only the first 3 show there.
+   The gallery page (#gallery-completed) is unaffected. */
+@media (max-width: 699px) {
+  #gallery-preview .gallery-item:nth-child(n+4) { display: none; }
 }
 .gallery-item { border-radius: 4px; }
 

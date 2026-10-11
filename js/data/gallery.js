@@ -25,8 +25,9 @@
        alt: "A short description of what's in the photo"
      },
 
-  4. Save. Both the gallery page and the homepage preview update
-     automatically — the homepage just shows the first 3 combined.
+  4. Save. The gallery page updates automatically. (The homepage preview
+     does not read this file — see the note at the top. It shows the first
+     5 photos from js/data/builds.js: 3 on phones.)
 
   ================================================================
   HOW TO REMOVE OR REORDER A PHOTO
