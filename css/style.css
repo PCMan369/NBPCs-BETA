@@ -1316,26 +1316,43 @@ strong {
 
 /* ============================================================
    18. FAQ Accordion
+   ============================================================
+   Visual Redesign, FAQ "Accordion", Option B (A-030). Replaces the six
+   full-width boxed cards (supersedes home decision 7, "boxed accordion
+   item"). Hairline-divided rows in an 800px column on the page grid, the
+   same ruled-row language as the process list, the situation picker and
+   the tier lists. Shared by the FAQ page and the homepage FAQ preview.
+
+   Also fixed here:
+   - The question is a real <button> (js/render/faqList.js) so a keyboard
+     can reach and operate it; focus uses the sitewide :focus-visible ring.
+   - The answer reveals by its real height (grid-template-rows 0fr -> 1fr)
+     instead of animating max-height up to a hardcoded 600px, which would
+     have clipped any longer answer and made closing lag. A closed answer is
+     visibility: hidden so screen readers do not read it; the visibility
+     switch is delayed so the closing animation still shows.
+   - The answer wrapper carries no vertical padding or border of its own
+     (they would stay as invisible space when it collapses to zero height);
+     the bottom space is on the last paragraph, which the wrapper clips.
+   - The <h2> inside each question used to keep its default margins on top
+     of the row padding (88px rows); rows are now 66px.
+   - Answer lines are capped at 65ch (they ran 139 characters per line).
    ============================================================ */
 
 .faq-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
   max-width: 800px;
-  margin: 0 auto;
+  border-top: 1px solid var(--border);
 }
 
 .faq-item {
-  background-color: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: border-color var(--ease);
+  border-bottom: 1px solid var(--border);
 }
 
-.faq-item.open {
-  border-color: color-mix(in srgb, var(--accent-text) 40%, transparent);
+.faq-heading {
+  margin: 0;
+  font-size: inherit;
 }
 
 .faq-question {
@@ -1343,17 +1360,17 @@ strong {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.2rem 1.4rem;
+  width: 100%;
+  padding: 1.25rem 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
   cursor: pointer;
-  user-select: none;
-  transition: background-color var(--ease);
 }
 
-.faq-question:hover {
-  background-color: rgba(255,255,255,0.025);
-}
-
-.faq-question h2 {
+.faq-q-text {
   font-size: 0.97rem;
   font-weight: 600;
   color: var(--text);
@@ -1377,6 +1394,12 @@ strong {
   transition: all 0.28s ease;
 }
 
+/* The box's hover tint is gone with the box; the icon takes over as the
+   hover cue. */
+.faq-question:hover .faq-icon {
+  border-color: var(--accent-text);
+}
+
 .faq-item.open .faq-icon {
   background-color: var(--accent-h); /* was --accent — white text/glyph on it only reached 3.68:1 */
   color: white;
@@ -1384,29 +1407,31 @@ strong {
 }
 
 .faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.32s ease;
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.32s ease, visibility 0s linear 0.32s;
 }
 
 .faq-item.open .faq-answer {
-  max-height: 600px;
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .faq-answer-inner {
-  padding: 0 1.4rem 1.2rem;
-  border-top: 1px solid var(--border);
+  min-height: 0;
+  overflow: hidden;
 }
 
 .faq-answer-inner p {
   font-size: 0.93rem;
   line-height: 1.78;
-  padding-top: 1rem;
+  max-width: 65ch;
 }
 
-/* Wide variant used on faq.html — no max-width constraint */
-.faq-list.full-width {
-  max-width: 100%;
+.faq-answer-inner p:last-child {
+  padding-bottom: 1.25rem;
 }
 
 

@@ -3,734 +3,8 @@
 Append-only. Entry header: `<lane>-<number> | complete|partial | <date or unknown>`.
 Next number = highest in the header lines below + 1 (see START_HERE.md).
 Files: A=added M=modified D=deleted, from a real diff of uploaded vs. returned project.
-
-B-001 | complete | 2026-10-05
-Task: Phase 0 coordination setup (docs only, no site code touched).
-Files:
-- M ARCHITECTURE.md
-- D CHANGELOG.md
-- D DECISIONS.md
-- A LOG.md
-- D PROJECT_STATUS.md
-- A START_HERE.md
-- D TODO.md
-- A docs-archive/CHANGELOG.md
-- A docs-archive/DECISIONS.md
-- A docs-archive/PROJECT_STATUS.md
-- A docs-archive/TODO.md
-Changed:
-- Created START_HERE.md and LOG.md.
-- Moved DECISIONS.md, PROJECT_STATUS.md, TODO.md, CHANGELOG.md into
-  docs-archive/ (content unchanged except a one-line ARCHIVED banner on top).
-- Added a one-paragraph note at the top of ARCHITECTURE.md pointing to the new
-  layout and flagging its theming text as pre-redesign.
-- Cross-checked this ZIP against the previous one: only VISUAL_REDESIGN.md,
-  css/style.css, js/data/builds.js and js/data/gallery.js differed; their
-  changes are summarized in START_HERE.md "Current state".
-- Read-only finding: services.html cannot be removed yet (owner queue item 1).
-Decision: none
-Verified: stitch.py output identical to the committed root HTML and sitemap.xml;
-  smoke-test not run (docs-only chunk, no code changed).
-Next/open: services.html removal waits on the owner (START_HERE.md owner queue).
-
-B-002 | complete | 2026-10-05
-Task: Record Lane A's closing summary and reconcile it with the ZIP (docs only).
-Files:
-- M LOG.md
-- M START_HERE.md
-Changed:
-- Lane A's summary (received after B-001): nothing decided but unwritten; open
-  items are the nav-dropdown shadow check and layout-transition, both already in
-  VISUAL_REDESIGN.md; smoke-test reported passing.
-- Reconciled: every file that differs between the two ZIPs is on Lane A's edited
-  list, and no other file differed. Its "97 files" counts ZIP entries including
-  folders (88 files).
-- START_HERE.md: removed the "unknown" owner-queue item, added the summary to
-  Current state, added layout-transition detail to Next up A, noted that
-  smoke-test cannot run in Lane B's sandbox.
-Decision: none
-Verified: smoke-test not run (jsdom missing in this sandbox, no network); Lane A
-  reports it passing on the same site code. No site files changed since B-001.
-Next/open: services.html removal still waits on the owner (START_HERE.md owner queue).
-
-B-003 | complete | 2026-10-05
-Task: Remove the Services page and everything tied to it (owner no longer offers services).
-Files:
-- M 404.html
-- M ARCHITECTURE.md
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M about.html
-- M build.html
-- M builds.html
-- M contact.html
-- M css/services.css
-- M custom-build.html
-- M faq.html
-- M gallery.html
-- M index.html
-- D js/data/services.js
-- M js/partials/footer.html
-- M js/partials/header.html
-- M js/render/contactRouter.js
-- M js/render/notifyBox.js
-- M js/render/partBoxOrder.js
-- D js/render/serviceCard.js
-- M pages-src/contact.html
-- M pages-src/part-boxes.html
-- D pages-src/services.html
-- M part-boxes.html
-- D services.html
-- M sitemap.xml
-- M smoke-test.js
-- M visual-check.py
-Changed:
-- Deleted services.html, pages-src/services.html, js/data/services.js,
-  js/render/serviceCard.js.
-- Removed the Services link from the header (desktop and mobile) and footer
-  partials, and the contact page's "PC Service / Repair" card (picker 6 -> 5).
-- css/services.css trimmed to the one class contact.html still uses
-  (.service-hub-card); file and class names kept for now.
-- smoke-test.js: dropped the services check, picker expectation 6 -> 5.
-  visual-check.py: dropped the services entry.
-- Fixed stale comments naming services.html (contactRouter.js, notifyBox.js,
-  partBoxOrder.js, pages-src/part-boxes.html), the ARCHITECTURE.md file listing,
-  and the VISUAL_REDESIGN.md scope note.
-- Rebuilt with stitch.py: 10 pages, sitemap has 9 URLs (404 excluded, no
-  services). Rebuilt pages differ from B-002 only by the removed links/card.
-- Left in place on purpose, awaiting owner approval (START_HERE.md owner queue
-  item 1): repair wording in about.html (3 spots) and the homepage structured
-  data description in build-tools/stitch.py.
-Decision: Owner decided to stop offering services; remove the page and all links to it.
-Verified: all local links/assets in the 10 built pages resolve; no references
-  to removed files outside docs-archive/; node --check passes on every JS file
-  and py_compile on both Python scripts. smoke-test not run (jsdom unavailable
-  in this sandbox), so the 6 -> 5 picker assertion is unverified at run time.
-Next/open: owner item 1 (wording approvals). Run smoke-test.js locally before
-  the next push.
-
-B-004 | complete | 2026-10-05
-Task: Remove the remaining repair wording (owner approved all four edits as proposed in B-003).
-Files:
-- M LOG.md
-- M START_HERE.md
-- M about.html
-- M build-tools/stitch.py
-- M index.html
-- M pages-src/about.html
-Changed:
-- pages-src/about.html: dropped "and repair" from the meta description (this
-  also feeds the og: and twitter: descriptions in the built page), "and
-  repairs" from the school paragraph, and "or a repair question" from the
-  bottom call-to-action (now "a listed system or a custom build").
-- build-tools/stitch.py: homepage structured-data description is now "Gaming PC
-  sales and custom builds in Southern Oregon."
-- Rebuilt with stitch.py; only about.html and index.html changed, on those
-  lines only.
-- Left alone on purpose: the FAQ's after-purchase email troubleshooting, its
-  upgrade answer, the "Cleaned" testing step, and the FAQ line saying support is
-  "not a warranty program or a repair service" (still accurate).
-- START_HERE.md: owner item 1 resolved and removed; Lane B list and state updated.
-Decision: Owner approved all four wording edits.
-Verified: all local links/assets in the 10 built pages resolve, no unreplaced
-  markers, stitch.py compiles; only the expected lines differ from B-003. No
-  "repair" remains in site code except the FAQ disclaimer above. smoke-test not
-  run (jsdom unavailable here).
-Next/open: run smoke-test.js locally before pushing (still unrun since the B-003
-  picker change).
-
-B-005 | complete | 2026-10-06
-Task: Correct the outdated test-environment notes after Lane A reported how it runs the tests.
-Files:
-- M LOG.md
-- M START_HERE.md
-- M smoke-test.js
-- M visual-check.py
-Changed:
-- smoke-test.js header: removed the claim that Playwright's browser cannot be
-  used in the sandbox; added setup (`npm install jsdom --no-save`, needs the npm
-  registry) and "report not run, never a pass".
-- visual-check.py header: Chromium is pre-installed at /opt/pw-browsers and both
-  the Python and Node bindings launch it; the earlier failure was only the
-  `npx playwright install chromium` download step, which is not needed.
-- START_HERE.md Tests section rewritten with both tools, which one needs network,
-  the screenshots/ warning, and a note that the docs-archive D24 / PROJECT_STATUS
-  statements are outdated. The archive itself stays frozen.
-- Lane B's earlier "no jsdom and no network" was true of that sandbox only; it
-  is account/sandbox dependent, not a project limit.
-Decision: none
-Verified: Chromium launched from both Python and Node here. visual-check.py run
-  on a scratch copy: 9 pages x 3 viewports, no horizontal overflow. Ad-hoc
-  Playwright pass on the same copy: 10 pages, 0 script errors, 0 links to
-  services, contact picker shows 5 cards. smoke-test.js itself still not run
-  (jsdom absent, npm registry returns 403 in this sandbox). node --check and
-  py_compile pass on the edited scripts. Screenshots were made on the scratch
-  copy and are not in the ZIP.
-Next/open: run smoke-test.js where the npm registry is reachable (Lane A's
-  sandbox) or locally, before the next push.
-
-A-006 | complete | 2026-10-06
-Task: Custom-build tier-card feature lists (Lane A visual decision; owner approved Option B).
-Files:
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M css/style.css
-Changed:
-- css/style.css: `.tier-features` now has `padding: 0` (it kept the browser's
-  default 40px indent), a top hairline and `flex: 1`; its `li` rows are
-  hairline-divided with no check marks (the `::before` rule, the old `gap` and
-  the `li` flex layout are gone). `flex: 1` moved from `.tier-desc` to
-  `.tier-features` so the top rules line up across the three cards. No markup
-  change; pages-src/ and the generated root HTML are unchanged.
-- VISUAL_REDESIGN.md: new "Tier-card feature lists" subsection (options A/B/C,
-  reasoning, measurements, tablet limitation, two noticed-but-undecided items);
-  "How this process works" notes artifacts are allowed for showing options;
-  Scope notes entry for custom-build corrected (it said "4 open items pending"
-  though all four were already resolved).
-- START_HERE.md: updated Current state, Next up (Lane A), Lane A role line, and
-  Tests (smoke-test ran here; sandbox cannot reach Google Fonts, how to get
-  real fonts for mockups).
-Decision: Owner chose Option B (ruled rows, no check marks) over A (aligned
-  check marks) and C (mono spec-sheet). Owner also OK'd using artifacts to show
-  options in future.
-Verified: stitch.py ran (exit 0), root HTML and sitemap.xml identical to B-005.
-  smoke-test.js (jsdom installed, npm reachable here): ALL CHECKS PASSED.
-  visual-check.py on a scratch copy: no horizontal overflow on any page at
-  desktop/tablet/mobile. Playwright on the real page at 1440/1024/768/390: list
-  text x equals badge x in every card, `padding-left` 0, no `::before` content,
-  0 script errors. Top rules align across cards at 1440 (2012px) and 1024
-  (2024px); at 768 the two first-row cards differ by 24px (one description wraps
-  to 4 lines, the other to 3) - not fixed. Screenshots and mockups were made on
-  scratch copies and are not in the ZIP.
-Next/open: custom-build still has the noticed-but-undecided process-section left
-  column alignment; tablet-width rule alignment (subgrid) goes in the tablet
-  pass; the sitewide scan findings (nav-dropdown shadow check, layout-transition)
-  are unchanged.
-
-A-007 | complete | 2026-10-06
-Task: Custom-build "How a Custom Build Works" left column alignment (Lane A visual decision; owner approved Option A).
-Files (diff against the A-006 ZIP returned earlier in this chat):
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M custom-build.html
-- M pages-src/custom-build.html
-Changed:
-- pages-src/custom-build.html: the process section's wrapper is now
-  `<div class="two-col">` instead of `<div class="two-col center">`, plus a short
-  HTML comment saying why. Plain `.two-col` already has `align-items: start`, so no
-  CSS change was needed; `.two-col.center` is still used by the home page's Custom
-  Builds section and is untouched.
-- custom-build.html regenerated with stitch.py (differs from A-006 only by that
-  class and the comment).
-- VISUAL_REDESIGN.md: new "Process section left column" subsection (options A/B/C,
-  measurements, reasoning, implementation, verification); Scope notes updated; the
-  "noticed" paragraph under the tier-card subsection now points to it.
-- START_HERE.md: Current state, Next up (Lane A) updated.
-Decision: Owner chose Option A (top-align) over B (header top, button bottom) and C
-  (header row over a 2x3 step grid). Options were shown as a published artifact
-  (owner had OK'd artifacts in A-006).
-Verified: stitch.py exit 0. smoke-test.js (jsdom installed here): ALL CHECKS PASSED.
-  visual-check.py on a scratch copy: no horizontal overflow on any page at
-  desktop/tablet/mobile. Playwright on the real page at 1440/1180/1024/901/768/390:
-  0 script errors; at 1440, 1180, 1024 and 901 the left column's top equals the
-  list's top and the label sits 5px below the first rule; at 768 and 390 the section
-  is one column as before. Home page's `.two-col.center` still computes
-  `align-items: center`. Screenshots and the options page were made on scratch
-  copies and are not in the ZIP.
-Next/open: custom-build's "Not Sure What Hardware You Need?" section only got the
-  header rollout and has not been reviewed; tablet-width tier-card rule alignment
-  (subgrid) still goes in the tablet pass; sitewide scan findings (nav-dropdown
-  shadow check, layout-transition) unchanged.
-
-A-008 | complete | 2026-10-06
-Task: Custom-build "Not Sure What Hardware You Need?" section layout (Lane A visual decision; owner approved Option A).
-Files (diff against the A-007 ZIP returned earlier in this chat):
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M css/style.css
-- M custom-build.html
-- M pages-src/custom-build.html
-Changed:
-- pages-src/custom-build.html: the section's inline `max-width:760px; margin:0 auto`
-  block is now `<div class="two-col">`: header (with `style="margin-bottom:0;"`,
-  `<h2 class="text-balance">`) in the left div, the two paragraphs and the button
-  row in the right div, plus a short HTML comment. Copy unchanged. The right
-  column's first paragraph has `margin-top:0` (see Decision note below).
-- css/style.css: new opt-in utility `.text-balance { text-wrap: balance; }` with a
-  comment; used only on that h2, so no other heading changes.
-- custom-build.html regenerated with stitch.py; no other root file changed.
-- VISUAL_REDESIGN.md: new "Not Sure section layout" subsection; Scope notes updated
-  (custom-build is done apart from deferred items).
-- START_HERE.md: Current state and Next up (Lane A) updated.
-Decision: Owner chose Option A (two columns on the page grid) over B (single column,
-  left edge on the grid) and C (centered). Options were shown as a published artifact.
-  Deviation to flag: the artifact showed the right column's first line about 18px
-  below the label, which I attributed to top-aligned boxes. The real cause was the
-  paragraph's default 1em top margin, no longer collapsing inside a grid item. It is
-  now `margin-top:0`, so the first line sits level with the label; the collapsed
-  spacing is 36px vs. 32px before. Slightly different from the approved mockup.
-Verified: stitch.py exit 0. smoke-test.js (jsdom installed here): ALL CHECKS PASSED.
-  visual-check.py on a scratch copy: no horizontal overflow on any page at
-  desktop/tablet/mobile. Playwright on the real page at 1440/1180/1024/901/768/390:
-  0 script errors, no horizontal overflow; two columns down to 901px and one column at
-  768/390 as before; section height 469px at 1440 (was 630), 643px at 768 (was 639),
-  816px at 390 (was 812). Screenshots and the options page were made on scratch
-  copies and are not in the ZIP.
-Next/open: custom-build has two deferred items only (tablet-width tier-card rule
-  alignment, final CTA box kicker label waits for the copy pass); sitewide scan
-  findings (nav-dropdown shadow check, layout-transition) unchanged. Next page to walk:
-  about, gallery, faq, contact or part-boxes (owner picks order).
-
-A-009 | complete | 2026-10-07
-Task: Contact page situation picker layout and the leftover-name rename (Lane A visual decision; owner approved Option B and the rename).
-Files (diff against the A-008 ZIP returned earlier in this chat):
-- M ARCHITECTURE.md
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M contact.html
-- D css/services.css
-- A css/situation-picker.css
-- M css/style.css
-- M pages-src/contact.html
-- M smoke-test.js
-Changed:
-- css/situation-picker.css (new, replaces the deleted css/services.css): picker is a
-  hairline-ruled list; each `.situation-option` is a 2-column grid (title + description,
-  button), last row open, h3/p default margins zeroed (they stacked with the flex gap
-  and put 44px between title and text), `text-wrap: pretty` on the description,
-  button `min-width: 12.5rem`; at 640px and below rows stack with the button below.
-- pages-src/contact.html: stylesheet link now css/situation-picker.css; picker container
-  `<div class="situation-picker" id="situation-picker">` (was `grid-2`); the five
-  `.service-hub-card` divs are `.situation-option`. Copy and data attributes unchanged.
-- contact.html regenerated with stitch.py; no other root file changed.
-- smoke-test.js: picker selector `.situation-option`; new assertion that no
-  `.service-hub-card` markup remains.
-- ARCHITECTURE.md file listing and a historical comment in css/style.css use the new
-  names. LOG.md (this file's older entries) and docs-archive/ keep the old names.
-- VISUAL_REDESIGN.md: new "Contact page" section with the picker decision; Scope notes
-  updated. START_HERE.md: Current state and Next up updated, old rename note removed.
-Decision: Owner chose Option B (ruled rows) over A (cards, last spans the row) and C
-  (three cards + two rows), and approved the rename. Options were shown as a published
-  artifact. Deviation to flag: the class is `.situation-option`, not `.situation-card`
-  (suggested earlier), because the items are rows now.
-Verified: stitch.py exit 0. smoke-test.js (jsdom installed here): ALL CHECKS PASSED,
-  including the 5-option picker and the new old-markup-gone assertion. visual-check.py on
-  a scratch copy: no horizontal overflow on any page at desktop/tablet/mobile. All local
-  links/assets in the 10 built pages resolve. Playwright on the real page at
-  1440/1024/901/768/641/640/390: 0 script errors, no horizontal overflow; at 1440 the
-  picker is 542px (was 832) with a 4px title-to-text gap and five 200px buttons on one
-  right edge; clicking each of the four form buttons reveals the expected panel and the
-  Part Box button still links to part-boxes.html. Screenshots and the options page were
-  made on scratch copies and are not in the ZIP.
-Next/open: rest of the contact page (three form panels and the shared .form-input /
-  .form-label / .form-privacy fields, thank-you state) is not walked yet; at 640px and
-  below the two button widths differ (148px / 196px), left as is for the mobile pass;
-  custom-build deferred items and the sitewide scan findings are unchanged.
-
-A-010 | complete | 2026-10-07
-Task: Contact page form panels - width, placement and internals (Lane A visual decision; owner approved Option A).
-Files (diff against the A-009 ZIP returned earlier in this chat):
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M contact.html
-- M css/style.css
-- M pages-src/contact.html
-Changed:
-- pages-src/contact.html: the three submit buttons no longer carry inline
-  `width:100%; justify-content:center;`. Copy unchanged.
-- css/style.css (next to the .form-privacy rules, with a comment): panel intro paragraph
-  capped at 52ch; privacy-note paragraph margin removed inside `.situation-form-panel`
-  (box 81px -> 56px at 1440); at 640px and below the submit button is full width again
-  so phones keep the full-width button they had before.
-- contact.html regenerated with stitch.py (differs from A-009 only by the removed
-  inline button style); no other root file changed.
-- VISUAL_REDESIGN.md: new "Form panel width and placement" subsection; Scope notes updated.
-  START_HERE.md: Current state and Next up updated, owner decision pending noted.
-Decision: Owner chose Option A (panel stays full width, internals fixed) over B (panel in
-  the picker's column) and C (760px on the page grid). Options were shown as a published
-  artifact. Deviation to flag: the mobile full-width button at 640px and below was not in
-  the mockup; it keeps the pre-change mobile behavior.
-Verified: stitch.py exit 0. smoke-test.js (jsdom installed here): ALL CHECKS PASSED.
-  visual-check.py on a scratch copy: no horizontal overflow on any page at
-  desktop/tablet/mobile. All local links/assets in the 10 built pages resolve. Playwright on
-  the real page at 1440/1024/768/390 (button also at 641/640): clicking each of the three form
-  buttons shows exactly its panel; 0 script errors, no horizontal overflow; at 1440 panel
-  1132px, intro 468px wide, button 187px, privacy box 56px; button 190px at 641px and full
-  width at 640px and 390px. Screenshots and the options page were made on scratch copies
-  and are not in the ZIP. Not run: actually submitting a form (it would POST to the form
-  service).
-Next/open: owner decision pending - the notify box on builds.html (privacy box measured 102px)
-  and the build-detail form have the same default-margin bug; a root fix to `.form-privacy p`
-  would change those signed-off pages. Rest of the contact page not walked yet: shared form
-  fields (.form-input, .form-label, .form-select, focus ring) and the thank-you state. With JS
-  off the three panels stack with no gap (noticed, not touched).
-
-A-011 | complete | 2026-10-07
-Task: Apply the privacy-note margin fix at the root `.form-privacy p` rule (owner approved; it was the pending decision from A-010).
-Files (diff against the A-010 ZIP returned earlier in this chat):
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M css/style.css
-Changed:
-- css/style.css: `margin: 0` added to `.form-privacy p` (with a comment). The scoped
-  `.situation-form-panel .form-privacy p` rule added in A-010 was removed as redundant, and
-  the contact block's comment now points at the root rule. No markup, JS or generated-HTML
-  change (stitch.py output is identical to A-010).
-- This also changes two pages signed off earlier: the notify box on builds.html
-  (js/render/notifyBox.js) and the build-detail inquiry form (js/render/buildDetail.js).
-- VISUAL_REDESIGN.md: new "Privacy-note margin fix extended to the root rule" subsection; the
-  A-010 text that said the fix was scoped and pending was updated. START_HERE.md: Current state
-  and Next up updated (pending decision removed).
-Decision: Owner approved applying the fix at the root, so all three places get it.
-Verified: stitch.py exit 0, generated files unchanged. smoke-test.js (jsdom installed here):
-  ALL CHECKS PASSED. visual-check.py on a scratch copy: no horizontal overflow on any page at
-  desktop/tablet/mobile. Playwright before -> after, 1440px / 390px: notify box on builds.html
-  102px -> 77px / 123px -> 98px; build-detail form 102px -> 77px / 123px -> 98px (measured in
-  scratch copies with aug26-02 set to available, because the form only renders for an available
-  listing and every real listing is sold; real data unchanged); contact panels 56px / 98px,
-  unchanged. 0 script errors and no horizontal overflow on builds, the detail page and contact
-  at both widths. Screenshots of the notify box and the detail form looked right. Screenshots and
-  scratch copies are not in the ZIP.
-Next/open: rest of the contact page (shared form fields .form-input, .form-label, .form-select,
-  focus ring; thank-you state) not walked yet; with JS off the three contact panels stack with
-  no gap (noticed, not touched); custom-build deferred items and the sitewide scan findings
-  unchanged.
-
-A-012 | complete | 2026-10-07
-Task: Shared form fields - resting boundary, focus state, select arrow (Lane A visual decision; owner approved Option A).
-Files (diff against the A-011 ZIP returned earlier in this chat):
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M css/style.css
-- M css/theme.css
-Changed:
-- css/theme.css: new token `--border-field: #6a665e` (with a comment); the `:focus` box-shadow glow
-  override for .form-input/.form-select/.form-textarea was REMOVED (theme.css loads after style.css and
-  would have kept the glow), with a comment in its place.
-- css/style.css: the three field classes use `border: 1px solid var(--border-field)`; the `:focus` rule
-  is `border-color: var(--accent-text); box-shadow: none; outline: 1px solid var(--accent-text);
-  outline-offset: 0` (one solid 2px accent edge, no glow); select arrow fill `%238f8a7d` (--dim)
-  instead of the old blue-gray `%2364748b`. Comments added.
-- No markup or JS change; stitch.py output is identical to A-011. The change applies to every page that
-  renders these fields: contact panels, build-detail inquiry form, notify box on builds.html and the
-  part-boxes order form.
-- VISUAL_REDESIGN.md: new "Form fields" subsection; Scope notes updated. START_HERE.md: Current state
-  and Next up updated.
-Decision: Owner chose Option A (visible border, solid focus edge) over B (underline fields) and C (keep the
-  quiet look, unify focus). Options were shown as a published artifact. Deviation to flag: the offset
-  ring I first showed for focus read as a busy double ring, so A uses a solid 2px edge (border plus
-  outline, no offset) instead.
-Verified: stitch.py exit 0, generated files unchanged. smoke-test.js (jsdom installed here): ALL CHECKS
-  PASSED. visual-check.py on a scratch copy: no horizontal overflow on any page at desktop/tablet/mobile.
-  Real browser before -> after: resting border rgb(44,44,48) -> rgb(106,102,94), contrast against the card
-  1.29:1 -> 3.13:1 (computed from the token colors); after the focus transition (400ms), every input, select
-  and textarea on contact, the notify box and the build-detail form (measured in a scratch copy with
-  aug26-02 set to available, real data unchanged) has border rgb(174,121,142), outline solid 1px at offset
-  0, box-shadow none; select arrow #64748b -> #8f8a7d; field heights unchanged (45px); 0 script errors. The
-  part-boxes order form (revealed by adding a box) shows the same focused style. Screenshots and options
-  page were made on scratch copies and are not in the ZIP. Not run: submitting a form. Not measured: the
-  field change at 390px specifically.
-Next/open: contact's thank-you state is not walked yet; `.qty-input`/`.qty-btn` on part-boxes untouched
-  (part-boxes not walked); whether the old focus glow was one of the 9 remaining
-  `gpt-thin-border-wide-shadow` hits is unknown (detector not run); custom-build deferred items and the
-  other sitewide scan findings unchanged.
-
-A-013 | complete | 2026-10-08
-Task: Success states - one shared confirmation component for contact, the builds.html notify box and the build-detail form (Lane A visual decision; owner approved Option B).
-Files (diff against the A-012 ZIP returned earlier in this chat):
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M css/style.css
-- M js/render/buildDetail.js
-- M js/render/contactRouter.js
-- M js/render/notifyBox.js
-Changed:
-- css/style.css: new `.success-state` / `.success-mark` / `.success-title` (centered neutral card, check
-  in a 56px circle outlined in --accent-text, h2 title, paragraph capped at 52ch, button below;
-  `.listing-form-card .success-state` drops its own box; `grid-column: 1 / -1` so it spans the grid the
-  notify box sits in). Added after the existing `.notify-success` block, which is kept on purpose (see
-  Next/open).
-- js/render/contactRouter.js, notifyBox.js, buildDetail.js: the inline-styled / `.notify-success`
-  confirmation blocks are replaced by the shared markup (mark has aria-hidden="true"; heading is an h2,
-  was an h3 under the h1 on contact and build-detail). On contact it is wrapped in
-  `<section class="section"><div class="container">` because #contact-live-region sits directly in <main>.
-  Copy, links, buttons, the ?sent=true / ?notified=true triggers and the live regions are unchanged.
-- VISUAL_REDESIGN.md: new "Success states" subsection; Scope notes updated (contact complete apart from
-  hero copy). START_HERE.md: Current state and Next up updated.
-Decision: Owner chose Option B (centered badge in a card) over A (centered, unboxed) and C (left-aligned on
-  the grid). Options were shown as a published artifact in three contexts. Deviations to flag: (1) the
-  artifact could not show that the notify box sits in a grid; the first implementation rendered a 361px
-  card on builds.html, fixed with `grid-column: 1 / -1`; (2) a fourth instance exists that the artifact did
-  not show, js/render/partBoxOrder.js (part-boxes order confirmation, inside the sticky .order-summary
-  panel), and it was left untouched because part-boxes is not walked yet.
-Verified: stitch.py exit 0, generated HTML unchanged. node --check passes on the three JS files.
-  smoke-test.js (jsdom installed here): ALL CHECKS PASSED. visual-check.py on a scratch copy: no horizontal
-  overflow on any page at desktop/tablet/mobile. Each state rendered for real by its URL parameter
-  (contact.html?sent=true, builds.html?notified=true, build.html?id=aug26-02&sent=true) at 1440/768/390: 0
-  script errors, no horizontal overflow; at 1440 contact card 1132px wide, builds card 1132px (720px at
-  768), build-detail state inside its form card with no box of its own; check mark 5.05:1 against the card
-  (old --accent mark 2.53:1); contact heading structure h1 then h2. The build-detail state was checked in a
-  scratch copy with aug26-02 set to available because every real listing is sold; real data unchanged.
-  part-boxes.html?ordered=true confirmation computes identically before and after (green border, 48px 32px
-  padding, 284px tall). Screenshots and the options page were made on scratch copies and are not in the ZIP.
-  Not run: actually submitting a form (it would POST to the form service), so the real redirect back with the
-  parameter was simulated by loading the URL directly.
-Next/open: migrate the part-boxes order confirmation (partBoxOrder.js, still `.notify-success` with the old
-  green border and an h3) to `.success-state` when part-boxes is walked; the hero on contact.html?sent=true
-  still says "Choose what fits below..." (copy, waits for the copy pass); custom-build deferred items and the
-  sitewide scan findings unchanged. Next page to walk: about, gallery, faq or part-boxes (owner picks).
-
-B-014 | complete | 2026-10-08
-Task: Refresh the stale theming text in ARCHITECTURE.md (Lane B checklist item; docs only, no site code touched).
-Files (diff against the A-013 ZIP):
-- M ARCHITECTURE.md
-- M LOG.md
-- M START_HERE.md
-Changed:
-- ARCHITECTURE.md: header note extended; directory-layout entries for css/tokens.css and css/theme.css rewritten
-  (theme.css is the live "Cask" theme, dark-only, loaded last on all 10 pages in pages-src/); "Theming" section
-  rewritten (tokens.css holds the old blue defaults + light block, theme.css redefines them; current token
-  roles: --accent, --accent-text, --border-field, fonts; rules of thumb); old "Visual redesign ("Forge")"
-  section replaced by "Visual redesign history" (Forge = superseded, history in docs-archive; current process
-  in VISUAL_REDESIGN.md). Each statement was checked against css/tokens.css, css/theme.css, the <link> order in
-  every pages-src/*.html, and VISUAL_REDESIGN.md decisions 9, 13, 14 and A-012.
-- START_HERE.md: Last updated / Current state header, B-014 line, Next up -> Lane B item removed, owner queue item 4.
-Found, not fixed:
-- theme.css does not redefine --success, so tokens.css's light-mode value (#16a34a) would apply for visitors
-  whose system is set to light. Visible effect: unknown (not rendered or measured). Visual question, left for Lane A.
-- Other stale parts of ARCHITECTURE.md (outside "theming", left alone and put in the owner queue): page list in
-  the directory layout omits about.html and part-boxes.html; js/data list omits faq.js, gallery.js,
-  partBoxes.js; docs line still lists files now in docs-archive/; "8 HTML files" in the rationale.
-- Comment in css/theme.css (decision 14 note) cites "/areas/website-visual-redesign.md", which is not a file in
-  this project. Not changed (code comment, not part of this chunk).
-Verified: stitch.py exit 0, generated files unchanged (diff of uploaded vs. working project shows only the docs
-  above). Not run: smoke-test.js and visual-check.py (no site code or CSS changed; no network here for jsdom).
-Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist. Lane A: walk about,
-  gallery, faq or part-boxes (owner picks).
-
-B-015 | complete | 2026-10-08
-Task: (1) fix the dead file-path citation in css/theme.css comments; (2) bring the non-theming stale parts of ARCHITECTURE.md up to date (owner request, following the B-014 findings).
-Files (diff against the B-014 ZIP):
-- M ARCHITECTURE.md
-- M LOG.md
-- M START_HERE.md
-- M css/theme.css
-Changed:
-- css/theme.css: comments only, 2 places (decision-14 notes): `/areas/website-visual-redesign.md` -> `VISUAL_REDESIGN.md`.
-  No CSS rules touched. The same dead citation also appears in css/style.css (2) and css/build-detail.css (4); not
-  changed (owner asked for theme.css only), listed in the owner queue.
-- ARCHITECTURE.md: directory layout now lists all 10 generated root pages plus pages-src/ (and says root HTML is
-  generated), adds js/data faq.js, gallery.js, partBoxes.js, the current docs files and docs-archive/, favicon.ico,
-  smoke-test.js, visual-check.py; gallery.css described as the lightbox only, loaded by gallery.html and index.html
-  (checked against the <link> tags; it was listed as gallery.html + build.html); doc references to DECISIONS.md and
-  PROJECT_STATUS.md now point into docs-archive/; stitch.py paragraph notes it also writes sitemap.xml/robots.txt
-  (404.html excluded), checked against build-tools/stitch.py. Header note updated. Also checked and found accurate, left
-  as is: marker names, the PC data-model field names, the media {images, videos} shape, the events fields, the blog
-  toggle in config.js, FormSubmit use.
-Corrects: B-014. B-014 listed "8 HTML files" in ARCHITECTURE.md's rationale as stale. It is not: that sentence
-  describes the OLD site before the rebuild, so it was left unchanged.
-Found, not fixed (owner queue item 4): comment in css/gallery.css says "Loaded only by gallery.html" (index.html also
-  loads it); comment in js/data/config.js mentions js/render/contactForm.js, which does not exist (contactRouter.js).
-Verified: stitch.py exit 0, generated files unchanged (diff shows only the files above). Not run: smoke-test.js and
-  visual-check.py (no executable code or CSS rules changed; no network here for jsdom).
-Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist. Lane A: walk about, gallery,
-  faq or part-boxes (owner picks).
-
-B-016 | complete | 2026-10-08
-Task: Fix the three leftovers from B-015 (owner approved 1-3): dead path citations, gallery.css header comment, config.js comment.
-Files (diff against the B-015 ZIP):
-- M LOG.md
-- M START_HERE.md
-- M css/build-detail.css
-- M css/gallery.css
-- M css/style.css
-- M js/data/config.js
-Changed (comments only, no rules or code):
-- css/style.css (2) and css/build-detail.css (4): `/areas/website-visual-redesign.md` -> `VISUAL_REDESIGN.md`. No
-  occurrences remain in css/ or js/.
-- css/gallery.css: header now says it is loaded by gallery.html and index.html (confirmed by the <link> tags).
-- js/data/config.js: the comment pointing at the nonexistent js/render/contactForm.js now says what actually happens:
-  stitch.py fills {{CONTACT_EMAIL}} into pages-src/contact.html and part-boxes.html (so re-run it after changing the
-  email), and js/render/buildDetail.js and notifyBox.js read CONTACT.email at runtime. Checked by grep.
-Verified: stitch.py exit 0, generated files unchanged; node --check passes on js/data/config.js. Not run:
-  smoke-test.js, visual-check.py (comments only; no network for jsdom).
-Next/open: owner has part-box pictures to add (not started). Lane B remaining: Phase 8 maintenance/deployment guide;
-  domain-swap checklist.
-
-B-017 | complete | 2026-10-08
-Task: Add the owner's part-box photos (11 boxes, one photo each, uploaded as HEIC in Archive.zip).
-Files (diff against the B-016 ZIP):
-- A images/box-01.jpg ... images/box-11.jpg (11 files)
-- M js/data/partBoxes.js
-- M LOG.md
-- M START_HERE.md
-Changed:
-- images/: HEIC converted to JPEG with ImageMagick (auto-oriented, EXIF/GPS stripped, longest side max 1800 -> 1350x1800,
-  quality 82), 230-400 KB each. Named by box id.
-- js/data/partBoxes.js: each of box-01..box-11 gets `media.images: ["images/box-NN.jpg"]`. Nothing else in the file changed.
-Mapping used (from file names, checked by looking at each photo): R_5_5500->box-01, R_5_3600->box-02, R_7_5800X3D->box-03,
-  MAG_A550BN->box-04, MAG_A650BE->box-05, SE-214-XT-V2->box-06, A520M-PLUS_W (open box, insert visible)->box-07,
-  A520M-PLUS (closed, taped)->box-08, B550M-VC-WIFI->box-09, B550-PLUS-AC-HES->box-10, RW_TOWER_SCREEN->box-11.
-Flags (owner queue item 4-5): box-03 data says 5700X3D, photo label says 5800X3D (not changed); box-07/08 assignment is
-  my reading; box-09 had a second photo (B550M-VC-WIFI_W) that was not added; portrait photos are center-cropped by the
-  landscape card frame (visual, Lane A).
-Verified: stitch.py exit 0, generated HTML unchanged; node --check passes on partBoxes.js. Real Chromium on a scratch copy
-  of part-boxes.html at 1440 and 390 wide: 11 cards, all 11 images loaded (naturalWidth 1350), 0 script errors, no
-  horizontal overflow; screenshots viewed (not in the ZIP). Not run: smoke-test.js (npm install jsdom still fails in this
-  sandbox: network unreachable), visual-check.py. Not tested: ordering/submitting the part-boxes order form.
-Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist.
-
-B-018 | complete | 2026-10-08
-Task: Part-box follow-ups from the owner's answers to B-017: fix box-03 model, split the B550M listing into with/without inserts, record the no-crop requirement for Lane A.
-Files (diff against the B-017 ZIP):
-- A images/box-12.jpg
-- M images/box-09.jpg
-- M js/data/partBoxes.js
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M LOG.md
-Changed:
-- js/data/partBoxes.js: box-03 model "Ryzen 7 5700X3D" -> "Ryzen 7 5800X3D" (owner: photo label is right; no other
-  mention of either model in the site data or pages). box-09 (MSI PRO B550M VC WIFI, includes inserts) quantity 2 -> 1.
-  New box-12 (same board, "Good condition. No inserts.", qty 1, $5, same category), placed right after box-09 so the two
-  display together. IDs are never reused, so the new box is box-12.
-- images/: box-09.jpg is now the B550M_W (with inserts) photo, re-converted from the HEIC with the same settings as
-  B-017; box-12.jpg is the plain (no inserts) photo that was box-09.jpg in B-017.
-- START_HERE.md: Current state, Next up (new first Lane A item: part-box photos shown portrait, uncropped), owner queue.
-- VISUAL_REDESIGN.md: one entry under "Outstanding" recording the owner request (not designed or implemented).
-Owner decisions: "_W" in the photo file names means "with inserts" (consistent with the B-017 mapping of box-07/08 and
-  box-01/02/04/05); photos stay portrait and uncropped (Lane A designs it).
-Flags (owner queue item 4): box-06's photo was a "_W" (with inserts) file but its data says "No inserts" (not changed);
-  box-12's condition wording is mine, following the other boxes' pattern.
-Verified: stitch.py exit 0, generated HTML unchanged; node --check passes on partBoxes.js. Real Chromium on a scratch copy
-  of part-boxes.html at 1440 and 390 wide: 12 cards, all 12 images loaded (1350 px), the two B550M cards adjacent,
-  0 script errors, no horizontal overflow. Not run: smoke-test.js (jsdom still cannot be installed here: network
-  unreachable), visual-check.py, submitting the order form.
-Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist.
-
-B-019 | complete | 2026-10-08
-Task: Fix box-06's insert status (owner: "with inserts is right").
-Files (diff against the B-018 ZIP):
-- M js/data/partBoxes.js
-- M START_HERE.md
-- M LOG.md
-Changed:
-- js/data/partBoxes.js: box-06 condition "Good condition. No inserts." -> "Good condition — includes inserts." (same wording
-  pattern as box-09). Nothing else touched. Owner approved box-12's wording ("Good condition. No inserts.") as is.
-- START_HERE.md: Current state, owner queue (the two part-box questions are resolved and removed).
-Scan for other small items (read-only, nothing changed): no TODO/FIXME/lorem in site files except the known
-  "TODO: replace with a dedicated business email" comment in js/data/config.js; no leftover services/repair mentions apart from
-  one disclaimer sentence in js/data/faq.js (copy, for the copy pass) and a history note in css/situation-picker.css; every file
-  in images/ is referenced; no empty alt attributes in pages-src. Remaining Lane B items are the two never-written docs.
-Verified: stitch.py exit 0, generated HTML unchanged; node --check passes on partBoxes.js. Not run: smoke-test.js (jsdom cannot
-  be installed in this sandbox: network unreachable), visual-check.py, any browser render (a one-line text change).
-Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist. Owner wants to start the copy rewording.
-
-B-020 | complete | 2026-10-08
-Task: Plan ahead for the copy rewrite (owner request): evaluate which site text is incorrect or may mislead, then which text has an important role (by style and placement) and is not doing it well. No copy changed.
-Files (diff against the B-019 ZIP):
-- A COPY_REVIEW.md
-- M START_HERE.md
-- M LOG.md
-Method: read the copy in every pages-src/*.html (incl. titles and meta descriptions), js/partials, js/data/{faq,builds,partBoxes,config,events,gallery}.js
-  and the user-visible strings in js/render/*.js; rendered builds.html, gallery.html and index.html in real Chromium on a scratch copy to see the
-  actual empty states (all builds are sold). Claims were checked against the data files where possible; the rest are marked unknown.
-Result: COPY_REVIEW.md. Part 1: 7 checked errors/contradictions (A), 7 wording that may mislead (B), 4 gaps (C). Part 2: 13 prominent
-  texts with a note on idea vs wording. Ends with a suggested order for the copy pass. Owner questions added to START_HERE.md owner queue item 4.
-Verified: no site file changed, so stitch.py and the generated HTML are untouched (not re-run: nothing to rebuild). Not run: smoke-test.js (jsdom
-  cannot be installed here), visual-check.py. Statements about how search engines see build.html titles, and about FormSubmit/analytics
-  behavior, are from reading the code and not tested.
-Next/open: Lane B remaining: Phase 8 maintenance/deployment guide; domain-swap checklist. Owner: answer the item-4 facts when ready.
-
-A-021 | complete | 2026-10-09
-Task: Part-boxes portrait photo cards (owner-requested; Lane A visual decision; owner approved Option B) and the --success light-mode pin (owner queue item 5).
-Files (diff against the uploaded nbpcs_after-B-020.zip):
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M css/part-boxes.css
-- M css/theme.css
-Changed:
-- css/part-boxes.css: cards are horizontal, two per row: `.box-grid` is `repeat(auto-fill, minmax(380px, 1fr))`,
-  `.box-card` a grid with a 144px photo column, `.box-image` is `aspect-ratio: 3 / 4` with
-  `.box-image img { object-fit: contain }` (photos never cropped), `.box-body` a flex column,
-  `.box-category` `align-self: flex-start`, `.box-footer` `margin-top: auto` (pins price + quantity to the card
-  bottom, which also fixes pickers that did not line up across a row). At 480px and below: one column, 110px
-  photo column; at 380px and below: 96px photo column. No markup or JS change; generated HTML unchanged.
-- css/theme.css: `--success: #22c55e` pinned with a comment. tokens.css gives --success a different value inside
-  a light-mode media query and theme.css never overrode it.
-- VISUAL_REDESIGN.md: new "Part-boxes page" section (portrait photo cards; light mode and --success); Scope notes
-  updated. START_HERE.md: Current state, Next up (Lane A) and Owner queue (item 5 removed) updated.
-Decision: Owner chose Option B (horizontal cards) over A (portrait frame in 3-column cards) and C (keep the 4:3
-  frame, whole photo inside it). Options were shown as a published artifact. Owner also reported that the live
-  site has no light mode. Deviations to flag: (1) the photo column is 144px, not the 150px shown in the options,
-  because the price + quantity row needs 198px and 150px left only ~4px of slack at the 386px card width;
-  (2) the first implementation used a 372px grid minimum, which was wrong; fixed to 380px after the width sweep
-  showed a wrapped footer at 820px.
-Verified: Reconciled Lane B's B-014..B-020 against a real diff of the B-020 ZIP vs my A-013 ZIP: the changed
-  files match the logged files exactly, and the CSS/config changes are comment-only (code identical after
-  stripping comments). stitch.py exit 0, generated HTML unchanged. smoke-test.js (jsdom installed here): ALL
-  CHECKS PASSED. visual-check.py on a scratch copy: no horizontal overflow on any page at desktop/tablet/mobile.
-  Real page at 1440/1180/1000/900/840/820/768/641/480/390/360/320px: 0 script errors, no horizontal overflow,
-  every photo shown whole, quantity pickers aligned in every row; 12-box grid 1,338px at 1440 (was 1,620px);
-  at 360px and 320px the price + quantity row wraps to two lines (price above picker). Quantity buttons add
-  boxes, the "Your Request" summary updates and the order form appears. Light mode: light/dark emulation on all
-  9 pages gives identical body background and text; only --success differed; after the pin
-  `.badge-available` computes rgb(34, 197, 94) under both schemes (checked on a scratch copy with aug26-02
-  available, since no real listing is available). Screenshots, the options page and scratch copies are not in
-  the ZIP.
-Next/open: part-boxes still has the `.qty-input` / `.qty-btn` picker, the sticky order summary panel and the
-  `.notify-success` order confirmation in js/render/partBoxOrder.js (migrate to `.success-state`) to walk; about,
-  gallery and faq are unwalked; the now-dead light-mode block in css/tokens.css was left alone (owner choice);
-  a click-to-enlarge lightbox for the part-box photos is a possible later addition, not done; contact hero copy,
-  custom-build deferred items and the sitewide scan findings unchanged.
-
-A-022 | complete | 2026-10-09
-Task: Remove the leftover light-mode values; the site has no light mode and light and dark must be identical (owner request, following the A-021 finding).
-Files (diff against the A-021 ZIP returned earlier in this chat):
-- M ARCHITECTURE.md
-- M LOG.md
-- M START_HERE.md
-- M VISUAL_REDESIGN.md
-- M css/theme.css
-- M css/tokens.css
-Changed:
-- css/tokens.css: the whole `@media (prefers-color-scheme: light)` override block removed (theme.css already
-  overrode every token in it except --success); `color-scheme: dark light` is now `dark`; header comment and the
-  ":root" colour comment say the palette is dark-only.
-- css/theme.css: the A-021 `--success` pin removed (redundant once the light block is gone; the dark value
-  `#22c55e` in tokens.css is the only definition); header comment updated.
-- ARCHITECTURE.md: tokens.css file-tree line, the "Where the live theme comes from" sentence and the "Dark only"
-  paragraph now describe a single dark palette.
-- VISUAL_REDESIGN.md: follow-up added to the "Light mode" subsection. START_HERE.md: Current state updated (the
-  A-021 bullet's "left in place" is superseded).
-- No markup, JS or generated-HTML change. The `--success` token itself is NOT removed: .badge-available,
-  .price-event and .event-badge still use it.
-Decision: Owner asked to remove the old --success (the unused light-mode value) and wanted everything the same
-  for light and dark. Interpreted as: remove the light-mode block (including its --success: #16a34a) and keep the
-  one dark --success definition, since removing the token would leave the Available badge, event price and event
-  badge without a colour. Flagged to the owner in the reply so it can be corrected.
-Verified: stitch.py exit 0, generated HTML unchanged. smoke-test.js (jsdom installed here): ALL CHECKS PASSED.
-  visual-check.py on a scratch copy: no horizontal overflow on any page at desktop/tablet/mobile. Light vs dark
-  emulation on 10 page states (9 pages, contact with a form panel open, contact.html?sent=true, part-boxes with
-  a box added): all 32 custom properties from tokens.css and theme.css equal, computed color-scheme `dark` in
-  both, full-page screenshots pixel-identical (the contact-panel state needs the button transition to settle:
-  at 250ms dark vs dark also differed in one 200x41px area, at 1,500ms all identical). No CSS variable used
-  without a definition (31 used, 32 defined). `.badge-available` computes rgb(34, 197, 94) under both schemes on
-  a scratch copy with aug26-02 available (no real listing is available). Screenshots and scratch copies are not
-  in the ZIP.
-Next/open: part-boxes still has the `.qty-input` / `.qty-btn` picker, the sticky order summary panel and the
-  `.notify-success` order confirmation (partBoxOrder.js) to walk; about, gallery and faq are unwalked; the
-  contact hero copy, custom-build deferred items and the sitewide scan findings are unchanged.
+Rollover: entries B-001 to A-022 were moved verbatim to docs-archive/LOG-B001-A022.md in B-032. Keep about the
+newest 10 entries here; the newest entry always stays (the next-ID rule reads it).
 
 A-023 | complete | 2026-10-09
 Task: Part-boxes leftovers: quantity picker and order confirmation (Lane A; owner approved both after a before/after preview).
@@ -930,3 +204,153 @@ Next/open: the gallery page's empty "Current Builds" section (options being prep
   sit in a 2-column grid so one is alone on the second row (already the case with squares; mobile pass); very tall
   one-column gallery grid on phones at 420px and below (mobile pass); faq is the only unwalked page; then Lane B's copy
   pass.
+
+A-029 | complete | 2026-10-11
+Task: Hide the gallery's empty "Current Builds" section (owner approved Option A); note the owner's iPhone Plus / Pro Max observation for the mobile redesign.
+Files (diff against the A-028 ZIP returned earlier in this chat):
+- M LOG.md
+- M START_HERE.md
+- M VISUAL_REDESIGN.md
+- M gallery.html
+- M pages-src/gallery.html
+Changed:
+- pages-src/gallery.html: the "Current Builds" section has `id="gallery-current-section"`, a comment, and the page
+  script now renders the current grid only when `currentBuilds.length` is non-zero, otherwise sets the section's
+  `hidden` attribute. js/render/galleryGrid.js is unchanged. Nothing else links to `#gallery-current`.
+- gallery.html regenerated with stitch.py (the section id and comment and the script only).
+- VISUAL_REDESIGN.md: new "Empty Current Builds" subsection under the Gallery page section; scope note (gallery
+  complete); new "Mobile and tablet pass — backlog" section (7 items) collecting everything noted so far for the
+  mobile redesign. START_HERE.md: Current state, Next up and Lane B's dependent sentence updated.
+- Mobile note, docs only, nothing changed in code: the owner reported (Safari responsive design mode) that iPhone
+  Plus and Pro Max sizes get photo grids on the homepage and gallery while smaller iPhones get a single stacked
+  column, and "similar problems in other places". Measured: `.gallery-grid` (gallery and homepage preview) is 1
+  column at 320/375/390/393px and 2 columns at 428/430/480/600px, because of one rule, `@media (max-width: 420px)`
+  in css/style.css. Builds grid, part-box grid, custom-build tier cards and home builds grid are 1 column at all of
+  those widths; the only other rules at 480px and below are part-boxes' (110px and 96px photo columns). The other
+  places the owner saw were not identifiable from the CSS and need a visual 390-vs-430 walk in the mobile pass.
+Decision: Owner chose Option A (hide the section while empty) over B (compact) and C (reuse the builds.html notify
+  card). Options were shown as a published artifact. Owner asked for the iPhone observation to be saved for the
+  mobile redesign and noted now.
+Verified: stitch.py exit 0. smoke-test.js (jsdom installed here): ALL CHECKS PASSED. visual-check.py on a scratch
+  copy: no horizontal overflow on any page at desktop/tablet/mobile. Real data at 1440/768/390px: the section
+  computes display none, 0 tiles in it, 3 visible sections (hero, Completed Builds, CTA), headings H1 then H2
+  "Completed Builds" then the CTA's H2, the Completed Builds heading at y=516/483/498 (was 995 at 1440px), 22
+  completed tiles, 0 script errors, no overflow. Scratch copy with one photo added under currentBuilds: the section
+  returns (4 visible sections, 1 tile, H2 "Current Builds" before H2 "Completed Builds") and the lightbox opens from
+  it (1 / 1). Column counts for seven components were measured at 320/375/390/393/428/430/480/600px for the mobile
+  note. Screenshots and the options page are not in the ZIP.
+Next/open: faq is the only unwalked page; then the mobile and tablet redesign (backlog in VISUAL_REDESIGN.md) and
+  Lane B's copy pass. Layout with few photos (a single current photo becomes one 556x741 tile; 2-4 photos leave
+  empty cells in the 4x2 block) is noted for when current photos are next added. Contact hero copy, custom-build
+  deferred items and the sitewide scan findings are unchanged.
+
+A-030 | complete | 2026-10-13
+Task: FAQ accordion, the last unwalked page of the desktop walk (Lane A visual decision; owner approved Option B).
+Files (diff against the A-029 ZIP returned earlier in this chat):
+- M ARCHITECTURE.md
+- M LOG.md
+- M START_HERE.md
+- M VISUAL_REDESIGN.md
+- M css/style.css
+- M css/theme.css
+- M faq.html
+- M js/render/faqAccordion.js
+- M js/render/faqList.js
+- M pages-src/faq.html
+Changed:
+- js/render/faqList.js: each question is `<h2 class="faq-heading"><button type="button" class="faq-question" id
+  aria-expanded="false" aria-controls>` with `.faq-q-text` and an aria-hidden `.faq-icon`; the answer is `role="region"
+  aria-labelledby` around the same `.faq-answer-inner`. Ids come from a module counter (`faqUid`), unique across lists.
+  Copy and the `answerExtra` paragraph are unchanged. Before, the question was a plain div that only responded to a click.
+- js/render/faqAccordion.js: same open/close logic (one open per list) plus `aria-expanded` kept in sync.
+- css/style.css section 18 replaced (long comment): ruled rows (800px column, hairlines, no box); `.faq-question` is a
+  full-width button; `.faq-answer` reveals with `grid-template-rows: 0fr -> 1fr` and is `visibility: hidden` while closed
+  (delayed switch so the close animation shows) instead of animating `max-height` to 600px; the answer wrapper has no
+  vertical padding/border of its own; answers `max-width: 65ch`; rows 66px (were 88px, the `h2` kept default margins);
+  the icon keeps its tokenized colours and gets a hover border.
+- css/theme.css: the `.faq-item.open` accent-border override and the `.faq-item` 4px radius removed.
+- pages-src/faq.html: the list is plain `faq-list` (was `faq-list full-width`); faq.html regenerated with stitch.py.
+  The homepage preview needs no page change (same renderer); index.html unchanged.
+- VISUAL_REDESIGN.md: new "FAQ page" section; scope note (faq complete, every page walked at desktop width); home
+  decision 7 marked superseded in part; the `layout-transition` entry updated (FAQ accordion done, two places remain).
+  ARCHITECTURE.md: the "pages not yet walked" line. START_HERE.md: Current state, Next up, open findings, and Lane B's
+  copy-pass sentence (now unblocked).
+Decision: Owner chose Option B (ruled rows, one 800px column) over A (keep the boxes, fix the insides) and C (ruled
+  rows, two columns). Options were shown as a published live artifact. This supersedes home decision 7 (boxed accordion).
+  Deviations to flag: (1) keyboard focus uses the sitewide 2px offset ring, not the inset edge in the mockup (the inset
+  edge crowded the text once the row lost its side padding); (2) the icon gets a hover border, not in the mockup, to
+  replace the box's hover tint; (3) the old accent border on the open item is gone with the boxes.
+Verified: stitch.py exit 0. node --check passes on both scripts. smoke-test.js (jsdom installed here): ALL CHECKS
+  PASSED. visual-check.py on a scratch copy: no horizontal overflow on any page at desktop/tablet/mobile. Real FAQ page
+  at 1440/1024/768/390px: 0 script errors, no horizontal overflow; 6 buttons, all aria-expanded false at rest, every
+  aria-controls resolves, ids unique; closed answers visibility hidden at height 0 (measured at rest, before any
+  interaction); list at x=154, 800px wide at 1440px; rows 67px; icon 774px from its question; answer paragraphs 585px
+  wide (65ch); headings H1, six question H2s, then the closing box's H2. Keyboard: Tab reaches 6 of 6 questions, Enter
+  opens one, Space on another opens it and closes the first, Space again closes it, aria-expanded follows each step; the
+  focused question shows a 2px rgb(174, 121, 142) outline at 2px offset. Animation sampled every 40ms: opening 23 ->
+  223px over about 280ms, closing starts immediately (179 -> 0px, no lag). Scratch copy with a 3,556-character answer
+  in the first real FAQ item: opens to its full 1,388px (old cap 600px), nothing clipped, last line visible, closes to 0
+  and hidden. Homepage preview: 534px column, 3 buttons, opens and closes. Two of my own measurement mistakes were
+  corrected before trusting the results (a visibility reading taken mid-transition; a scratch edit that had landed in the
+  data file's example comment). A first scripted edit stopped partway (a no-op replacement that did not match), leaving
+  the renderer changed but not the CSS or behaviour script; the rest was applied at once and re-verified before
+  packaging. Screenshots, the options page and scratch copies are not in the ZIP. Not run: the design scanner, so whether
+  it still flags a grid-rows transition is unknown.
+Next/open: the desktop walk is finished (every page). Next: the mobile and tablet redesign (backlog in
+  VISUAL_REDESIGN.md, including the iPhone Plus / Pro Max observation) and Lane B's copy pass, which is no longer blocked.
+  Still open from earlier: the mobile nav submenu and the page-load progress bar (layout-transition), the nav-dropdown
+  shadow check, contact hero copy, custom-build's two deferred items.
+
+A-031 | complete | 2026-10-13
+Task: Handoff preparation for the mobile and tablet redesign (docs only). The owner is moving Lane A to a new chat on the same account.
+Files (diff against the A-030 ZIP returned earlier in this chat):
+- M LOG.md
+- M START_HERE.md
+- M VISUAL_REDESIGN.md
+Changed:
+- START_HERE.md: "Next up" rewritten as a clear mobile and tablet brief (first chunk suggested, page status, open
+  findings); "Do not touch" no longer refers to pages Lane A "has not finished walking" (all are walked) and no longer says
+  the copy rewrite waits "after the redesign" (the copy pass is Lane B's and can start); the doc-map line that said
+  ARCHITECTURE.md's theming text "predates the redesign" is corrected (refreshed in B-014, updated in A-022 and A-030);
+  two Tests bullets added: Chromium is the only browser installed (no WebKit or Firefox; the owner tests in Safari) and
+  visual-check.py only checks 1440, 768 and 390px for overflow.
+- VISUAL_REDESIGN.md: the "Desktop first" process bullet now says the desktop walk is finished and mobile is current; a
+  "Building option artifacts" how-to was added to "How this process works" (the lessons and pitfalls of A-006 to A-030);
+  the mobile backlog gained item 8 (tooling and baseline).
+- No site files changed: stitch output is identical to A-030.
+Decision: none (owner asked for the files and ZIPs to be checked and made ready for the new chat).
+Verified (on the extracted A-030 ZIP, before these edits): integrity OK; one top folder nbpcs/; no .git, node_modules,
+  __pycache__, screenshots or temp files; ZIP name, last LOG header and START_HERE.md all say A-030; LOG.md has 30 entries
+  (16 A and 14 B) with no gaps so the next number is 031; the output LOG.md and START_HERE.md were
+  byte-identical to the ones inside the ZIP; the A-030 entry's file list matched a real diff; stitch.py output identical
+  to the committed root HTML, sitemap.xml and robots.txt; node --check on 19 JS files plus smoke-test.js and py_compile
+  on both Python scripts all clean; all local links and assets in the 10 built pages resolve and no unreplaced {{ }}
+  markers; no old class names (service-hub-card, notify-success, css/services.css, faq-list full-width) in live code (only
+  in history comments); every image referenced by real data exists (four filenames that "look missing" are only examples
+  inside instruction comments in builds.js and gallery.js); smoke-test.js ALL CHECKS PASSED and visual-check.py no
+  overflow. The ZIP is about 12MB, the same as the B-025 upload, because of Lane B's part-box photos. Also ran: horizontal
+  overflow and script-error baseline, 10 pages x 14 widths (320 to 1024px): none of either. After these doc edits: stitch
+  identical, ZIP integrity and the diff against A-030 re-checked (see the reply). Two mistakes in my own first check
+  script (it read the "202" out of "2026" in the dates and printed false log-ID gaps) were caught and redone properly.
+Next/open: the mobile and tablet redesign (backlog in VISUAL_REDESIGN.md, 8 items; item 1, the 420px gallery breakpoint
+  that splits iPhone widths, is the suggested first chunk); Lane B's copy pass can start; still open from earlier: the mobile
+  nav submenu and the page-load progress bar (layout-transition), the nav-dropdown shadow check, contact hero copy,
+  custom-build's two deferred items.
+
+B-032 | complete | 2026-10-13
+Task: Slim the coordination docs without removing information (docs only; no site files changed).
+Files: M LOG.md, START_HERE.md, VISUAL_REDESIGN.md, MAINTENANCE.md; A TESTING.md and three docs-archive/ files
+  (LOG-B001-A022.md, START_HERE-through-A-031.md, VISUAL_REDESIGN-desktop-pass.md).
+Changed:
+- START_HERE.md 24 KB -> 8 KB: rules kept, "Current state" is now current facts only, new "Docs budgets" section. The old file
+  is kept verbatim in docs-archive/START_HERE-through-A-031.md; test notes moved to TESTING.md; the owner's ZIP-apply steps
+  moved to MAINTENANCE.md.
+- LOG.md: entries B-001..A-022 moved verbatim to docs-archive/LOG-B001-A022.md; A-023..A-031 stay (A-031 is still the
+  newest, so the next-ID rule is unaffected).
+- VISUAL_REDESIGN.md 111 KB -> 24 KB: the closed desktop decision records moved verbatim to
+  docs-archive/VISUAL_REDESIGN-desktop-pass.md, with a heading index in the live file. The still-open Impeccable findings
+  (`gpt-thin-border-wide-shadow`, `layout-transition`) stay live under "Open design findings".
+Decision: none (owner asked for slimming without losing information).
+Verified: line-by-line check that every line of the old LOG.md entries, START_HERE.md and VISUAL_REDESIGN.md is in a live
+  or archive file; no non-.md file differs from A-031.
+Next/open: none.

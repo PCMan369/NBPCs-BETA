@@ -28,7 +28,10 @@
     </div>
   </section>
 
-  <section class="section">
+  <!-- "Current Builds" is hidden while currentBuilds (js/data/gallery.js) is empty and
+       shows by itself once a photo is added there. See VISUAL_REDESIGN.md, "Gallery
+       page: empty Current Builds". -->
+  <section class="section" id="gallery-current-section">
     <div class="container">
       <div class="section-header align-left">
         <span class="section-label">For Sale</span>
@@ -75,7 +78,11 @@
   <script src="js/render/chrome.js"></script>
 
   <script>
-    renderGalleryGrid(currentBuilds,   'gallery-current');
+    if (currentBuilds.length) {
+      renderGalleryGrid(currentBuilds, 'gallery-current');
+    } else {
+      document.getElementById('gallery-current-section').hidden = true;
+    }
     renderGalleryGrid(completedBuilds, 'gallery-completed');
   </script>
 

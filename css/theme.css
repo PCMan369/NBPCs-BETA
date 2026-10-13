@@ -155,9 +155,6 @@ h1, h2, h3, h4 {
 .nav-sublink.active {
   background-color: rgba(139,63,94,0.12);
 }
-.faq-item.open {
-  border-color: rgba(174,121,142,0.4);
-}
 .faq-icon {
   background-color: rgba(139,63,94,0.1);
   border: 1px solid rgba(174,121,142,0.2);
@@ -360,7 +357,6 @@ h1, h2, h3, h4 {
 /* ================================================================
    FAQ — dark cards, amber toggle, no other structural change.
    ================================================================ */
-.faq-item { border-radius: 4px; }
 .faq-icon { color: var(--accent-text); }
 
 /* ================================================================

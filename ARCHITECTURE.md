@@ -232,7 +232,8 @@ above. Neither changed the HTML/JS structure described elsewhere in this file.
    typography, section headers, build cards, form fields, success states,
    the contact situation picker and more. The authoritative, current record is
    **VISUAL_REDESIGN.md**; START_HERE.md "Current state" says which pages are
-   done. Pages not yet walked (gallery, faq) still carry some earlier styling.
+   done. Every page has now been walked at desktop width (A-030); the mobile and tablet
+   pass is still to do.
 
 ## What's deliberately NOT built yet
 

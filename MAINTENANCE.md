@@ -123,3 +123,12 @@ The site is hosted on GitHub Pages and you push the files to GitHub. Commit **th
 - **Privacy:** photos, listing text and everything in `js/` are public once pushed.
 - **Changing the web address** (a real domain) is more than one setting. See the domain-swap checklist when it exists (planned, not written).
 - Old decisions and history: `docs-archive/DECISIONS.md` (large; search it rather than reading it). Design decisions: `VISUAL_REDESIGN.md`.
+
+## Applying a returned ZIP from a Claude chat
+Make the local working tree match the ZIP exactly, keeping `.git`, so deleted
+files disappear too (mirror-style sync, e.g. `rsync -a --delete --exclude .git`
+or `robocopy /MIR /XD .git`). Dry-run first, or check `git status` after: the
+deleted files shown should match the `D` lines in the log entry. A mirror
+sync also deletes local-only files that are not in the ZIP (for example
+`design-prototypes/` if it still exists), so exclude or relocate those.
+Commit with the entry ID in the message.
