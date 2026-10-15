@@ -23,7 +23,7 @@
 
   Two kinds of things DON'T re-theme automatically and get explicit
   overrides below: (1) rules that hardcode `color: white` on top of
-  `var(--accent-h)` — safe with the old blue, fails contrast badly on
+  the solid accent fill — safe with the old blue, fails contrast badly on
   amber; (2) rules that hardcode the old blue as a raw rgba() (mostly
   tints, box-shadows, and focus rings) instead of referencing a token.
   Batch 1 swept every instance findable from the homepage; Batch 2
@@ -44,7 +44,6 @@
   --card: #17171a;
   --card-h: #202024;
   --accent: #8b3f5e;
-  --accent-h: #8b3f5e;
   --accent-h2: #763650;
   --text: #f2efe9;
   --muted: #b6b2a9;
@@ -58,6 +57,13 @@
   --border-field: #6a665e;
   --accent-2: #cba9b7;
   --accent-text: #ae798e;
+  /* Accent text that sits ON the accent tint (rgba(139,63,94,0.10-0.12)):
+     active nav / dropdown / mobile sublink, .faq-icon, .box-category. The
+     tint darkens the surface, so --accent-text drops to 4.68:1 there (the
+     scanner's static estimate: 4.24:1); this ~6% lighter shade gives 5.13:1
+     (4.64:1 in the scanner's worst case). Visual Redesign M5, A-039. Not for
+     text on plain --card/--bg, and never on the solid accent fill. */
+  --accent-text-tint: #b38195;
   /* Visual redesign, decision 14 (accent color — Cask, approved):
      accent-text is deliberately lightened further from --accent than
      it needed to be under amber (30% lighten vs. amber's much smaller
@@ -352,12 +358,25 @@ h1, h2, h3, h4 {
 @media (max-width: 699px) {
   #gallery-preview .gallery-item:nth-child(n+4) { display: none; }
 }
+/* Phones and small tablets, Visual Redesign "Phone gallery grid", Option C (A-033):
+   the first photo runs full width and the rest sit in two columns, the desktop
+   bento scaled down. Replaces the old 1-column rule at 420px, which put iPhone
+   Plus / Pro Max widths (428-430px) in a different layout from smaller iPhones
+   and made the 22-photo gallery 10,452px tall at 390px. The homepage preview
+   (3 visible tiles) becomes 1 big + 2 small, so no tile is alone on a row. On
+   the gallery pages, a last tile that would sit alone (even photo count) spans
+   the full width. */
+@media (max-width: 699px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .gallery-grid .gallery-item:nth-child(1) { grid-column: span 2; }
+  .gallery-grid:not(#gallery-preview) .gallery-item:last-child:nth-child(even) { grid-column: span 2; }
+}
 .gallery-item { border-radius: 4px; }
 
 /* ================================================================
    FAQ — dark cards, amber toggle, no other structural change.
    ================================================================ */
-.faq-icon { color: var(--accent-text); }
+.faq-icon { color: var(--accent-text-tint); }
 
 /* ================================================================
    CTA / waitlist / notify block

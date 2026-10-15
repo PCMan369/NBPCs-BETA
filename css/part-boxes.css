@@ -85,7 +85,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent-text);
+  color: var(--accent-text-tint);
   background: rgba(139,63,94,0.12);
   border-radius: 999px;
   padding: 0.15rem 0.55rem;
@@ -164,7 +164,7 @@
 }
 
 .qty-btn:hover {
-  background: var(--accent-h); /* was --accent — white text on it only reached 3.68:1 */
+  background: var(--accent); /* solid accent fill, white text on it (--accent-h merged into --accent, A-040) */
   color: white;
 }
 
@@ -305,5 +305,53 @@
 @media (max-width: 380px) {
   .box-card {
     grid-template-columns: 96px 1fr;
+  }
+}
+
+/* Phones 389px and below, Visual Redesign "Part-box cards on small phones",
+   Option B (A-036): the card is two rows. Photo + text on top, then a ruled
+   footer across the whole card with the price on the left and the quantity
+   picker on the right, the same pattern wider phones show beside the photo.
+   Before this the price wrapped above the picker at 321-375px and again at
+   381-388px (the photo column jumps from 96px to 110px at 381px). .box-body
+   becomes display: contents so its text can sit in the card grid beside the
+   photo while the footer spans both columns; row 3 is 1fr so extra photo
+   height never opens gaps between the text lines. 390px and up unchanged. */
+@media (max-width: 389px) {
+  .box-card {
+    grid-template-columns: 96px 1fr;
+    grid-template-rows: auto auto 1fr auto;
+  }
+
+  .box-image {
+    grid-row: 1 / span 3;
+  }
+
+  .box-body {
+    display: contents;
+  }
+
+  .box-category,
+  .box-title,
+  .box-condition {
+    grid-column: 2;
+    margin-left: 0.9rem;
+    margin-right: 1rem;
+  }
+
+  .box-category {
+    justify-self: start;
+  }
+
+  .box-body > :first-child {
+    margin-top: 1rem;
+  }
+
+  .box-footer {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    margin: 0.25rem 1rem 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
   }
 }

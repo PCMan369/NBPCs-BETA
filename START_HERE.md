@@ -1,7 +1,7 @@
 # START_HERE.md — North Bridge PCs website
 
 Read this first, then the last few entries of LOG.md. Read other docs only
-when the doc map (bottom) says to. Last updated: B-032 (2026-10-13).
+when the doc map (bottom) says to. Last updated: A-040 (2026-10-14).
 
 ## What this is
 Static HTML/CSS/vanilla-JS site on GitHub Pages. Real sources are in
@@ -67,42 +67,45 @@ cautions: MAINTENANCE.md, "Applying a returned ZIP".
   page records go verbatim to docs-archive/ with a heading index in the live file.
 - If a budget is exceeded when you start, say so; fix it in the same chunk if the fix is docs-only.
 
-## Current state (as of B-032)
+## Current state (as of A-040)
 - V1 build is complete (history D1-D43 in docs-archive/DECISIONS.md). Services were removed (B-003, B-004); the old
   services.html URL returns the 404 page. All builds are sold, so the site shows its no-inventory states. Dark only, no
   light mode (A-022); the `--success` token stays.
-- **Visual redesign.** Live record: VISUAL_REDESIGN.md (closed desktop decisions are in
-  docs-archive/VISUAL_REDESIGN-desktop-pass.md, indexed in the live file). Accent is "Cask" `#8b3f5e` sitewide. Every
-  page has been walked at desktop width (finished A-030). Status: home, build-detail, about, gallery and faq done;
-  contact done apart from hero copy; part-boxes apart from copy items (COPY_REVIEW.md); custom-build apart from two
-  items (tier-card rule alignment at tablet widths, for the mobile pass; the final CTA box's kicker label, for the copy pass).
+- **Visual redesign.** Live record: VISUAL_REDESIGN.md (closed desktop decisions: docs-archive/VISUAL_REDESIGN-desktop-pass.md,
+  indexed in the live file). Accent is "Cask" `#8b3f5e` sitewide. Every page walked at desktop width (A-030). Home,
+  build-detail, about, gallery and faq done;
+  contact done apart from hero copy; part-boxes apart from copy items (COPY_REVIEW.md); custom-build apart from one
+  item (the final CTA box's kicker label, for the copy pass).
 - **Built pieces that constrain new work:**
-  - Forms: field border is the `--border-field` token; focus is one solid 2px accent edge (A-012). Contact, builds notify
-    box, build-detail form and part-boxes order confirmation share one `.success-state` card (A-013, A-023).
-  - Contact picker: `.situation-picker` / `.situation-option` in `css/situation-picker.css` (was `services.css`, A-009).
+  - Forms: field border `--border-field`; focus one solid 2px accent edge (A-012). Contact, builds notify box,
+    build-detail form and part-boxes order confirmation share one `.success-state` card (A-013, A-023).
+  - Accent text on the accent tint (active nav, FAQ icon, part-box chip): `--accent-text-tint` (A-039).
+  - Contact picker: `.situation-picker` / `.situation-option` in `css/situation-picker.css` (A-009); buttons all 200px
+    wide, also on phones (A-034).
   - FAQ: ruled rows, buttons in the h2s, `grid-template-rows` reveal (A-030; supersedes home decision 7).
   - Gallery: tiles 3:4 `object-fit: contain` (A-027); homepage preview 5 photos on desktop, 3 below 700px (A-028); empty
-    "Current Builds" hidden until `currentBuilds` in `js/data/gallery.js` has a photo (A-029).
+    "Current Builds" hidden until `currentBuilds` in `js/data/gallery.js` has a photo (A-029). Below 700px: 2 columns,
+    first photo full width, a lone last tile full width (A-033, `css/theme.css`).
   - Part-boxes: 12 boxes, one portrait photo each (`images/box-NN.jpg`); horizontal cards, two per row when the grid is
-    at least 780px wide (A-021).
-- **Checks at A-031:** root HTML matches `pages-src/` + stitch.py; no horizontal overflow or script errors on the 10 pages
-  at 14 widths from 320 to 1024px (Chromium only); `smoke-test.js` passed in Lane A's sandbox (A-030).
+    at least 780px wide (A-021); at 389px and below a two-row card with a full-width footer (A-036).
+- **Checks at A-040:** `visual-check.py` (10 pages x 15 widths, Chromium): no overflow or script errors;
+  `smoke-test.js` passed in Lane A's sandbox; Impeccable: 0 findings, 0 advisories.
 
 ## Next up
 **Lane A:** the mobile and tablet redesign (owner, 2026-10-13). Findings: VISUAL_REDESIGN.md, "Mobile and tablet pass —
-backlog" (8 items) and "Open design findings" (`gpt-thin-border-wide-shadow`, `layout-transition`; `--accent-h` still
-equals `--accent`, harmless). Sensible first chunk, backlog item 1: iPhone Plus / Pro Max widths (428-430px) get a
-2-column photo grid while smaller iPhones get one column (single `max-width: 420px` rule on `.gallery-grid`).
+backlog" (all 8 items done) and "Open design findings" (A-038 re-scan: thin-border and layout-transition no longer
+reported; the 4.2:1 advisory, the lightbox `broken-image` and `--accent-h` were closed in A-039/A-040; the detector is
+clean). Left: a mobile walk of every page (owner, Safari).
 **Lane B:** the copy pass (see Owner queue); the domain-swap checklist (`SITE.url`, Search Console, GitHub Pages custom
 domain), which can wait because the owner cannot afford a domain yet.
 
 ## Owner queue (waiting on you)
 - Medium term, not blocking (owner, 2026-10-09): a hero image (several PCs or the building setup); a real domain plus
   phone/Facebook values; testimonials (off until real ones exist).
-- Copy pass (can start now): the facts questions are answered in COPY_REVIEW.md, "Owner answers". Owner rule: reword only
-  if misleading. Still to decide: whether to fix the two items that look misleading (pickup is described as at the
-  owner's address but is usually meet-in-the-middle with paid delivery possible; the site never says parts are used), and
-  the wrong/contradictory items in COPY_REVIEW.md Part 1 A.
+- Copy pass (can start now): facts answered in COPY_REVIEW.md, "Owner answers". Owner rule: reword only if misleading.
+  Still to decide: fix the two items that look misleading (pickup is described as at the owner's address but is usually
+  meet-in-the-middle, paid delivery possible; the site never says parts are used) and the wrong/contradictory items in
+  COPY_REVIEW.md Part 1 A.
 
 ## Do not touch
 - Site copy wording goes through the copy pass (Lane B, owner rule "reword only if misleading"); Lane A does not reword
@@ -111,7 +114,7 @@ domain), which can wait because the owner cannot afford a domain yet.
 ## Doc map
 - **LOG.md**: newest ~10 completed chunks, newest last. **docs-archive/**: frozen history (grep, never read in full):
   DECISIONS.md (D1-D43; code comments cite "DECISIONS.md D##"), PROJECT_STATUS.md, TODO.md, CHANGELOG.md,
-  LOG-B001-A022.md, START_HERE-through-A-031.md (old per-chunk state narrative), VISUAL_REDESIGN-desktop-pass.md.
+  LOG-B001-A022.md, LOG-A023-A027.md, LOG-A028-A029.md, START_HERE-through-A-031.md (old per-chunk state narrative), VISUAL_REDESIGN-desktop-pass.md.
 - **VISUAL_REDESIGN.md**: live design process, scope, open findings, mobile backlog (Lane A).
 - **ARCHITECTURE.md**: stack and structure. **MAINTENANCE.md**: owner guide. **COPY_REVIEW.md**: text audit for the copy pass.
 - **TESTING.md**: how to run `smoke-test.js` and `visual-check.py`, sandbox limits (npm registry, fonts, browsers) and

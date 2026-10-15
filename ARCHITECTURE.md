@@ -180,13 +180,13 @@ There is no JS theme switcher.
 
 **Current token values** (all in the `:root` block of `css/theme.css`; read the
 file for exact values, the ones that matter for understanding the design are):
-- Accent is **"Cask"**, `--accent` / `--accent-h` = `#8b3f5e`, chosen in
+- Accent is **"Cask"**, `--accent` = `#8b3f5e`, chosen in
   VISUAL_REDESIGN.md decision 14. Solid accent fills (`.btn-primary`,
   `.back-to-top`, `.nav-cta`, `.skip-link`) use white text.
 - `--accent-text` (`#ae798e`, a lightened tint) is the token for accent-colored
   text, borders, outlines and icons, because the base value is too dark to read
   as a thin line or small text. Use `--accent` only as a solid fill.
-- `--accent-h` currently equals `--accent`, and `--accent-h2` is defined but
+- `--accent-h` was removed in A-040 (it equalled `--accent`); `--accent-h2` is defined but
   unused. Button hover brightens the same fill (`filter: brightness(1.12)`)
   rather than switching to a second color (decision 9).
 - `--border-field` (`#6a665e`) is the resting border for form fields, added in

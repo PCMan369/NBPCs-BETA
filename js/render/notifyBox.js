@@ -46,7 +46,7 @@ function renderNotifyBox() {
           'When I have something that fits, I\'ll reach out directly. ' +
           'No spam, no mailing list — just a one-time heads up.</p>' +
           '<p style="margin-top:1rem; font-size:0.88rem;">' +
-            'In the meantime, <a href="custom-build.html" style="color:var(--accent); text-decoration:underline;">custom builds</a> are always available ' +
+            'In the meantime, <a href="custom-build.html" style="color:var(--accent-text); text-decoration:underline;">custom builds</a> are always available ' +
             'if you have something specific in mind.' +
           '</p>' +
         '</div>' +

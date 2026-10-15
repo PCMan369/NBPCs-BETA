@@ -64,6 +64,7 @@
     grid-row: auto;
     justify-self: start;
     margin-top: 0.75rem;
-    min-width: 0;
+    /* min-width: 12.5rem from the rule above stays: same button width on phones
+       (Visual Redesign M2, A-034; it was reset to 0, so buttons sized to their text). */
   }
 }

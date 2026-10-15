@@ -41,7 +41,7 @@ a {
 }
 
 a:hover {
-  color: var(--accent-text); /* was --accent-h (#2563eb), which only reached
+  color: var(--accent-text); /* was the old blue --accent-h (#2563eb, removed A-040), which only reached
                                  3.45:1 against dark --bg — fails WCAG AA.
                                  Keeping the same color as the resting accent-text
                                  state and relying on underline for hover feedback,
@@ -284,12 +284,12 @@ strong {
 }
 
 .nav-link.active {
-  color: var(--accent-text);
+  color: var(--accent-text-tint);
   background-color: rgba(139,63,94,0.12);
 }
 
 .nav-cta {
-  background-color: var(--accent-h) !important; /* was --accent — white text on it only reached 3.68:1 */
+  background-color: var(--accent) !important; /* solid accent fill, white text on it (--accent-h merged into --accent, A-040) */
   color: white !important;
   font-weight: 600;
   padding: 0.5rem 1.1rem;
@@ -390,7 +390,7 @@ strong {
 }
 
 .nav-dropdown-link.active {
-  color: var(--accent-text);
+  color: var(--accent-text-tint);
   background-color: rgba(139,63,94,0.12);
 }
 
@@ -516,7 +516,7 @@ strong {
 }
 
 .nav-sublink.active {
-  color: var(--accent-text);
+  color: var(--accent-text-tint);
   background-color: rgba(139,63,94,0.12);
 }
 
@@ -1045,7 +1045,7 @@ strong {
 }
 
 .btn-primary {
-  background-color: var(--accent-h); /* was --accent — white text on it only reached 3.68:1, below WCAG AA's 4.5:1 for this text size */
+  background-color: var(--accent); /* solid accent fill, white text on it (--accent-h merged into --accent, A-040) */
   color: white;
   /* Visual redesign, decision 9 (button treatment — Option C,
      approved, sitewide): flat neutral shadow instead of a colored
@@ -1070,7 +1070,7 @@ strong {
      a:hover { color: var(--accent-text) } (one type selector + one
      pseudo-class) silently outranked .btn-primary's plain-class
      `color: white` the instant it was hovered — accent-text text on
-     the still-solid accent-h background, exactly Impeccable's number.
+     the still-solid accent background, exactly Impeccable's number.
      Confirmed live with a real hover (not just read from the CSS):
      computed color was rgb(174,121,142) on rgb(139,63,94) before this
      fix. Same root cause already diagnosed and worked around for
@@ -1220,6 +1220,24 @@ strong {
 
 .tier-features li:last-child {
   border-bottom: none;
+}
+
+/* Tablet widths, Visual Redesign "Tier cards at tablet widths", Option A (A-035):
+   at 641px and up the six parts of each card (badge, price, price label,
+   description, list, button) sit on rows shared across the cards (subgrid), so
+   the list rules and buttons line up whatever the descriptions wrap to. Before
+   this the top rules were 23-24px apart at 661-681 and 751-781px. Needs each
+   .tier-card to have exactly six children (hence span 6). Browsers without
+   subgrid keep the flex layout above. Phones (640px and below) are unchanged. */
+@media (min-width: 641px) {
+  @supports (grid-template-rows: subgrid) {
+    .grid-3 > .tier-card {
+      display: grid;
+      grid-row: span 6;
+      grid-template-rows: subgrid;
+      row-gap: 0;
+    }
+  }
 }
 
 
@@ -1401,7 +1419,7 @@ strong {
 }
 
 .faq-item.open .faq-icon {
-  background-color: var(--accent-h); /* was --accent — white text/glyph on it only reached 3.68:1 */
+  background-color: var(--accent); /* solid accent fill, white text on it (--accent-h merged into --accent, A-040) */
   color: white;
   transform: rotate(45deg);
 }
@@ -1843,13 +1861,6 @@ strong {
   }
 }
 
-/* Very small screens */
-@media (max-width: 420px) {
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ============================================================
    Back to Top Button
    ============================================================ */
@@ -1860,7 +1871,7 @@ strong {
   right: 1.5rem;
   width: 44px;
   height: 44px;
-  background-color: var(--accent-h); /* was --accent — white text on it only reached 3.68:1 */
+  background-color: var(--accent); /* solid accent fill, white text on it (--accent-h merged into --accent, A-040) */
   color: white;
   border: none;
   border-radius: 50%;
@@ -2031,7 +2042,7 @@ strong {
    ============================================================ */
 
 #event-banner {
-  background-color: var(--accent-h); /* was --accent — white text on it only reached 3.68:1 */
+  background-color: var(--accent); /* solid accent fill, white text on it (--accent-h merged into --accent, A-040) */
   color: white;
   width: 100%;
   z-index: 1001;

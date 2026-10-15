@@ -94,10 +94,19 @@ function _ensureLightbox() {
   el.innerHTML =
     '<button class="lightbox-close" aria-label="Close">&times;</button>' +
     '<button class="lightbox-arrow lightbox-prev" aria-label="Previous photo">&lsaquo;</button>' +
-    '<img class="lightbox-img" alt="">' +
     '<video class="lightbox-video" controls playsinline></video>' +
     '<button class="lightbox-arrow lightbox-next" aria-label="Next photo">&rsaquo;</button>' +
     '<div class="lightbox-counter"></div>';
+
+  // The photo <img> is built here, not in the markup string above: it has no
+  // src until _renderLightboxItem() sets one, and an <img> with an empty src
+  // in markup is what the Impeccable detector reports as broken-image (a false
+  // positive: the lightbox is display:none until a photo is set). Same place
+  // in the DOM as before, between the prev button and the video.
+  var photo = document.createElement('img');
+  photo.className = 'lightbox-img';
+  photo.alt = '';
+  el.insertBefore(photo, el.querySelector('.lightbox-video'));
 
   document.body.appendChild(el);
 
