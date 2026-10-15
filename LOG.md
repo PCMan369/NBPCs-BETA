@@ -213,3 +213,14 @@ Decision: none (owner asked for both). No visual change intended.
 Verified: 30 screenshots (10 pages x 390/768/1440) identical before/after apart from the animated 4px progress bar (differs between two runs of the unchanged build);
   lightbox open, next, Escape and focus return identical; detector 0 findings; `visual-check.py` clean (150 loads); `smoke-test.js` passed; Chromium only, hover states not shot, Safari not run.
 Next/open: the mobile walk of every page (owner, Safari).
+
+A-041 | complete | 2026-10-14
+Task: Mobile walk, owner finding (iPhone 8, iOS 16.7, Safari): after tapping into and out of a form field the page scrolls sideways until zoomed in and out. Lane A bug fix.
+Files: M css/style.css, css/part-boxes.css, VISUAL_REDESIGN.md, START_HERE.md, LOG.md. Root *.html unchanged after stitch.
+Changed:
+- style.css: `.form-input`, `.form-select`, `.form-textarea` are 16px inside `@media (pointer: coarse)` (were 14.72px). part-boxes.css: `.qty-input` the same (was 14.4px). iOS Safari zooms on focus when field text is under 16px; desktop unchanged.
+- VISUAL_REDESIGN.md: new "Mobile walk findings" section with this item; START_HERE.md updated.
+Decision: none (bug fix). `maximum-scale=1` rejected because it blocks pinch zoom.
+Verified: Chromium with touch emulation at 320/375/390/430px: all fields 16px, no overflow, fields 1-2px taller (41 -> 43px), desktop still 14.72px; nothing wider than the screen on any of the 10 pages at 375px;
+  `visual-check.py` clean (150 loads); `smoke-test.js` passed; detector not re-run. NOT reproduced or verified on an iPhone or in Safari: the cause is very likely but unconfirmed until the owner re-tests.
+Next/open: owner re-test of the form fields on the iPhone; the rest of the mobile walk.

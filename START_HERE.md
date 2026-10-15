@@ -1,7 +1,7 @@
 # START_HERE.md — North Bridge PCs website
 
 Read this first, then the last few entries of LOG.md. Read other docs only
-when the doc map (bottom) says to. Last updated: A-040 (2026-10-14).
+when the doc map (bottom) says to. Last updated: A-041 (2026-10-14).
 
 ## What this is
 Static HTML/CSS/vanilla-JS site on GitHub Pages. Real sources are in
@@ -67,7 +67,7 @@ cautions: MAINTENANCE.md, "Applying a returned ZIP".
   page records go verbatim to docs-archive/ with a heading index in the live file.
 - If a budget is exceeded when you start, say so; fix it in the same chunk if the fix is docs-only.
 
-## Current state (as of A-040)
+## Current state (as of A-041)
 - V1 build is complete (history D1-D43 in docs-archive/DECISIONS.md). Services were removed (B-003, B-004); the old
   services.html URL returns the 404 page. All builds are sold, so the site shows its no-inventory states. Dark only, no
   light mode (A-022); the `--success` token stays.
@@ -80,6 +80,7 @@ cautions: MAINTENANCE.md, "Applying a returned ZIP".
   - Forms: field border `--border-field`; focus one solid 2px accent edge (A-012). Contact, builds notify box,
     build-detail form and part-boxes order confirmation share one `.success-state` card (A-013, A-023).
   - Accent text on the accent tint (active nav, FAQ icon, part-box chip): `--accent-text-tint` (A-039).
+  - Form fields are 16px on touch screens (`pointer: coarse`); smaller makes iOS Safari zoom on focus (A-041).
   - Contact picker: `.situation-picker` / `.situation-option` in `css/situation-picker.css` (A-009); buttons all 200px
     wide, also on phones (A-034).
   - FAQ: ruled rows, buttons in the h2s, `grid-template-rows` reveal (A-030; supersedes home decision 7).
@@ -88,14 +89,15 @@ cautions: MAINTENANCE.md, "Applying a returned ZIP".
     first photo full width, a lone last tile full width (A-033, `css/theme.css`).
   - Part-boxes: 12 boxes, one portrait photo each (`images/box-NN.jpg`); horizontal cards, two per row when the grid is
     at least 780px wide (A-021); at 389px and below a two-row card with a full-width footer (A-036).
-- **Checks at A-040:** `visual-check.py` (10 pages x 15 widths, Chromium): no overflow or script errors;
+- **Checks at A-041:** `visual-check.py` (10 pages x 15 widths, Chromium): no overflow or script errors;
   `smoke-test.js` passed in Lane A's sandbox; Impeccable: 0 findings, 0 advisories.
 
 ## Next up
 **Lane A:** the mobile and tablet redesign (owner, 2026-10-13). Findings: VISUAL_REDESIGN.md, "Mobile and tablet pass —
 backlog" (all 8 items done) and "Open design findings" (A-038 re-scan: thin-border and layout-transition no longer
 reported; the 4.2:1 advisory, the lightbox `broken-image` and `--accent-h` were closed in A-039/A-040; the detector is
-clean). Left: a mobile walk of every page (owner, Safari).
+clean). Mobile walk (owner, iPhone 8 Safari): all fine except the form-focus sideways scroll, fixed in A-041; owner to
+re-test it on the phone (VISUAL_REDESIGN.md, "Mobile walk findings").
 **Lane B:** the copy pass (see Owner queue); the domain-swap checklist (`SITE.url`, Search Console, GitHub Pages custom
 domain), which can wait because the owner cannot afford a domain yet.
 

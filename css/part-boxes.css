@@ -189,6 +189,14 @@
   -moz-appearance: textfield;
 }
 
+/* Touch screens: 16px so iOS Safari does not zoom the page on focus (see the
+   comment on .form-input in style.css, A-041). */
+@media (pointer: coarse) {
+  .qty-input {
+    font-size: 16px;
+  }
+}
+
 .qty-input::-webkit-outer-spin-button,
 .qty-input::-webkit-inner-spin-button {
   -webkit-appearance: none;

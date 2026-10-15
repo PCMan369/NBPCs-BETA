@@ -183,6 +183,18 @@ though it comes later in the file. Verified against `.btn-primary`,
 `.btn-secondary`, and `.nav-cta` hover states directly with real
 screenshots after the fix.
 
+## Mobile walk findings (owner, real devices)
+
+Device: iPhone 8, iOS 16.7.16, Safari (owner, A-041). Everything else looked fine.
+1. **FIXED in A-041, pending the owner's re-test on the phone.** Tapping into a form field and out again left the page
+   scrolling sideways; zooming in and out cleared it. Cause (very likely, not reproduced here: only Chromium is
+   available): every field's text was under 16px (`.form-input`, `.form-select`, `.form-textarea` 14.72px; `.qty-input`
+   14.4px), and iOS Safari zooms the page when such a field gets focus and can leave it zoomed. Nothing on any page is wider
+   than the screen (checked at 375px with touch emulation), which fits a zoom artifact. Fix: 16px in those fields inside
+   `@media (pointer: coarse)` (`css/style.css`, `css/part-boxes.css`); desktop unchanged (14.72px). Rejected:
+   `maximum-scale=1` in the viewport tag (blocks pinch zoom). Side effect: fields are 1-2px taller on touch screens
+   (41px -> 43px). Re-test: contact form (each situation), builds notify form, part-box quantity and order form.
+
 ## Open design findings (Impeccable scan)
 
 Still open as of B-032. The resolved findings (`side-tab`, `low-contrast`) are in the archive.

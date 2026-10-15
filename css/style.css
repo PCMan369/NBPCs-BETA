@@ -1539,6 +1539,19 @@ strong {
   -webkit-appearance: none;
 }
 
+/* Touch screens: 16px text in fields. iOS Safari zooms the whole page when a
+   field with text under 16px gets focus, and can leave the page zoomed and
+   scrolling sideways after the field loses focus (owner report, iPhone 8, iOS
+   16.7, A-041). Not a viewport lock (maximum-scale would block pinch zoom).
+   Applies to every field class here; .qty-input is in part-boxes.css. */
+@media (pointer: coarse) {
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 16px;
+  }
+}
+
 .form-input::placeholder,
 .form-textarea::placeholder {
   color: var(--dim);
