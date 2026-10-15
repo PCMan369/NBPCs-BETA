@@ -26,9 +26,17 @@
 const faqItems = [
 
   {
+    id: "new-or-used",
+    question: "Are the parts new or used?",
+    answer: "Mostly used. Most of the parts in my builds are used; the power supply and case are almost always new. If you want to know about the condition of a specific part, ask before you buy and I'll tell you what I know.",
+    answerExtra: "",
+    featured: false
+  },
+
+  {
     id: "fortnite",
     question: "Can it run Fortnite?",
-    answer: "Yes — every system I sell is capable of running Fortnite. Entry-level builds will handle it comfortably at 1080p on medium settings, usually hitting well above 60fps. Mid-range systems push higher frame rates and can handle Epic settings without breaking a sweat. High-end builds run it at 1440p or push for very high frame rates on 1080p.",
+    answer: "Yes — every gaming PC I build is capable of running Fortnite. Entry-level builds will handle it comfortably at 1080p on medium settings, usually hitting well above 60fps. Mid-range systems push higher frame rates and can handle Epic settings without breaking a sweat. High-end builds run it at 1440p or push for very high frame rates on 1080p.",
     answerExtra: "Each listing includes estimated performance numbers for common titles, so you can get a sense of what to expect before buying. Keep in mind that Fortnite's performance varies a lot by mode (zero build vs. standard), chapter updates, and the settings you choose.",
     featured: true
   },
@@ -36,7 +44,7 @@ const faqItems = [
   {
     id: "war-thunder",
     question: "Can it run War Thunder?",
-    answer: "Yes. War Thunder runs well on all the systems I sell. It's worth knowing that the game leans heavier on CPU in ground battles (especially with lots of players on screen), so builds with stronger CPUs tend to do better in those scenarios. Air battles are generally easier to run.",
+    answer: "Yes. War Thunder runs well on all the gaming PCs I build. It's worth knowing that the game leans heavier on CPU in ground battles (especially with lots of players on screen), so builds with stronger CPUs tend to do better in those scenarios. Air battles are generally easier to run.",
     answerExtra: "Performance estimates on each listing reflect typical gameplay, not just the best-case scenario. If War Thunder is your main game, mention it when you reach out — I'll make sure the build makes sense for it specifically.",
     featured: false
   },

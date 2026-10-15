@@ -1,7 +1,7 @@
 # START_HERE.md — North Bridge PCs website
 
 Read this first, then the last few entries of LOG.md. Read other docs only
-when the doc map (bottom) says to. Last updated: A-041 (2026-10-14).
+when the doc map (bottom) says to. Last updated: B-050 (2026-10-15).
 
 ## What this is
 Static HTML/CSS/vanilla-JS site on GitHub Pages. Real sources are in
@@ -67,57 +67,54 @@ cautions: MAINTENANCE.md, "Applying a returned ZIP".
   page records go verbatim to docs-archive/ with a heading index in the live file.
 - If a budget is exceeded when you start, say so; fix it in the same chunk if the fix is docs-only.
 
-## Current state (as of A-041)
-- V1 build is complete (history D1-D43 in docs-archive/DECISIONS.md). Services were removed (B-003, B-004); the old
+## Current state (as of A-043)
+- V1 build is complete. Services were removed (B-003, B-004); the old
   services.html URL returns the 404 page. All builds are sold, so the site shows its no-inventory states. Dark only, no
   light mode (A-022); the `--success` token stays.
-- **Visual redesign.** Live record: VISUAL_REDESIGN.md (closed desktop decisions: docs-archive/VISUAL_REDESIGN-desktop-pass.md,
-  indexed in the live file). Accent is "Cask" `#8b3f5e` sitewide. Every page walked at desktop width (A-030). Home,
-  build-detail, about, gallery and faq done;
-  contact done apart from hero copy; part-boxes apart from copy items (COPY_REVIEW.md); custom-build apart from one
-  item (the final CTA box's kicker label, for the copy pass).
+- **Visual redesign.** Live record: VISUAL_REDESIGN.md (closed desktop decisions: docs-archive/VISUAL_REDESIGN-desktop-pass.md).
+  Accent is "Cask" `#8b3f5e` sitewide. Desktop walk done A-030; mobile and tablet pass done (A-042; owner checked
+  iPhone 8 Safari, iPad, MacBook; Android untested). Left open: contact hero copy, part-boxes copy items
+  (COPY_REVIEW.md), custom-build's final CTA kicker label (copy pass).
 - **Built pieces that constrain new work:**
   - Forms: field border `--border-field`; focus one solid 2px accent edge (A-012). Contact, builds notify box,
     build-detail form and part-boxes order confirmation share one `.success-state` card (A-013, A-023).
   - Accent text on the accent tint (active nav, FAQ icon, part-box chip): `--accent-text-tint` (A-039).
-  - Form fields are 16px on touch screens (`pointer: coarse`); smaller makes iOS Safari zoom on focus (A-041).
+  - Status badges (Available/Sold): one outlined pill on cards and the detail page; no `.badge-quiet` (A-043).
+  - Form fields are 16px on touch screens (`pointer: coarse`); smaller makes iOS Safari zoom (A-041).
   - Contact picker: `.situation-picker` / `.situation-option` in `css/situation-picker.css` (A-009); buttons all 200px
-    wide, also on phones (A-034).
+    wide (A-034).
   - FAQ: ruled rows, buttons in the h2s, `grid-template-rows` reveal (A-030; supersedes home decision 7).
-  - Gallery: tiles 3:4 `object-fit: contain` (A-027); homepage preview 5 photos on desktop, 3 below 700px (A-028); empty
-    "Current Builds" hidden until `currentBuilds` in `js/data/gallery.js` has a photo (A-029). Below 700px: 2 columns,
-    first photo full width, a lone last tile full width (A-033, `css/theme.css`).
-  - Part-boxes: 12 boxes, one portrait photo each (`images/box-NN.jpg`); horizontal cards, two per row when the grid is
-    at least 780px wide (A-021); at 389px and below a two-row card with a full-width footer (A-036).
-- **Checks at A-041:** `visual-check.py` (10 pages x 15 widths, Chromium): no overflow or script errors;
-  `smoke-test.js` passed in Lane A's sandbox; Impeccable: 0 findings, 0 advisories.
+  - Gallery: tiles 3:4 `object-fit: contain` (A-027); homepage preview 5 photos, 3 below 700px (A-028); empty "Current
+    Builds" hidden until `currentBuilds` in `js/data/gallery.js` has a photo (A-029). Below 700px: 2 columns, first
+    photo and a lone last tile full width (A-033, `css/theme.css`).
+  - Part-boxes: 12 boxes, one portrait photo each (`images/box-NN.jpg`); horizontal cards, two per row from 780px grid
+    width (A-021); at 389px and below a two-row card with a full-width footer (A-036).
+- **Checks at A-043:** `visual-check.py` (10 pages x 15 widths) clean; `smoke-test.js` passed; Impeccable clean.
 
 ## Next up
-**Lane A:** the mobile and tablet redesign (owner, 2026-10-13). Findings: VISUAL_REDESIGN.md, "Mobile and tablet pass —
-backlog" (all 8 items done) and "Open design findings" (A-038 re-scan: thin-border and layout-transition no longer
-reported; the 4.2:1 advisory, the lightbox `broken-image` and `--accent-h` were closed in A-039/A-040; the detector is
-clean). Mobile walk (owner, iPhone 8 Safari): all fine except the form-focus sideways scroll, fixed in A-041; owner to
-re-test it on the phone (VISUAL_REDESIGN.md, "Mobile walk findings").
-**Lane B:** the copy pass (see Owner queue); the domain-swap checklist (`SITE.url`, Search Console, GitHub Pages custom
-domain), which can wait because the owner cannot afford a domain yet.
+**Lane A:** nothing queued; the redesign and the mobile pass are finished. New visual work starts from an owner request.
+**Lane B:** the copy pass (progress list in COPY_REVIEW.md): agree the plan for the fuller rewrite, then draft in small chunks;
+the domain-swap checklist, which can wait (no domain yet).
 
 ## Owner queue (waiting on you)
-- Medium term, not blocking (owner, 2026-10-09): a hero image (several PCs or the building setup); a real domain plus
-  phone/Facebook values; testimonials (off until real ones exist).
-- Copy pass (can start now): facts answered in COPY_REVIEW.md, "Owner answers". Owner rule: reword only if misleading.
-  Still to decide: fix the two items that look misleading (pickup is described as at the owner's address but is usually
-  meet-in-the-middle, paid delivery possible; the site never says parts are used) and the wrong/contradictory items in
-  COPY_REVIEW.md Part 1 A.
+- Not blocking (owner, 2026-10-09): a hero image (several PCs or the building setup); a real domain plus phone/Facebook
+  values; testimonials (off until real ones exist).
+- Copy pass: **Lane B drafts the wording (three directions, in a picker page), the owner edits it, then Lane B applies it.**
+  Chunks 1-2 (B-046, B-048) fixed the misleading items. A fuller rewrite is planned (COPY_REVIEW.md). Step 1, the message
+  brief, is recorded in COPY_BRIEF.md (owner's marks, B-050) and stays draft until the owner decides whether faith-based values
+  belong in the copy. Delivery fee left unstated; say if a page should name one.
 
 ## Do not touch
-- Site copy wording goes through the copy pass (Lane B, owner rule "reword only if misleading"); Lane A does not reword
-  copy. The copy pass changes words only, never CSS, markup structure or layout (Lane A's).
+- Site copy wording goes through the copy pass (Lane B; the owner approves every wording); Lane A does not reword copy.
+  While applying copy, Lane B may make small markup/CSS changes when necessary or very helpful (owner, B-049) and says
+  so in the log; anything larger or purely visual goes to Lane A.
 
 ## Doc map
 - **LOG.md**: newest ~10 completed chunks, newest last. **docs-archive/**: frozen history (grep, never read in full):
   DECISIONS.md (D1-D43; code comments cite "DECISIONS.md D##"), PROJECT_STATUS.md, TODO.md, CHANGELOG.md,
-  LOG-B001-A022.md, LOG-A023-A027.md, LOG-A028-A029.md, START_HERE-through-A-031.md (old per-chunk state narrative), VISUAL_REDESIGN-desktop-pass.md.
-- **VISUAL_REDESIGN.md**: live design process, scope, open findings, mobile backlog (Lane A).
-- **ARCHITECTURE.md**: stack and structure. **MAINTENANCE.md**: owner guide. **COPY_REVIEW.md**: text audit for the copy pass.
-- **TESTING.md**: how to run `smoke-test.js` and `visual-check.py`, sandbox limits (npm registry, fonts, browsers) and
-  widths covered. Read it before running or reporting a test. Never claim a test passed unless it ran.
+  LOG-<first>-<last>.md (rolled-over log entries, by ID range), START_HERE-through-A-031.md, VISUAL_REDESIGN-desktop-pass.md,
+  VISUAL_REDESIGN-mobile-pass.md (M1-M6, backlog, walk findings).
+- **VISUAL_REDESIGN.md**: live design process, scope, open findings (Lane A); mobile pass (M1-M6) archived.
+- **ARCHITECTURE.md**: stack and structure. **MAINTENANCE.md**: owner guide. **COPY_REVIEW.md**: text audit and rewrite plan. **COPY_BRIEF.md**: message brief (facts, voice, selling points).
+- **TESTING.md**: how to run `smoke-test.js`, `visual-check.py` and the Impeccable scan, sandbox limits (npm registry,
+  fonts, browsers) and widths covered. Read it before running or reporting a test. Never claim a test passed unless it ran.

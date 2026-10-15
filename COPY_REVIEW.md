@@ -29,6 +29,22 @@ The owner's rule for the copy pass: **reword only if the text is misleading.** A
 - **Hero image, real domain, testimonials:** all medium term (no money for a domain yet; wants a good hero photo of several PCs or the
   building setup). Not blocking the copy pass.
 
+**Copy pass progress** (words only; update this list each chunk)
+**Process (owner, B-047): Lane B drafts suggested wording, the owner edits it, then Lane B applies it.** Nothing is applied
+before the owner has seen the draft, except small fixes the owner has asked for in their own words.
+- B-046 done: part-boxes meta description, the pickup wording, the "used parts" statement (home and listing trust text, new FAQ item).
+- B-047 done: part-boxes meta description made generic on purpose (no box types named, so it never needs updating).
+- B-048 done: chunk 2, the owner's choices applied as they edited them (home "Available Systems" intro, Gaming PCs intro,
+  Custom Build last line, gallery intro and description, FAQ Fortnite/War Thunder opening words, contact "Buying a Gaming PC").
+  The wording is now on the pages; the drafts were in a picker page and are not kept here.
+- **Rewrite plan (owner, B-048/B-049; small markup/CSS changes allowed when helpful):**
+  1. Message brief: marked by the owner and recorded in COPY_BRIEF.md (B-050); stays draft until the faith-values question is decided.
+  2. Location map: every text spot, what it is for, its limits (title and description lengths, buttons, empty states, forms).
+  3. Taglines and selling points chosen from the brief (picker page, three directions).
+  4. Page-by-page drafting in the picker, then apply: header and footer, home, listings, custom builds, About, FAQ, contact,
+     part boxes, small messages.
+  5. Words only unless a small markup/CSS change helps; flag anything bigger to Lane A.
+
 **What this leaves for the copy pass, by the "only if misleading" rule** (my reading; the owner decides):
 1. Pickup wording (see above): a buyer is told "pickup" and "address shared after sale" but the usual arrangement is a meeting point near
    Grants Pass, with paid delivery possible.

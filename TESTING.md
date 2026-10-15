@@ -14,8 +14,15 @@ Moved out of START_HERE.md in B-032 (content unchanged apart from layout). Read 
 - Fonts: theme.css loads Google Fonts, unreachable in Lane A's sandbox, so screenshots use fallback fonts. For
   font-accurate mockups, install `@fontsource-variable/manrope`, `@fontsource-variable/bricolage-grotesque` and
   `@fontsource/space-mono` from npm in a scratch folder and inject `@font-face` rules (scratch copy only).
-- Browsers: only Chromium is installed here; the owner tests in Safari (macOS responsive design mode). CSS in use that
+- Browsers: only Chromium is installed here. The owner tests on real devices: iPhone 8 (iOS 16.7, Safari), an iPad and a
+  MacBook; Android is untested (no device). CSS in use that
   older engines may ignore (written to degrade gracefully, unverified outside Chromium): `text-wrap: balance`/`pretty`,
   `color-mix()`, `aspect-ratio`, animating `grid-template-rows`.
+- Touch emulation: CSS that depends on `(pointer: coarse)` (form fields are 16px on touch screens, A-041) only applies in
+  Playwright with `browser.new_context(has_touch=True, is_mobile=True)`; a plain context does not match it. iOS Safari's
+  zoom-on-focus itself cannot be reproduced here, so check the field `font-size` (16px) instead of the zoom.
+- Impeccable design scanner: `npx impeccable detect .` run in a scratch copy of the built site with `pages-src/` and
+  `docs-archive/` deleted (otherwise it reads unresolved stylesheets and reports false findings). Needs the npm registry.
+  Empty output and exit code 0 mean no findings. Last result: clean (A-043).
 - Old docs claiming the Node/npx Playwright route "doesn't work" are outdated: only the `npx playwright install
   chromium` download step failed, and it is not needed.

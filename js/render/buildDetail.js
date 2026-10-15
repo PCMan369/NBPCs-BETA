@@ -65,8 +65,8 @@ function initBuildDetailPage() {
 
   var isAvailable = build.status === 'available';
   var badge = isAvailable
-    ? '<span class="badge badge-available badge-quiet">Available</span>'
-    : '<span class="badge badge-sold badge-quiet">Sold</span>';
+    ? '<span class="badge badge-available">Available</span>'
+    : '<span class="badge badge-sold">Sold</span>';
 
   // ---- Media list: images + videos combined into one ordered gallery ----
   var media = [];
@@ -222,7 +222,7 @@ function initBuildDetailPage() {
   } else {
     formHtml =
       '<div class="sold-notice">' +
-        '<span class="badge badge-sold badge-quiet" style="margin-bottom:0.5rem;">Sold</span>' +
+        '<span class="badge badge-sold" style="margin-bottom:0.5rem;">Sold</span>' +
         '<p>This system has already been sold. Check the listings page for what\'s currently available.</p>' +
         '<a href="builds.html" class="btn btn-secondary" style="margin-top:1rem;">Browse Available Systems &rarr;</a>' +
       '</div>';

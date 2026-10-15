@@ -974,9 +974,9 @@ strong {
 }
 
 .badge-available {
-  background-color: rgba(34,197,94,0.12);
+  background: none;
   color: var(--success);
-  border: 1px solid rgba(34,197,94,0.28);
+  border: 1px solid rgba(34,197,94,0.5);
 }
 
 .badge-available::before {
@@ -984,36 +984,22 @@ strong {
 }
 
 .badge-sold {
-  background-color: rgba(239,68,68,0.1);
+  background: none;
   color: var(--danger);
-  border: 1px solid rgba(239,68,68,0.22);
+  border: 1px solid rgba(239,68,68,0.45);
 }
 
 .badge-sold::before {
   background-color: var(--danger);
 }
 
-/* Visual redesign, decision 5 (build-detail availability badge —
-   Option C, approved): quiet treatment — dot + text only, no pill
-   background/border. Scoped to .badge-quiet rather than changed on
-   .badge-available/.badge-sold directly, so the homepage/listing-card
-   badges (buildCard.js) keep their current filled-pill look; only the
-   build-detail page opts in via this extra class. See
-   VISUAL_REDESIGN.md. */
-.badge-quiet {
-  background: none;
-  border: none;
-  padding: 0;
-  border-radius: 0;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-.badge-quiet::before {
-  width: 6px;
-  height: 6px;
-  border-radius: 1px;
-}
+/* Visual redesign, A-043 (owner chose Option C): ONE badge everywhere, an
+   outlined pill (thin coloured border, no fill, round dot) on the listing
+   cards (builds page, homepage) and on the build-detail page and its sold
+   notice. It replaces the filled pill on cards and the .badge-quiet variant
+   (dot + text, no pill) that decision 5 gave the detail page. Text colours are
+   unchanged (--success, --danger); the outline carries the status shape. See
+   docs-archive/VISUAL_REDESIGN-mobile-pass.md, M6. */
 
 
 /* ============================================================

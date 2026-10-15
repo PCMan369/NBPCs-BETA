@@ -29,7 +29,7 @@ function renderTrustEvidence() {
     '<div class="evidence evidence-compact">' +
       '<div>' +
         '<p class="evidence-lead">Every system gets <span class="accent">cleaned, stress tested under load, and temperature-checked</span> before it goes anywhere.</p>' +
-        '<p class="evidence-sub">The specs listed are accurate — performance estimates are based on real-world expectations for that hardware, not cherry-picked benchmark runs. If a system has a limitation, I\'ll tell you. Based in Southern Oregon, pickup is in person — if you hit a snag after getting it home, you\'re reaching an actual person, not a ticket queue.</p>' +
+        '<p class="evidence-sub">The specs listed are accurate. Most of the parts are used; the power supply and case are almost always new. Performance estimates are based on real-world expectations for that hardware, not cherry-picked benchmark runs. If a system has a limitation, I\'ll tell you. Based in Southern Oregon, pickup is in person — if you hit a snag after getting it home, you\'re reaching an actual person, not a ticket queue.</p>' +
       '</div>' +
       '<div class="evidence-checklist">' +
         '<div class="evidence-row">' +
