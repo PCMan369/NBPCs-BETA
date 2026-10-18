@@ -96,11 +96,11 @@ function renderEmptyBuildsState() {
   return (
     '<div class="empty-state-forge">' +
       '<span class="icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg></span>' +
-      '<h3>No Systems Listed Right Now</h3>' +
-      '<p>Nothing available at the moment — check back soon, or get notified when something comes in.</p>' +
+      '<h3>Nothing Listed Right Now</h3>' +
+      '<p>I don\'t have any systems listed right now. Get notified by email when the next one is ready, or ask about a custom build.</p>' +
       '<div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.5rem;">' +
         '<a href="builds.html" class="btn btn-primary">Get Notified &rarr;</a>' +
-        '<a href="custom-build.html" class="btn btn-secondary">Custom Builds</a>' +
+        '<a href="custom-build.html" class="btn btn-secondary">Start a Custom Build</a>' +
       '</div>' +
     '</div>'
   );

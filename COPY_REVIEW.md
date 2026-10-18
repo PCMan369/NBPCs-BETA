@@ -38,8 +38,9 @@ before the owner has seen the draft, except small fixes the owner has asked for 
   Custom Build last line, gallery intro and description, FAQ Fortnite/War Thunder opening words, contact "Buying a Gaming PC").
   The wording is now on the pages; the drafts were in a picker page and are not kept here.
 - **Rewrite plan (owner, B-048/B-049; small markup/CSS changes allowed when helpful):**
-  1. Message brief: marked by the owner and recorded in COPY_BRIEF.md (B-050); stays draft until the faith-values question is decided.
-  2. Location map: every text spot, what it is for, its limits (title and description lengths, buttons, empty states, forms).
+  1. Message brief: marked by the owner, final (COPY_BRIEF.md, B-050/B-051).
+  2. Location map: COPY_MAP.md (B-051), agreed. 3. Taglines and selling points: chosen (COPY_BRIEF.md 9, 10).
+  4. Page by page: home first screen and "How I Work" (B-055), home Available Systems and checklist sections (B-056), home lower sections (B-058) applied; the home page is done. FAQ page applied (B-060). Next: Gaming PCs page, listing pages, Custom Builds, Contact, About, Gallery, Part Boxes, 404.
   3. Taglines and selling points chosen from the brief (picker page, three directions).
   4. Page-by-page drafting in the picker, then apply: header and footer, home, listings, custom builds, About, FAQ, contact,
      part boxes, small messages.
@@ -182,3 +183,29 @@ message; part-box condition lines (as of B-019); form success messages.
 1. Facts first (owner answers): payment methods, returns/as-is, new vs used, where pickup happens, tier prices, privacy wording, process claims.
 2. Fix the wrong/stale items (Part 1 section A) so nothing contradicts the current state or the part-box inventory.
 3. Then the role work (Part 2) page by page, after Lane A finishes each page's layout, since placement changes what is worth saying.
+
+## Polish list (small things noticed during the rewrite; handle after the rewording is done)
+Rule (owner, B-057): whenever Lane B notices a small issue, it goes here instead of being fixed on the spot or forgotten.
+- "Before" is said six times in the home checklist section (label, heading, lead, big line, steps 03 and 04); trim step 03's "before it goes anywhere". (B-056)
+- "Listed" is said four times in the home empty state; trim its first sentence. (B-056)
+- "Tested" is said in the header tagline, the home intro and "Ready to play". (B-055)
+- Listing pages: the big line above the checklist still has the old wording ("Every system gets cleaned, stress tested under load, and temperature-checked"). (B-056)
+- DONE (B-060): the FAQ Linux answer now states where free ends.
+- `js/data/config.js` tagline is still "Southern Oregon Gaming PCs" (used in structured data) while the header now says "Gaming PCs, honestly built and tested." (B-055)
+- Budget tiers (~$500, ~$800, ~$1,200): the owner is unsure the GPU classes match what the sold systems had; confirm before the Custom Builds page is reworded. (B-049)
+- Button labels on pages not yet reworded (Browse Systems, View All Systems, Contact Me, Reach Out, Get Started, Talk Budget) should use the chosen set: Browse Gaming PCs, Start a Custom Build, Send a Message, Get Notified. (B-051)
+- COPY_MAP.md describes the copy as it was at B-051; refresh or retire it when the rewrite ends. (B-057)
+- Gallery section on the home page says "Recent Work", "Recent Builds" and "built and sold": the label and heading echo each other. (B-058)
+- "Questions" is in two adjacent home headings ("Questions Before You Buy" and "Have a Question? Ready to Buy?"). (B-058)
+
+## For Lane A (after the copy pass): minor redesign for the new wording and paragraph sizes
+Owner, B-059: the layout may need small changes once the new copy is in. Places already known (add more as the rewrite goes on):
+- Header tagline is longer ("Gaming PCs, honestly built and tested."); check the header at 320 to 1440px and in the mobile menu.
+- New "How I Work" strip on the home page: only a hairline-row style (`.point` in theme.css); may want spacing, emphasis or icons.
+- Home hero: new heading and shorter intro; the empty-state block and the shortened checklist paragraph leave more white space.
+- Home FAQ preview now shows four questions, and every FAQ answer changes length as the FAQ page is reworded.
+- Button labels are longer in places ("Start a Custom Build", "Read the Full FAQ"): check widths on phones.
+- Listing pages: the checklist text there was shortened too.
+- FAQ "What if something goes wrong after I buy?": the paragraph under the answer still says "not a warranty program or a repair service", which repeats "no returns or warranty" in the answer above it. (B-060)
+- FAQ: two answers are about specific games (Fortnite, War Thunder); consider whether one is enough once the rest of the site is reworded. (B-060)
+

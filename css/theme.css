@@ -296,6 +296,11 @@ h1, h2, h3, h4 {
 .evidence-row .mark {
   font-family: var(--font-mono); color: var(--accent-text); font-size: 0.85rem; flex-shrink: 0; width: 1.6rem; padding-top: 0.15rem;
 }
+/* Selling-points strip on the home page (B-055): hairline rule, heading, one line.
+   Same type as .evidence-row; sits in a plain .grid-3. */
+.point { border-top: 1px solid var(--border); padding-top: 1.1rem; }
+.point h3 { margin: 0 0 0.3rem; font-size: 1.05rem; font-family: var(--font-heading); font-weight: 600; }
+.point p { margin: 0; color: var(--muted); font-size: 0.97rem; }
 .evidence-row h3 { margin: 0 0 0.3rem; font-size: 1.05rem; font-family: var(--font-heading); font-weight: 600; }
 .evidence-row p { margin: 0; color: var(--muted); font-size: 0.97rem; }
 

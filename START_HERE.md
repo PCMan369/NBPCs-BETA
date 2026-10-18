@@ -1,7 +1,7 @@
 # START_HERE.md — North Bridge PCs website
 
 Read this first, then the last few entries of LOG.md. Read other docs only
-when the doc map (bottom) says to. Last updated: B-050 (2026-10-15).
+when the doc map (bottom) says to. Last updated: B-060 (2026-10-15).
 
 ## What this is
 Static HTML/CSS/vanilla-JS site on GitHub Pages. Real sources are in
@@ -92,17 +92,18 @@ cautions: MAINTENANCE.md, "Applying a returned ZIP".
 - **Checks at A-043:** `visual-check.py` (10 pages x 15 widths) clean; `smoke-test.js` passed; Impeccable clean.
 
 ## Next up
-**Lane A:** nothing queued; the redesign and the mobile pass are finished. New visual work starts from an owner request.
+**Lane A:** after the copy pass, a minor redesign pass so the layout suits the new wording and paragraph sizes (owner, B-059; places listed in
+COPY_REVIEW.md, "For Lane A"). Nothing else queued; new visual work starts from an owner request.
 **Lane B:** the copy pass (progress list in COPY_REVIEW.md): agree the plan for the fuller rewrite, then draft in small chunks;
 the domain-swap checklist, which can wait (no domain yet).
 
 ## Owner queue (waiting on you)
 - Not blocking (owner, 2026-10-09): a hero image (several PCs or the building setup); a real domain plus phone/Facebook
   values; testimonials (off until real ones exist).
-- Copy pass: **Lane B drafts the wording (three directions, in a picker page), the owner edits it, then Lane B applies it.**
-  Chunks 1-2 (B-046, B-048) fixed the misleading items. A fuller rewrite is planned (COPY_REVIEW.md). Step 1, the message
-  brief, is recorded in COPY_BRIEF.md (owner's marks, B-050) and stays draft until the owner decides whether faith-based values
-  belong in the copy. Delivery fee left unstated; say if a page should name one.
+- Copy pass: **Lane B drafts the wording (three directions, in a picker page), recommends one with a short reason, the owner
+  edits it, then Lane B applies it** (the recommendation is standing, owner B-052). Steps 1-2 (COPY_BRIEF.md, COPY_MAP.md) are
+  agreed. Steps 1-3 are final (COPY_BRIEF.md). Step 4, page by page: the whole home page is done (B-055, B-056, B-058); the FAQ page is done too (B-060), then Gaming PCs and listing pages, Custom Builds, Contact, About, Gallery, Part Boxes, 404. Small things noticed go on the polish list in COPY_REVIEW.md, handled after the rewording. Delivery fee left
+  unstated; say if a page should name one.
 
 ## Do not touch
 - Site copy wording goes through the copy pass (Lane B; the owner approves every wording); Lane A does not reword copy.
@@ -115,6 +116,6 @@ the domain-swap checklist, which can wait (no domain yet).
   LOG-<first>-<last>.md (rolled-over log entries, by ID range), START_HERE-through-A-031.md, VISUAL_REDESIGN-desktop-pass.md,
   VISUAL_REDESIGN-mobile-pass.md (M1-M6, backlog, walk findings).
 - **VISUAL_REDESIGN.md**: live design process, scope, open findings (Lane A); mobile pass (M1-M6) archived.
-- **ARCHITECTURE.md**: stack and structure. **MAINTENANCE.md**: owner guide. **COPY_REVIEW.md**: text audit and rewrite plan. **COPY_BRIEF.md**: message brief (facts, voice, selling points).
+- **ARCHITECTURE.md**: stack and structure. **MAINTENANCE.md**: owner guide. **COPY_REVIEW.md**: text audit and rewrite plan. **COPY_BRIEF.md**: message brief. **COPY_MAP.md**: every text spot and its job.
 - **TESTING.md**: how to run `smoke-test.js`, `visual-check.py` and the Impeccable scan, sandbox limits (npm registry,
   fonts, browsers) and widths covered. Read it before running or reporting a test. Never claim a test passed unless it ran.
