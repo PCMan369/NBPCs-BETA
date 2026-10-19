@@ -40,7 +40,7 @@ before the owner has seen the draft, except small fixes the owner has asked for 
 - **Rewrite plan (owner, B-048/B-049; small markup/CSS changes allowed when helpful):**
   1. Message brief: marked by the owner, final (COPY_BRIEF.md, B-050/B-051).
   2. Location map: COPY_MAP.md (B-051), agreed. 3. Taglines and selling points: chosen (COPY_BRIEF.md 9, 10).
-  4. Page by page: home first screen and "How I Work" (B-055), home Available Systems and checklist sections (B-056), home lower sections (B-058) applied; the home page is done. FAQ page applied (B-060). Next: Gaming PCs page, listing pages, Custom Builds, Contact, About, Gallery, Part Boxes, 404.
+  4. Page by page: home first screen and "How I Work" (B-055), home Available Systems and checklist sections (B-056), home lower sections (B-058) applied; the home page is done. FAQ page (B-060, B-061), Gaming PCs and listing pages (B-062), Custom Builds (B-064) applied. Next: Contact, About, Gallery, Part Boxes, 404.
   3. Taglines and selling points chosen from the brief (picker page, three directions).
   4. Page-by-page drafting in the picker, then apply: header and footer, home, listings, custom builds, About, FAQ, contact,
      part boxes, small messages.
@@ -208,4 +208,20 @@ Owner, B-059: the layout may need small changes once the new copy is in. Places 
 - Listing pages: the checklist text there was shortened too.
 - FAQ "What if something goes wrong after I buy?": the paragraph under the answer still says "not a warranty program or a repair service", which repeats "no returns or warranty" in the answer above it. (B-060)
 - FAQ: two answers are about specific games (Fortnite, War Thunder); consider whether one is enough once the rest of the site is reworded. (B-060)
+- A sold listing page says "See what's listed now, or ask about a custom build" in the sold notice and again, with the same button, in the "More Gaming PCs" box below. (B-062)
+- The listing description says "Local pickup" while the page now says "Pickup in person near Grants Pass"; the header also says "Local Pickup". Fine, but check the wording for consistency at the end. (B-062)
+- `js/render/buildDetail.js` writes the business name as a literal in four places (title, description, form subject, "Why North Bridge PCs"); see Name change below. (B-062)
+
+## Name change (owner, B-062: the business name may change; do it as one pass, together with the domain if possible)
+Where the name appears today (counts of "North Bridge" in sources, from a search at B-062): pages-src/contact.html 8, about.html 4, part-boxes.html 3, gallery.html 2,
+faq.html 2, builds.html 2, build.html 2, 404.html 2, index.html 1, custom-build.html 1; js/render/buildDetail.js 4, trustSection.js 1, notifyBox.js 1; js/partials/footer.html 2,
+header.html 1 (the logo splits it as "North Bridge" plus an accent-coloured "PCs"); js/data/config.js `businessName` (feeds the home page structured data and, via build-tools/stitch.py,
+other generated text); js/data/builds.js 1. Also: page titles end in "| North Bridge PCs" (all 10 pages); FormSubmit subject lines in the forms; `SITE.url` still contains
+"North-Bridge-PCs" (the GitHub repository path); the ZIP names (nbpcs) and a few docs mention it. A rename is a search-and-replace plus a check of the logo (two-colour split)
+and the structured data; it should be one chunk after the copy pass, and it changes the tagline and title lengths, so the minor redesign should come after it.
+- Custom Builds step 05 says "five checks" while the home page and listings say "Five steps"; pick one word. (B-064)
+- The Custom Builds cards say "GPU" in the one-line blurb and "graphics card" in the list; pick one term. (B-064)
+- The three budget cards still have the button "Talk Budget →"; the chosen set is "Send a Message". (B-064)
+- On the Custom Builds page the accent line sits right above the "Send a Message" button in the process section: Lane A may want more space. (B-064)
+- Contact page form asks "Need a Monitor?" with the option "Yes, looking for a monitor too", but the owner does not sell monitors; decide in the Contact picker. (B-064)
 

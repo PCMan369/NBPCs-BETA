@@ -108,4 +108,23 @@ question "How do pickup and payment work?" (meet near Grants Pass, see it runnin
 "No trades at this time. If that changes, I'll update this page." After-sale question "What if something goes wrong after I buy?" ("There are no returns or warranty, but I can help
 you troubleshoot over email."), also shown on the home page. FAQ page title "FAQ: Used Parts, Linux, Support | North Bridge PCs", label "Good to Know", heading "Frequently Asked
 Questions", bottom text with the reply time and the button "Start a Custom Build".
+**Follow-up (owner, B-061):** the listed Linux distros are accurate; the Linux answer now also says to ask about something different. The FAQ bottom line
+"No question is too basic when you're buying a PC." became "No question is too basic or too technical." (advanced questions are welcome too).
+
+## 14. Step 4e choices: Gaming PCs and listing pages (owner, B-062; balance checked first)
+Applied as chosen: Gaming PCs title "Ready-to-Buy Gaming PCs | North Bridge PCs" and its description, intro ("Each system has real specs and an estimated performance for popular games.
+Sold ones stay below for reference."), sold section text ("Past builds, kept here for reference. These are sold."); sign-up box text, "Get Notified" button and confirmation
+("I'll email you when I list something that might be a good fit."); listing title "[name] | North Bridge PCs" and description "[name], [price]. Built and tested by North Bridge PCs in Grants Pass,
+Oregon. Local pickup."; form "Ask About This System" / "Send a message and I'll reply by email, usually within a day or two." / "Send a Message →"; sold notice, "More Gaming PCs" box and
+not-found page with "Browse Gaming PCs"; pickup line "Pickup in person near Grants Pass"; checklist big line "Five steps before it's yours." Lane B also changed, to match: the static
+title and description in build.html, the "Custom Builds" button in the "More Gaming PCs" box to "Start a Custom Build", and the "Browse More Systems" button on the thank-you message to "Browse Gaming PCs".
+**Owner note: the business name may change.** See COPY_REVIEW.md "Name change".
+
+## 15. Step 4f choices: Custom Builds page (owner, B-064; balance checked first)
+Applied as chosen: title "Custom Gaming PCs in Southern Oregon | North Bridge PCs" and its description; intro "Tell me your budget and the games you play, and I'll put together a parts list that
+makes sense. I build and test every system myself."; process text merged into one paragraph with the button "Send a Message →"; step 03 (Linux free for common distributions), step 05
+("run the same five checks every system gets"), step 06 "Pickup in person" (meet near Grants Pass, see it running, delivery possibly for a fee); budget intro "Rough examples to give you an idea."
+and a shorter footnote; the three cards without named graphics cards and with "Typically" on frame rates; "Not Sure" section cut to two paragraphs with "Send a Message →"; "Want Something Ready Now?"
+with "Browse Gaming PCs →" and "Send a Message". Lane B's change to the owner's edit: "adding a monitor later" became "using more than one monitor" (the owner does not sell monitors; the number
+of screens only matters for the graphics card's outputs). The Contact page form also asks "Need a Monitor?" (contact.html); that field goes in the Contact picker.
 

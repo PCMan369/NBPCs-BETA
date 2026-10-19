@@ -12,49 +12,10 @@ docs-archive/LOG-A035-A036.md in B-046, A-037 and A-038 to
 docs-archive/LOG-A037-A038.md in B-048, A-039 to A-045 to
 docs-archive/LOG-A039-A045.md in B-055, B-046 and B-047 to
 docs-archive/LOG-B046-B047.md in B-057, B-048 and B-049 to
-docs-archive/LOG-B048-B049.md in B-059. Keep about the
+docs-archive/LOG-B048-B049.md in B-059, B-050 and B-051 to
+docs-archive/LOG-B050-B051.md in B-061, B-052 and B-053 to
+docs-archive/LOG-B052-B053.md in B-063. Keep about the
 newest 10 entries here; the newest entry always stays (the next-ID rule reads it).
-
-B-050 | complete | 2026-10-15
-Task: Record the owner's marked message brief (step 1 of the copy rewrite); answer the owner's faith-values question in chat. Lane B, docs only.
-Files: A COPY_BRIEF.md; M START_HERE.md, COPY_REVIEW.md, LOG.md. No site file changed.
-Changed:
-- COPY_BRIEF.md: the owner's marks and edits (facts, buyer angles, voice A, selling points, taglines, words to avoid) plus the open faith-values point.
-- Found while recording: the FAQ Linux answer says "no extra charge" and lists Arch, but the owner now says advanced distros or configuration may cost extra. Not edited yet (COPY_BRIEF.md section 8).
-Decision: none; the faith-values question is the owner's to decide after the pros and cons in chat.
-Verified: docs only; no site files changed, so no site tests run. START_HERE.md size checked against its budget.
-Next/open: owner decision on the faith-values question; then step 2 (location map).
-
-B-051 | complete | 2026-10-15
-Task: Finalize the message brief (owner: principles in plain words, no Bible quotes or references; open point removed) and draft step 2, the location map. Lane B, docs only.
-Files: A COPY_MAP.md; M COPY_BRIEF.md, COPY_REVIEW.md, START_HERE.md, LOG.md. No site file changed.
-Changed:
-- COPY_BRIEF.md: open point replaced by the owner's values decision; marked final for step 1. (B-050's log text about the open point is history.)
-- COPY_MAP.md: what each kind of slot is for with drafting rules, repeated and inconsistent copy found, site-wide slots, every page's slots (title, meta, text, buttons, forms), script and data text, proposed drafting order, small site changes that would help.
-- COPY_REVIEW.md plan and START_HERE.md updated.
-Decision: none needed; the owner reacts to the map next.
-Verified: slots extracted by script from pages-src, partials and render/data files, then checked by hand; counts (button labels, kickers, repeated phrases) come from searching the files. Docs only; no site tests run.
-Next/open: owner's reaction to COPY_MAP.md; then step 3, taglines and selling points.
-
-B-052 | complete | 2026-10-15
-Task: Copy rewrite step 3: publish the taglines and selling points picker (nine lines, three directions each); redo it with a recommended option and a reason on every line (owner request, now standing). Lane B.
-Files: M START_HERE.md, LOG.md. No site file changed. Published page: "Copy pass step 3: taglines and selling points" (not part of the project).
-Changed:
-- Picker: header tagline, home heading, home intro, six selling points; each line marks one option as recommended and says why, including trade-offs and what to confirm.
-- START_HERE.md: the recommend-one rule is recorded for every future picker; steps 1-2 agreed (owner: "the plan looks good").
-Decision: none yet; the owner's choices come back from the picker next.
-Verified: page tested in Chromium (phone and desktop, light and dark): choosing, editing, leaving out, export, saved edits, recommendation badges and notes, no overflow or script errors; not tried in Safari. Docs only; no site tests run.
-Next/open: owner's choices from step 3; then draft the home page.
-
-B-053 | complete | 2026-10-15
-Task: Record the owner's step 3 choices and check their balance (owner request). Lane B, docs only.
-Files: M COPY_BRIEF.md, START_HERE.md, LOG.md. No site file changed.
-Changed:
-- COPY_BRIEF.md section 9: the nine choices (tagline, H1, intro, six selling points, all direction A except the H1) and the balance check.
-- Finding: honesty is said four times (tagline, intro, points 1 and 2); nothing on buyer outcome, after-sale help or the "runs your games" angle; "near Grants Pass" twice. A rebalance is proposed in the reply.
-Decision: pending; the owner answers yes or edits the rebalance.
-Verified: choices copied from the owner's picker output; docs only, no site tests run.
-Next/open: owner's answer on the rebalance; then step 4, drafting the home page.
 
 B-054 | complete | 2026-10-15
 Task: Record the agreed selling-point rebalance (owner: yes) and start step 4 with a picker for the home page's first screen. Lane B, docs only.
@@ -128,3 +89,47 @@ Changed:
 Decision: balanced; the Linux fix and the payment and delivery answer close two audit findings. Two echoes added to the polish list.
 Verified: `visual-check.py` clean (150 loads); real Chromium: FAQ page lists eight questions in the new order, the home preview shows the new after-sale question, no script errors; `smoke-test.js` not run (jsdom install fails: network).
 Next/open: Gaming PCs page and the single listing pages (including the checklist big line).
+
+B-061 | complete | 2026-10-15
+Task: Two FAQ fixes from the owner, then draft the Gaming PCs and listing pages picker. Lane B.
+Files: M pages-src/faq.html, js/data/faq.js, COPY_BRIEF.md, START_HERE.md, LOG.md; A docs-archive/LOG-B050-B051.md; root faq.html regenerated. Published page: "Copy pass step 4: Gaming PCs and listing pages".
+Changed:
+- Linux answer also says to ask about something different (owner confirmed the distro list is right); FAQ bottom line is now "No question is too basic or too technical."
+- Picker (9 lines): Gaming PCs title, description, heading, intro and sold section; sign-up box; listing page title and description (they said "for sale" even for sold listings), question form, sold and not-found text, pickup line and checklist big line; each with a recommendation.
+- LOG.md rolled over (B-050, B-051 moved verbatim).
+Decision: none yet on the picker.
+Verified: faq.html carries both changes, stitch exit 0; picker tested in Chromium (phone and desktop, light and dark), no errors. No site tests run beyond that (text-only change).
+Next/open: owner's choices for the picker; then apply.
+
+B-062 | complete | 2026-10-15
+Task: Copy pass step 4e: apply the owner's choices for the Gaming PCs and single listing pages; balance checked first; note the planned name change. Lane B.
+Files: M pages-src/builds.html, pages-src/build.html, js/render/buildDetail.js, notifyBox.js, trustSection.js, COPY_BRIEF.md, COPY_REVIEW.md, START_HERE.md, LOG.md; root builds.html and build.html regenerated.
+Changed:
+- Gaming PCs page: title, description, intro, sold text; sign-up box text, button, confirmation. Listing pages: script-made title and description (no more "for sale" on sold listings), form, sold notice, "More Gaming PCs" box, not-found, pickup line, checklist big line.
+- To match: static head of build.html, the "Start a Custom Build" button in the box, and the thank-you button "Browse Gaming PCs".
+- COPY_REVIEW.md: a "Name change" section (where the name appears, one-pass plan) and three polish items.
+Decision: balanced. The owner plans to change the business name; that is a later single pass.
+Verified: `visual-check.py` clean (150 loads); real Chromium on a scratch copy (one listing flipped to available): titles and descriptions, form, sold notice, box, not-found and the empty-state sign-up box show the new text, no script errors; `smoke-test.js` not run (jsdom install fails: network).
+Next/open: Custom Builds, Contact, About, Gallery, Part Boxes and 404 pages; then the polish list, the name change and Lane A's minor redesign.
+
+B-063 | complete | 2026-10-15
+Task: Draft the Custom Builds page picker (copy pass step 4). Lane B, docs only.
+Files: M START_HERE.md, LOG.md; A docs-archive/LOG-B052-B053.md. No site file changed. Published page: "Copy pass step 4: Custom Builds page".
+Changed:
+- Picker (8 lines): title and description, label/heading/intro, process section, steps 03/05/06, budget intro and footnote, the three budget cards, "Not sure" section, "Ready now" section; each with a recommended option and reason.
+- Key recommendation: remove named GPU classes from the budget cards (the owner is unsure they match what was sold) and mark the fps figures "Typically".
+Also: START_HERE.md copy-pass paragraph rewritten (it had garbled from repeated edits) and brought back toward its size budget; LOG.md rolled over (B-052, B-053 moved verbatim).
+Decision: none yet; the owner's choices come back from the picker.
+Verified: picker tested in Chromium (phone and desktop, light and dark), no errors; description options checked for length (154, 155, 149). Docs only, no site tests run.
+Next/open: owner's choices; then apply, then Contact, About, Gallery, Part Boxes, 404.
+
+B-064 | complete | 2026-10-15
+Task: Copy pass step 4f: apply the owner's choices for the Custom Builds page; balance checked first. Lane B.
+Files: M pages-src/custom-build.html, COPY_BRIEF.md, COPY_REVIEW.md, START_HERE.md, LOG.md; root custom-build.html regenerated.
+Changed:
+- Custom Builds: title, description, intro, process text (one paragraph) and button, steps 03/05/06, budget intro, footnote and cards (no named graphics cards, "Typically" on fps), "Not Sure" section (two paragraphs), "Ready Now" section and buttons.
+- Small markup: two paragraphs removed (process section, "Not Sure" section) because the owner's text merges them; spacing kept by adjusting one inline margin.
+- Owner's edit changed: "adding a monitor later" -> "using more than one monitor" (the owner does not sell monitors). Five polish items added, including the Contact form's "Need a Monitor?" field.
+Decision: balanced.
+Verified: `visual-check.py` clean (150 loads); real Chromium at 1440 and 390 px, screenshots viewed: process and "Not Sure" sections keep their spacing, no overflow or script errors; `smoke-test.js` not run (jsdom install fails: network).
+Next/open: Contact, About, Gallery, Part Boxes and 404 pages (the Contact picker starts with the "Need a Monitor?" field).

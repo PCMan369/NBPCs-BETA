@@ -52,7 +52,7 @@ const faqItems = [
   {
     id: "linux",
     question: "Do you offer Linux?",
-    answer: "Yes. Linux installation is available on request. It's free for common distributions like Ubuntu, Fedora, Pop!_OS or Linux Mint; anything more advanced, like Arch or a custom configuration, may cost extra, and I'll tell you before I start. Just mention what you'd like when you reach out and I'll set it up before pickup.",
+    answer: "Yes. Linux installation is available on request. It's free for common distributions like Ubuntu, Fedora, Pop!_OS or Linux Mint; anything more advanced, like Arch or a custom configuration, may cost extra, and I'll tell you before I start. Mention what you'd like when you reach out, or ask about something different and I'll tell you what's possible. I'll set it up before pickup.",
     answerExtra: "If you're not sure which distro to go with, I'm happy to suggest something based on what you're planning to use the machine for. For gaming specifically, Pop!_OS and Fedora tend to be solid starting points with good driver support out of the box.",
     featured: true
   },

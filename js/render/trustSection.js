@@ -28,7 +28,7 @@ function renderTrustEvidence() {
   return (
     '<div class="evidence evidence-compact">' +
       '<div>' +
-        '<p class="evidence-lead">Every system gets <span class="accent">cleaned, stress tested under load, and temperature-checked</span> before it goes anywhere.</p>' +
+        '<p class="evidence-lead">Five steps <span class="accent">before it\'s yours.</span></p>' +
         '<p class="evidence-sub">Performance figures are estimates based on real-world expectations for that hardware, not benchmarks I ran. There are no returns, but if you hit a snag after getting it home, email me and I\'ll help you troubleshoot.</p>' +
       '</div>' +
       '<div class="evidence-checklist">' +
