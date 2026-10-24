@@ -1,7 +1,7 @@
 # START_HERE.md — North Bridge PCs website
 
 Read this first, then the last few entries of LOG.md. Read other docs only
-when the doc map (bottom) says to. Last updated: B-064 (2026-10-15).
+when the doc map (bottom) says to. Last updated: B-078 (2026-10-21).
 
 ## What this is
 Static HTML/CSS/vanilla-JS site on GitHub Pages. Real sources are in
@@ -67,41 +67,36 @@ cautions: MAINTENANCE.md, "Applying a returned ZIP".
   page records go verbatim to docs-archive/ with a heading index in the live file.
 - If a budget is exceeded when you start, say so; fix it in the same chunk if the fix is docs-only.
 
-## Current state (as of A-043)
+## Current state (as of B-078)
 - V1 build is complete. Services were removed (B-003, B-004); the old
   services.html URL returns the 404 page. All builds are sold, so the site shows its no-inventory states. Dark only, no
   light mode (A-022); the `--success` token stays.
 - **Visual redesign.** Live record: VISUAL_REDESIGN.md (closed desktop decisions: docs-archive/VISUAL_REDESIGN-desktop-pass.md).
   Accent is "Cask" `#8b3f5e` sitewide. Desktop walk done A-030; mobile and tablet pass done (A-042; owner checked
-  iPhone 8 Safari, iPad, MacBook; Android untested). Left open: contact hero copy, part-boxes copy items
-  (COPY_REVIEW.md), custom-build's final CTA kicker label (copy pass).
+  iPhone 8 Safari, iPad, MacBook; Android untested). Left open: custom-build's final CTA kicker label (copy pass).
 - **Built pieces that constrain new work:**
-  - Forms: field border `--border-field`; focus one solid 2px accent edge (A-012). Contact, builds notify box,
-    build-detail form and part-boxes order confirmation share one `.success-state` card (A-013, A-023).
+  - Forms: field border `--border-field`; focus one solid 2px accent edge (A-012). Four forms share one `.success-state` card (A-013, A-023).
   - Accent text on the accent tint (active nav, FAQ icon, part-box chip): `--accent-text-tint` (A-039).
   - Status badges (Available/Sold): one outlined pill on cards and the detail page; no `.badge-quiet` (A-043).
   - Form fields are 16px on touch screens (`pointer: coarse`); smaller makes iOS Safari zoom (A-041).
-  - Contact picker: `.situation-picker` / `.situation-option` in `css/situation-picker.css` (A-009); buttons all 200px
-    wide (A-034).
-  - FAQ: ruled rows, buttons in the h2s, `grid-template-rows` reveal (A-030; supersedes home decision 7).
-  - Gallery: tiles 3:4 `object-fit: contain` (A-027); homepage preview 5 photos, 3 below 700px (A-028); empty "Current
-    Builds" hidden until `currentBuilds` in `js/data/gallery.js` has a photo (A-029). Below 700px: 2 columns, first
-    photo and a lone last tile full width (A-033, `css/theme.css`).
-  - Part-boxes: 12 boxes, one portrait photo each (`images/box-NN.jpg`); horizontal cards, two per row from 780px grid
-    width (A-021); at 389px and below a two-row card with a full-width footer (A-036).
-- **Checks at A-043:** `visual-check.py` (10 pages x 15 widths) clean; `smoke-test.js` passed; Impeccable clean.
+  - Contact picker: `.situation-picker` / `.situation-option` in `css/situation-picker.css` (A-009); buttons 200px wide (A-034).
+  - FAQ: ruled rows, buttons in the h2s, `grid-template-rows` reveal (A-030).
+  - Gallery: tiles 3:4 `object-fit: contain` (A-027); home preview 5 photos, 3 below 700px (A-028); empty "Current
+    Builds" hidden until `currentBuilds` in `js/data/gallery.js` has a photo (A-029); below 700px 2 columns (A-033).
+  - Part-boxes: 12 boxes, one portrait photo each (`images/box-NN.jpg`); horizontal cards, two per row from 780px
+    (A-021); at 389px and below a two-row card (A-036).
+- **Checks:** `visual-check.py` (10 pages x 15 widths) clean at B-068; `smoke-test.js` and Impeccable last ran at A-043 (clean); jsdom does not install in Lane B's sandbox.
 
 ## Next up
-**Lane A:** after the copy pass, a minor redesign so the layout suits the new wording and paragraph sizes (list in COPY_REVIEW.md,
+**Lane A:** the copy pass is done, so a minor redesign so the layout suits the new wording and paragraph sizes (list in COPY_REVIEW.md,
 "For Lane A"). New visual work starts from an owner request.
-**Lane B:** the copy pass (COPY_REVIEW.md), then its polish list, the business-name change and the domain-swap checklist.
+**Lane B:** the first copy pass (B-074) and the purposeful-repetition review (B-076; standard wordings: COPY_BRIEF.md section 21) are done. The polish list is applied (B-078). Next: refresh COPY_MAP.md (owner: refresh, not retire), the business-name change and the domain-swap checklist.
 
 ## Owner queue (waiting on you)
 - Not blocking (owner): a hero image; a real domain plus phone/Facebook values; testimonials.
-- Copy pass: Lane B drafts three directions in a picker page and recommends one with a reason, you edit it, Lane B applies it
-  (owner, B-052). Brief, map and tagline steps are final (COPY_BRIEF.md). Done: home, FAQ, Gaming PCs and listing pages, Custom Builds.
-  Next: Contact, About, Gallery, Part Boxes, 404. Small things go on the polish
-  list (COPY_REVIEW.md); the business name may change ("Name change" there). Delivery fee left unstated; say if a page should name one.
+- Copy pass: first pass complete (B-074); every page's wording was approved by you (Lane B drafts a picker, you choose, Lane B applies; owner,
+  B-052). Brief, map and tagline: COPY_BRIEF.md. Small things are on the polish list (COPY_REVIEW.md); the business name may change ("Name change"
+  there). Delivery fee left unstated; say if a page should name one. Standard wordings repeat on purpose now (COPY_BRIEF.md section 21): change one everywhere or nowhere. Please check the site with the new copy and report anything that reads wrong (page and line). COPY_MAP.md still describes the copy as of B-051; refreshing it is next.
 
 ## Do not touch
 - Site copy wording goes through the copy pass (Lane B; the owner approves every wording); Lane A does not reword copy.

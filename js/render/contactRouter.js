@@ -43,7 +43,7 @@ function initContactRouter() {
         '<div class="success-state">' +
           '<span class="success-mark" aria-hidden="true">&#10003;</span>' +
           '<h2 class="success-title">Message Sent</h2>' +
-          '<p>Thanks for reaching out. I\'ll get back to you by email within a day or two.</p>' +
+          '<p>Thanks for reaching out. I\'ll reply by email, usually within a day or two.</p>' +
           '<a href="index.html" class="btn btn-secondary">Back to Home</a>' +
         '</div>' +
       '</div></section>';
@@ -66,8 +66,8 @@ function initContactRouter() {
       target.style.display = 'block';
 
       // The General Question / Other-not-sure buttons share one
-      // panel — relabel its heading, intro line, hidden subject, and
-      // hidden situation tag to match whichever button was clicked.
+      // panel — relabel its heading, hidden subject, and hidden
+      // situation tag (and its intro line, only if the button has its own) to match whichever button was clicked.
       var label = btn.getAttribute('data-situation-label');
       if (label) {
         var heading = target.querySelector('.situation-heading');
@@ -75,7 +75,7 @@ function initContactRouter() {
         var tagInput = target.querySelector('.situation-tag-input');
         var subjectInput = target.querySelector('.situation-subject-input');
         if (heading) heading.textContent = label;
-        if (lead) lead.textContent = btn.getAttribute('data-situation-lead') || '';
+        if (lead && btn.hasAttribute('data-situation-lead')) lead.textContent = btn.getAttribute('data-situation-lead');
         if (tagInput) tagInput.value = btn.getAttribute('data-situation-tag') || label;
         if (subjectInput) subjectInput.value = btn.getAttribute('data-situation-subject') || label;
       }

@@ -60,7 +60,7 @@ function initBuildDetailPage() {
   document.title = build.title + ' | North Bridge PCs';
   var metaDesc = document.querySelector('meta[name="description"]');
   if (metaDesc) {
-    metaDesc.content = build.title + ', ' + build.price + '. Built and tested by North Bridge PCs in Grants Pass, Oregon. Local pickup.';
+    metaDesc.content = build.title + ', ' + build.price + '. Built and tested by North Bridge PCs. Pickup in person near Grants Pass, Oregon.';
   }
 
   var isAvailable = build.status === 'available';
@@ -330,7 +330,7 @@ function initBuildDetailPage() {
         '<div class="success-state">' +
           '<span class="success-mark" aria-hidden="true">&#10003;</span>' +
           '<h2 class="success-title">Message Sent</h2>' +
-          '<p>Thanks for reaching out. I\'ll get back to you by email within a day or two.</p>' +
+          '<p>Thanks for reaching out. I\'ll reply by email, usually within a day or two.</p>' +
           '<a href="builds.html" class="btn btn-secondary btn-sm">Browse Gaming PCs</a>' +
         '</div>';
     }

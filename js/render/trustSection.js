@@ -42,7 +42,7 @@ function renderTrustEvidence() {
         '</div>' +
         '<div class="evidence-row">' +
           '<span class="mark">03</span>' +
-          '<div><h3>Temps checked</h3><p>Temperatures checked under load before it goes anywhere.</p></div>' +
+          '<div><h3>Temps checked</h3><p>Temperatures checked under load.</p></div>' +
         '</div>' +
         '<div class="evidence-row">' +
           '<span class="mark">04</span>' +

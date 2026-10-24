@@ -4,8 +4,8 @@
   <!--ANALYTICS-->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Empty PC component boxes and packaging for sale from North Bridge PCs builds. Availability changes as boxes sell and more come in. Southern Oregon local pickup.">
-  <title>Part Boxes &amp; Packaging — North Bridge PCs | Southern Oregon</title>
+  <meta name="description" content="Empty PC component boxes for sale, good for shipping, storage or reselling your own parts. Pickup near Grants Pass, Oregon.">
+  <title>Part Boxes | North Bridge PCs</title>
 <!--SEO-->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="css/tokens.css">
@@ -23,8 +23,8 @@
   <section class="page-hero">
     <div class="container">
       <span class="section-label">Extra From the Bench</span>
-      <h1>Part Boxes &amp; Packaging</h1>
-      <p>Empty component boxes left over from builds — useful for shipping, storage, or reselling your own parts. Pick any combination below; local pickup in Southern Oregon.</p>
+      <h1>Part Boxes</h1>
+      <p>Empty component boxes left over from my builds, good for shipping, storage, or reselling parts. Choose any combination below and I'll arrange pickup.</p>
     </div>
   </section>
 
@@ -37,10 +37,10 @@
         <aside class="order-summary" id="order-summary">
           <div class="order-summary-title">Your Request</div>
           <div id="order-summary-items">
-            <p class="order-summary-empty">No boxes selected yet.</p>
+            <p class="order-summary-empty">No boxes selected yet. Use the + on any box to add it.</p>
           </div>
           <div class="order-summary-total" id="order-summary-total" style="display:none;">
-            <span>Estimated Total</span>
+            <span>Total</span>
             <strong id="order-total-amount">$0</strong>
           </div>
 
@@ -51,7 +51,7 @@
               config.js), same pattern as contact.html — a
               real POST + redirect, not a fetch()/AJAX call, so it doesn't
               depend on that specific request succeeding at submit time.
-              items_requested/estimated_total are hidden fields kept in
+              items_requested/total are hidden fields kept in
               sync by partBoxOrder.js's updateSummary() every time the
               selection changes, so the real submission always matches
               what's shown in the summary above.
@@ -63,7 +63,7 @@
               <input type="hidden" name="_next" id="order-next" value="{{SITE_URL}}/part-boxes.html?ordered=true">
               <input type="hidden" name="_url" id="order-url" value="{{SITE_URL}}/part-boxes.html">
               <input type="hidden" name="items_requested" id="order-items-hidden" value="">
-              <input type="hidden" name="estimated_total" id="order-total-hidden" value="">
+              <input type="hidden" name="total" id="order-total-hidden" value="">
 
               <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off">
 
@@ -73,11 +73,11 @@
               </div>
               <div class="form-group">
                 <label class="form-label" for="order-email">Your Email</label>
-                <input type="email" id="order-email" name="email" class="form-input" placeholder="So I can follow up" required autocomplete="email">
+                <input type="email" id="order-email" name="email" class="form-input" placeholder="So I can reply to you" required autocomplete="email">
               </div>
               <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Send Request &rarr;</button>
               <p style="font-size:0.8rem; color:var(--dim); margin-top:0.75rem; text-align:center; line-height:1.5;">
-                This sends a request, not a payment. I'll follow up by email to arrange pickup and payment.
+                This sends a request, not a payment. I'll reply by email to arrange pickup and payment.
               </p>
             </form>
           </div>

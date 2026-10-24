@@ -113,7 +113,7 @@ words; no quotes from or references to the Bible.
 - [Kicker] Ready to Buy
 - [H1] Gaming PCs
 - [Page intro] Every system is cleaned, stress tested, and ready for local pickup in Southern Oregon, with accurate specs and realis…
-- [Kicker] Sold History
+- [Kicker] Sale History
 - [Section heading] Recently Sold
 - [Body text] A look at what's come through recently — for reference, not for sale.
 

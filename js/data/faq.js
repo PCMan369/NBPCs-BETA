@@ -85,7 +85,7 @@ const faqItems = [
     id: "support",
     question: "What if something goes wrong after I buy?",
     answer: "There are no returns or warranty, but I can help you troubleshoot over email. If something isn't working right after you get it home, reach out and I'll do my best to help figure out what's going on.",
-    answerExtra: "To be clear about what this is: it's a real person helping you troubleshoot over email, not a warranty program or a repair service. For straightforward issues — a driver problem, a setting that needs adjusting, something not behaving the way it should — this usually gets things sorted. For hardware failures, I'll help you figure out next steps, but I can't cover physical repairs under this.",
+    answerExtra: "For straightforward issues, like a driver problem or a setting that needs adjusting, this usually gets things sorted. For hardware failures, I'll help you work out next steps, but I can't cover physical repairs.",
     featured: true
   }
 

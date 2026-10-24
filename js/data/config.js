@@ -60,7 +60,7 @@ const CONTACT = {
   // Future: once inquiry-type routing exists, different inquiry types
   // could point at different addresses/rules here without touching any
   // form markup.
-  responseTimeNote: "I typically respond within a day or two."
+  responseTimeNote: "I usually reply within a day or two."
 };
 
 const features = {

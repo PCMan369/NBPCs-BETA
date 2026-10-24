@@ -14,7 +14,7 @@
   fetch()/AJAX call — it doesn't depend on that specific request
   succeeding at submit time the way the old fetch()-based version did.
   updateSummary() below keeps two hidden fields (items_requested,
-  estimated_total) in sync with the visible summary on every selection
+  total) in sync with the visible summary on every selection
   change, so the real POST always matches what's shown on screen. See
   DECISIONS.md D31 for the reliability fix and why part-boxes.html was
   the one form still on the old pattern.
@@ -42,7 +42,7 @@ function initPartBoxOrder() {
       '<div class="success-state">' +
         '<span class="success-mark" aria-hidden="true">&#10003;</span>' +
         '<h2 class="success-title">Request Sent</h2>' +
-        '<p>I\'ll follow up by email to arrange pickup and payment.</p>' +
+        '<p>Thanks. I\'ll reply by email, usually within a day or two, to arrange pickup and payment.</p>' +
       '</div>';
     return;
   }
@@ -84,7 +84,7 @@ function initPartBoxOrder() {
     });
 
     if (!lines.length) {
-      itemsEl.innerHTML = '<p class="order-summary-empty">No boxes selected yet.</p>';
+      itemsEl.innerHTML = '<p class="order-summary-empty">No boxes selected yet. Use the + on any box to add it.</p>';
       totalWrap.style.display = 'none';
       formWrap.style.display = 'none';
       if (itemsHiddenEl) itemsHiddenEl.value = '';

@@ -40,7 +40,7 @@ before the owner has seen the draft, except small fixes the owner has asked for 
 - **Rewrite plan (owner, B-048/B-049; small markup/CSS changes allowed when helpful):**
   1. Message brief: marked by the owner, final (COPY_BRIEF.md, B-050/B-051).
   2. Location map: COPY_MAP.md (B-051), agreed. 3. Taglines and selling points: chosen (COPY_BRIEF.md 9, 10).
-  4. Page by page: home first screen and "How I Work" (B-055), home Available Systems and checklist sections (B-056), home lower sections (B-058) applied; the home page is done. FAQ page (B-060, B-061), Gaming PCs and listing pages (B-062), Custom Builds (B-064) applied. Next: Contact, About, Gallery, Part Boxes, 404.
+  4. Page by page: home first screen and "How I Work" (B-055), home Available Systems and checklist sections (B-056), home lower sections (B-058) applied; the home page is done. FAQ page (B-060, B-061), Gaming PCs and listing pages (B-062), Custom Builds (B-064), Contact (B-066) applied; About (B-068) applied; Gallery (B-070) applied; Part Boxes (B-072) applied; 404 (B-074) applied: the first copy pass is complete. Next: the purposeful-repetition review, the polish list, the name change.
   3. Taglines and selling points chosen from the brief (picker page, three directions).
   4. Page-by-page drafting in the picker, then apply: header and footer, home, listings, custom builds, About, FAQ, contact,
      part boxes, small messages.
@@ -186,17 +186,36 @@ message; part-box condition lines (as of B-019); form success messages.
 
 ## Polish list (small things noticed during the rewrite; handle after the rewording is done)
 Rule (owner, B-057): whenever Lane B notices a small issue, it goes here instead of being fixed on the spot or forgotten.
-- "Before" is said six times in the home checklist section (label, heading, lead, big line, steps 03 and 04); trim step 03's "before it goes anywhere". (B-056)
-- "Listed" is said four times in the home empty state; trim its first sentence. (B-056)
-- "Tested" is said in the header tagline, the home intro and "Ready to play". (B-055)
-- Listing pages: the big line above the checklist still has the old wording ("Every system gets cleaned, stress tested under load, and temperature-checked"). (B-056)
+- "Before" is said six times in the home checklist section (label, heading, lead, big line, steps 03 and 04); trim step 03's "before it goes anywhere". (B-056) DONE (B-076): step 03 trimmed; "before" is now said five times.
+- "Listed" is said four times in the home empty state; trim its first sentence. (B-056) DONE (B-076): the sentence now says "Everything I've listed so far has sold."; "listed" is still said three times there (heading, sentence, section title).
+- "Tested" is said in the header tagline, the home intro and "Ready to play". (B-055) CLOSED (B-077): kept on purpose (the hands-on promise, COPY_BRIEF.md section 21).
+- DONE (B-062, checked B-066): the listing pages' checklist big line is now "Five steps before it's yours."
 - DONE (B-060): the FAQ Linux answer now states where free ends.
 - `js/data/config.js` tagline is still "Southern Oregon Gaming PCs" (used in structured data) while the header now says "Gaming PCs, honestly built and tested." (B-055)
-- Budget tiers (~$500, ~$800, ~$1,200): the owner is unsure the GPU classes match what the sold systems had; confirm before the Custom Builds page is reworded. (B-049)
-- Button labels on pages not yet reworded (Browse Systems, View All Systems, Contact Me, Reach Out, Get Started, Talk Budget) should use the chosen set: Browse Gaming PCs, Start a Custom Build, Send a Message, Get Notified. (B-051)
+- Budget tiers (~$500, ~$800, ~$1,200): the owner is unsure the GPU classes match what the sold systems had; confirm before the Custom Builds page is reworded. (B-049) DONE (B-064): named graphics cards removed, fps marked "Typically".
+- Button labels on pages not yet reworded (Talk Budget, three times on the Custom Builds budget cards; Contact Me in the Part Boxes cards, `partBoxCard.js`) should use the chosen set: Browse Gaming PCs, Start a Custom Build, Send a Message, Get Notified. (B-051) DONE (B-078): no old label is left on the site.
 - COPY_MAP.md describes the copy as it was at B-051; refresh or retire it when the rewrite ends. (B-057)
-- Gallery section on the home page says "Recent Work", "Recent Builds" and "built and sold": the label and heading echo each other. (B-058)
-- "Questions" is in two adjacent home headings ("Questions Before You Buy" and "Have a Question? Ready to Buy?"). (B-058)
+- Gallery section on the home page says "Recent Work", "Recent Builds" and "built and sold": the label and heading echo each other. (B-058) DONE (B-076): the label is now "Photos".
+- "Questions" is in two adjacent home headings ("Questions Before You Buy" and "Have a Question? Ready to Buy?"). (B-058) DONE (B-076): the bottom heading is "Want to Talk It Through?".
+
+## Polish status (B-077)
+The polish list is spread over this file (the list above, items after "Name change", and the Lane A list). Sorted at B-077:
+- Wording to decide (owner): DONE, B-078: ten small fixes from the published picker "Polish list: small wording fixes" (Contact custom-form heading and "Pick" echo; Custom Builds "five checks", "GPU", budget-card buttons and "what's listed"; the home See-it-running point; the listing search description's double "Grants Pass"; the FAQ after-sale paragraph; Part Boxes "my builds"). Apply as B-078 when the owner's choices come back.
+- Closed, kept on purpose (no work): "tested" and "ready" on the home page, About's "one person" and "before it's yours", the home empty-state "listed" (three uses), the gallery intro next to the traded laptop (owner, B-070), the budget tiers (B-064).
+- Waiting for something else: the Gallery "For Sale" label (until a current photo exists); the config tagline (`js/data/config.js`, not shown on any page; goes with the name change).
+- Lane A (visual, see that list): the lone RGB dropdown, Custom Builds accent line spacing, longer header tagline, the EliteBook photo order (owner), FAQ game answers (owner).
+- Later chunks: the name change ("Name change"), the domain-swap checklist, and COPY_MAP.md (it still describes the copy as of B-051: refresh it or retire it; owner to say which).
+
+New items from applying the polish picker (B-078): "Send a Message" is now the button on six Custom Builds buttons (the process section, the three budget cards, "Not Sure" and "Ready Now"), all to the Contact page, and the "Ready Now" one has no arrow while the other five have →; the Custom Builds cards say "graphics card" in the blurb and again in the list (tier 3); the home checklist steps still say "GPU" ("CPU and GPU pushed under sustained load", "GPU and system drivers current"); a sold listing page still says "See what's listed now" (standard: "available"); COPY_MAP.md refresh is the next chunk (owner: refresh, not retire).
+
+## Purposeful repetition (owner, B-069: after the first copy pass, consider it)
+Task for Lane B once every page has its new copy and before the polish list is closed. The brief warns against repeating phrases like keywords, but some repetition helps: a visitor who sees the same few promises in the same words on several pages learns to trust them.
+- Decide which messages are repeated on purpose (candidates: one person who builds and tests; "see it running" before pickup; honest about being new; the usual reply time; local pickup; Linux available; no pressure).
+- For each, pick one standard wording and the pages where it belongs (and where it does not). Record it as a short table in COPY_BRIEF.md.
+- Sort the echo items on the polish list into "keep, on purpose" and "vary or cut", and make wording of the kept ones identical.
+- Present it in a picker like the others (the table, with a recommendation and reason per message), then apply. Check the balance again: a message repeated more than three times per page, or word for word in neighbouring sentences, still counts as an echo.
+
+Status (B-076): the owner chose option A on all seven and the changes are applied; the standard wordings are recorded in COPY_BRIEF.md section 21. New polish items from applying them: the listing search description says "Grants Pass" twice ("...in Grants Pass, Oregon. Pickup in person near Grants Pass."); the home "See it running" point now repeats "running" in title and text, and "before it's yours" appears in it and in the checklist big line; Custom Builds "Ready Now" text says "see what's listed right now" (the standard is "available"); `responseTimeNote` in `js/data/config.js` is not used by any page (now the standard wording); the Part Boxes hero and Contact row still describe the boxes in two wordings. Earlier status (B-075): picker drafted with seven messages (hands-on promise, "see it running", the truth promise, reply time, pickup label, "ready-to-buy"/"available", home-page echoes) and a list of wording that is already identical and needs no choice. Owner chooses; then apply, and record the standard wordings as a table in COPY_BRIEF.md. Found while surveying: the home page uses "ready" seven times; the listing pages' "What You're Getting" heading is another use of the promise phrase (keep); each of the three Custom Builds budget cards says "Linux available on request" (kept unless the owner says otherwise); the listing search description says "Built and tested by North Bridge PCs" (a name-change item).
 
 ## For Lane A (after the copy pass): minor redesign for the new wording and paragraph sizes
 Owner, B-059: the layout may need small changes once the new copy is in. Places already known (add more as the rewrite goes on):
@@ -206,10 +225,16 @@ Owner, B-059: the layout may need small changes once the new copy is in. Places 
 - Home FAQ preview now shows four questions, and every FAQ answer changes length as the FAQ page is reworded.
 - Button labels are longer in places ("Start a Custom Build", "Read the Full FAQ"): check widths on phones.
 - Listing pages: the checklist text there was shortened too.
-- FAQ "What if something goes wrong after I buy?": the paragraph under the answer still says "not a warranty program or a repair service", which repeats "no returns or warranty" in the answer above it. (B-060)
+- FAQ "What if something goes wrong after I buy?": the paragraph under the answer still says "not a warranty program or a repair service", which repeats "no returns or warranty" in the answer above it. (B-060) DONE (B-078).
 - FAQ: two answers are about specific games (Fortnite, War Thunder); consider whether one is enough once the rest of the site is reworded. (B-060)
+- Part Boxes (B-072): the hero says "left over from my builds" while the Contact row says "left over from builds" (same idea, two wordings: DONE B-078, the Contact row now says "my builds"); "Includes insert(s)" (owner's wording) merges the old "includes inserts" and "includes cardboard insert" lines, so per-box accuracy is the owner's to check.
+- Part Boxes order emails: the hidden field `estimated_total` is now `total`, so the owner's notification email shows "total" (B-072).
+- Gallery (B-069): all 22 photos carry the alt text "previously sold" (screen readers hear it each time); `js/render/galleryGrid.js` says "Photos coming soon." only if a grid is empty (never today); the first six gallery photos are a laptop (HP EliteBook 840 G10) that the owner got in a trade for a PC they built; the owner said to change no wording because of it (B-070), so the photos stay first. Moving them after the PCs is a data-order change in `js/data/gallery.js`, left to the owner.
+- Gallery: "For Sale" label over "Systems listed for sale right now." says it twice (section hidden until a current photo exists); the intro says "built and sold" while the first photos are the traded laptop. (B-070)
+- About: "before it's yours" (local paragraph) echoes the home checklist's "before"; ("what you're getting" twice: DONE B-076); the opening line ("I build and test every PC here myself") and the hero line ("One person") overlap. (B-068)
+- Contact custom form: with the monitor field gone, the three dropdowns (Wi-Fi, Windows or Linux, RGB) leave RGB alone on the last row at desktop width; Lane A may want it full width or paired. (B-066)
 - A sold listing page says "See what's listed now, or ask about a custom build" in the sold notice and again, with the same button, in the "More Gaming PCs" box below. (B-062)
-- The listing description says "Local pickup" while the page now says "Pickup in person near Grants Pass"; the header also says "Local Pickup". Fine, but check the wording for consistency at the end. (B-062)
+- The listing description now says "Pickup in person near Grants Pass" (DONE B-076); the header "Local Pickup" and Contact's "Pickup and Delivery" stay on purpose. (B-062)
 - `js/render/buildDetail.js` writes the business name as a literal in four places (title, description, form subject, "Why North Bridge PCs"); see Name change below. (B-062)
 
 ## Name change (owner, B-062: the business name may change; do it as one pass, together with the domain if possible)
@@ -219,9 +244,21 @@ header.html 1 (the logo splits it as "North Bridge" plus an accent-coloured "PCs
 other generated text); js/data/builds.js 1. Also: page titles end in "| North Bridge PCs" (all 10 pages); FormSubmit subject lines in the forms; `SITE.url` still contains
 "North-Bridge-PCs" (the GitHub repository path); the ZIP names (nbpcs) and a few docs mention it. A rename is a search-and-replace plus a check of the logo (two-colour split)
 and the structured data; it should be one chunk after the copy pass, and it changes the tagline and title lengths, so the minor redesign should come after it.
-- Custom Builds step 05 says "five checks" while the home page and listings say "Five steps"; pick one word. (B-064)
-- The Custom Builds cards say "GPU" in the one-line blurb and "graphics card" in the list; pick one term. (B-064)
-- The three budget cards still have the button "Talk Budget →"; the chosen set is "Send a Message". (B-064)
+- Custom Builds step 05 says "five checks" while the home page and listings say "Five steps"; pick one word. (B-064) DONE (B-078): "steps".
+- The Custom Builds cards say "GPU" in the one-line blurb and "graphics card" in the list; pick one term. (B-064) DONE (B-078): "graphics card" (also in the home budget table).
+- The three budget cards still have the button "Talk Budget →"; the chosen set is "Send a Message". (B-064) DONE (B-078).
 - On the Custom Builds page the accent line sits right above the "Send a Message" button in the process section: Lane A may want more space. (B-064)
-- Contact page form asks "Need a Monitor?" with the option "Yes, looking for a monitor too", but the owner does not sell monitors; decide in the Contact picker. (B-064)
+- DONE (B-066): the Contact form's "Need a Monitor?" field was removed (owner's pick).
+- Contact: the custom panel's heading is still "Custom PC" while the picker row is now "Custom Build". (B-066) DONE (B-078).
+- Contact: "Pick" opens both the hero intro and the picker intro. DONE (B-078; the "ready-to-go" and "what's listed" parts DONE B-076)
+- DONE (B-076): the Contact Response Time block now says "I usually reply within a day or two."
+- DONE (B-076): the listing-page inquiry thank-you now matches Contact's confirmation.
+
+## How the picker pages work (so a new chat can continue the copy pass)
+Each step is a single self-contained HTML page published with the Artifact tool (items: current text, options A/B/C, "Keep current wording", a star on the recommended option, a
+"Why I'd pick X" note, an editable box for the chosen option, and a "Copy my choices" button whose list the owner pastes back). Pickers are not stored in the project; they live in
+the chat that made them. To make the next one: read the page's current text (script-made text lives in js/render/*.js and js/data/*.js), draft three directions in the voice in
+COPY_BRIEF.md, recommend one with a reason, check title/description lengths (title about 60, description up to 155), then check the balance of the owner's choices before applying and put small
+things on the polish list. Pages done: all of them (first copy pass complete, B-074). Next: the polish list (see "Polish status"), the
+business-name change (see "Name change"), the domain-swap checklist, and Lane A's minor redesign.
 

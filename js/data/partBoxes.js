@@ -54,7 +54,7 @@ const partBoxes = [
     category: "CPU Box",
     quantity: 3,
     price: "$5",
-    condition: "Good condition — includes foam inserts.",
+    condition: "Good condition. Includes foam inserts.",
     media: { images: ["images/box-01.jpg"], videos: [] },
     notes: ""
   },
@@ -66,7 +66,7 @@ const partBoxes = [
     category: "CPU Box",
     quantity: 2,
     price: "$5",
-    condition: "Good condition — includes foam inserts.",
+    condition: "Good condition. Includes foam inserts.",
     media: { images: ["images/box-02.jpg"], videos: [] },
     notes: ""
   },
@@ -78,7 +78,7 @@ const partBoxes = [
     category: "CPU Box",
     quantity: 1,
     price: "$5",
-    condition: "Fair condition.",
+    condition: "Fair condition. No inserts.",
     media: { images: ["images/box-03.jpg"], videos: [] },
     notes: ""
   },
@@ -90,7 +90,7 @@ const partBoxes = [
     category: "PSU Box",
     quantity: 4,
     price: "$3",
-    condition: "Good condition — includes foam inserts.",
+    condition: "Good condition. Includes foam inserts.",
     media: { images: ["images/box-04.jpg"], videos: [] },
     notes: ""
   },
@@ -103,7 +103,7 @@ const partBoxes = [
     category: "PSU Box",
     quantity: 1,
     price: "$3",
-    condition: "Good condition — includes foam inserts.",
+    condition: "Good condition. Includes foam inserts.",
     media: { images: ["images/box-05.jpg"], videos: [] },
     notes: ""
   },
@@ -115,7 +115,7 @@ const partBoxes = [
     category: "Cooler Box",
     quantity: 1,
     price: "$3",
-    condition: "Good condition — includes inserts.",
+    condition: "Good condition. Includes insert(s).",
     media: { images: ["images/box-06.jpg"], videos: [] },
     notes: ""
   },
@@ -127,7 +127,7 @@ const partBoxes = [
     category: "Motherboard Box",
     quantity: 1,
     price: "$5",
-    condition: "Good condition — includes cardboard insert.",
+    condition: "Good condition. Includes insert(s).",
     media: { images: ["images/box-07.jpg"], videos: [] },
     notes: ""
   },
@@ -139,7 +139,7 @@ const partBoxes = [
     category: "Motherboard Box",
     quantity: 1,
     price: "$5",
-    condition: "Good condition. No cardboard insert.",
+    condition: "Good condition. No inserts.",
     media: { images: ["images/box-08.jpg"], videos: [] },
     notes: ""
   },
@@ -151,7 +151,7 @@ const partBoxes = [
     category: "Motherboard Box",
     quantity: 1,
     price: "$5",
-    condition: "Good condition — includes inserts.",
+    condition: "Good condition. Includes insert(s).",
     media: { images: ["images/box-09.jpg"], videos: [] },
     notes: ""
   },
@@ -175,7 +175,7 @@ const partBoxes = [
     category: "Motherboard Box",
     quantity: 1,
     price: "$5",
-    condition: "Good condition. No cardboard insert.",
+    condition: "Good condition. No inserts.",
     media: { images: ["images/box-10.jpg"], videos: [] },
     notes: ""
   },

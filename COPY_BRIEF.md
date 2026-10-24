@@ -128,3 +128,44 @@ and a shorter footnote; the three cards without named graphics cards and with "T
 with "Browse Gaming PCs →" and "Send a Message". Lane B's change to the owner's edit: "adding a monitor later" became "using more than one monitor" (the owner does not sell monitors; the number
 of screens only matters for the graphics card's outputs). The Contact page form also asks "Need a Monitor?" (contact.html); that field goes in the Contact picker.
 
+## 16. Step 4g choices: Contact page (owner, B-066; balance checked first)
+Applied as chosen (all eight picks A): the "Need a Monitor?" field removed from the custom form (its "Anything Else" box now lists "number of monitors"); title "Contact | North Bridge PCs" and
+description "Ask about a gaming PC, start a custom build, or just get a question answered. I usually reply within a day or two."; label "Get in Touch", heading "Contact", intro "Pick what fits
+below and I'll reply by email. No pressure, just a conversation." (the place list left the intro); info block "Pickup and Delivery" (meet near Grants Pass, delivery possibly for a fee, towns once);
+Custom Builds and Linux blocks (common distributions free, set up before pickup); picker "What Do You Need Help With?" with rows Buying a Gaming PC / Custom Build / Part Boxes / General Question /
+Other / Not Sure and four different buttons ("Ask About a Gaming PC", "Start a Custom Build", "Ask a Question", "Tell Me What's Going On"; Part Boxes keeps "Browse Part Boxes"); buying panel and general panel
+intros; all three submit buttons "Send a Message →"; confirmation "Message Sent" / "Thanks for reaching out. I'll reply by email, usually within a day or two."
+Lane B small markup/JS (owner rule B-049): the two General/Other buttons no longer carry their own panel intro (`data-situation-lead` removed) and `contactRouter.js` only replaces the intro when a button has one,
+so the owner's shared general intro shows for both. The Response Time block was not in the picker and is unchanged.
+
+## 17. Step 4h choices: About page (owner, B-068; balance checked first)
+Applied as chosen: title "About | North Bridge PCs" and description "North Bridge PCs is one person building and testing gaming PCs near Grants Pass, Oregon. Started in May 2026, and upfront about being new." (138 characters); hero intro "One person, building gaming PCs in Southern Oregon, and trying to do it honestly." (label and heading unchanged);
+opening line "Hi, I'm Jacob Skrove. I build and test every PC here myself, and I started North Bridge PCs in May 2026."; the five story paragraphs in the A, B, A, A, A versions (origin; local, with "see it running"; value and hobby; the promise first, "still new" said once;
+school and turnaround with "usually"); bottom box "Have a Question?" with "Ask about a system, a custom build, or anything else. I usually reply within a day or two." and buttons "Send a Message →" and "Browse Gaming PCs". Text only; no markup change.
+
+## 18. Step 4i choices: Gallery page (owner, B-070; balance checked first)
+Applied as chosen: title "Gallery | North Bridge PCs"; description "Photos of systems sold by North Bridge PCs near Grants Pass, Oregon, shown from several angles." (the owner's edit of option A; 95 characters); hero label "Photos", heading "Gallery", intro "A look at the PCs I've built and sold. Click or tap any photo to see it larger." (option C);
+hidden "Current Builds" section is now "For Sale / Available Now / Systems listed for sale right now."; the visible section is "Sale History / Past Systems / Every one has gone to a new owner. Close-ups of the front, sides and ports."; bottom box "Want One Like These?" with "Browse what's available now, or tell me your budget and the games you play and I'll build something to fit." and buttons "Browse Gaming PCs →" and "Start a Custom Build".
+Owner rule: the kicker is "Sale History", not "Sold History", everywhere (changed on the Gaming PCs page and in COPY_MAP.md too). The HP EliteBook photos stay in the gallery; no wording anywhere changes because of them (the owner got that laptop in a trade for a PC they built). Text only; no markup change.
+
+## 19. Step 4j choices: Part Boxes page (owner, B-072; balance checked first)
+Applied as chosen (all option A except the condition lines): title "Part Boxes | North Bridge PCs" and description "Empty PC component boxes for sale, good for shipping, storage or reselling your own parts. Pickup near Grants Pass, Oregon." (123 characters); label "Extra From the Bench", heading "Part Boxes", intro "Empty component boxes left over from my builds, good for shipping, storage, or reselling parts. Choose any combination below and I'll arrange pickup.";
+request panel "Your Request" with "No boxes selected yet. Use the + on any box to add it." and the total label "Total" (the owner: it is not an estimate; the hidden form field is now `total`); form "First name is fine" / "So I can reply to you" / "Send Request →" and "This sends a request, not a payment. I'll reply by email to arrange pickup and payment."; confirmation "Request Sent" / "Thanks. I'll reply by email, usually within a day or two, to arrange pickup and payment.";
+empty state "No Part Boxes Right Now" / "Nothing is available at the moment. Check back later, or send a message if you're looking for a specific box." / "Send a Message →".
+Condition lines (the owner's own list): "Good condition. Includes foam inserts." (4 boxes), "Good condition. Includes insert(s)." (3 boxes: the old "includes inserts" and "includes cardboard insert"), "Good condition. No inserts." (4 boxes, including the old "No cardboard insert"), "Fair condition. No inserts." (the one Fair box, the 5800X3D). All 12 boxes have a condition line (the RTX 3060 entry in `partBoxes.js` is only the example in the "how to add a box" comment). Text and data only; one hidden form field renamed.
+
+## 20. Step 4k choices: 404 page (owner, B-074; balance checked first)
+Applied as chosen (option A for both): title "Page Not Found | North Bridge PCs"; description "That page isn't here. Try the home page or the Gaming PCs page."; heading "Page Not Found"; text "That page doesn't exist, or it has moved. Check the link, or try one of these."; buttons "Back to Home →" and "Browse Gaming PCs" (unchanged). No mention of the old services page, on purpose. Text only. This completes step 4: every page now has owner-approved wording.
+
+## 21. Purposeful repetition: standard wordings (owner, B-076; all seven picks option A; balance checked first)
+Rule: a standard wording is changed everywhere it appears or nowhere. These repeat on purpose; anything else repeated on a page is an echo to cut.
+| Message | Standard wording | Where, on purpose |
+|---|---|---|
+| Who does the work | "I build and test every PC myself." | home hero (longer line), Custom Builds intro, About opening line; the header tagline says "honestly built and tested" on every page. Not on listings, Contact, Gallery, Part Boxes |
+| Seeing it | "you can see the system running" | home point "See it running", Custom Builds step 06, FAQ pickup answer, About local paragraph |
+| The promise | "tell you exactly what you're getting, good and bad" | home hero, About paragraph 4; the listing heading "What You're Getting" stays |
+| Reply time | "I usually reply within a day or two" | Contact block, description and confirmation; home, FAQ and About bottom boxes; Part Boxes confirmation; listing form and thank-you; `config.js` responseTimeNote |
+| Pickup | "Pickup in person near Grants Pass" | listing page line and search description, Custom Builds step 06 title; the header "Local Pickup" and Contact "Pickup and Delivery" stay |
+| Terms | "ready-to-buy" (a system in stock), "available" (what is in stock now) | Contact buying row and panel; "Ready to play" is the setup point and stays |
+Already identical, no choice needed: the used-parts sentence (home, FAQ); "your budget and the games you play" (Contact, Custom Builds, Gallery, home); "No pressure" (home bottom box, Contact intro); place names ("near Grants Pass" for pickup, "Southern Oregon" for the area, the town list once on Contact); being new (May 2026) on About only; Linux (header, Contact, FAQ, home, Custom Builds step 03, and "Linux available on request" on each budget card).
+Applied changes: Custom Builds intro "PC"; home "See it running" and Custom Builds step 06 "you can see the system running"; About paragraph 4 "exactly what you're getting, good and bad" and paragraph 3 last sentence "understand your PC"; Contact Response Time block, listing thank-you and `responseTimeNote`; listing search description "Pickup in person near Grants Pass"; Contact row "ready-to-buy" and panel "available"; home checklist step 03 (also on the listing pages, which share the text), empty-state sentence, gallery label "Photos" and bottom heading "Want to Talk It Through?".
